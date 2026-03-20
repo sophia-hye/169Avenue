@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ScrollToTop } from './components/ScrollToTop'
 import { HomePage } from './components/HomePage'
 import { ConsultationPage } from './components/ConsultationPage'
 import { SuccessStoriesPage } from './components/SuccessStoriesPage'
@@ -10,15 +11,18 @@ import { RegionDetailPage } from './components/RegionDetailPage'
 import { StateDetailPage } from './components/StateDetailPage'
 import { EuropeCountryDetailPage } from './components/EuropeCountryDetailPage'
 import { FieldPage } from './components/FieldPage'
+import { UniversityDetailPage } from './components/UniversityDetailPage'
 
 function App() {
   return (
     <BrowserRouter basename="/169Avenue">
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/partners" element={<PartnersPage />} />
         <Route path="/field" element={<FieldPage />} />
+        <Route path="/university/:slug" element={<UniversityDetailPage />} />
         <Route path="/destinations" element={<DestinationsPage />} />
         <Route path="/destinations/us/:stateCode" element={<StateDetailPage />} />
         <Route path="/destinations/eu/:countryId" element={<EuropeCountryDetailPage />} />

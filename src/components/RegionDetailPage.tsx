@@ -8,6 +8,7 @@ import { UKMap } from './maps/UKMap'
 import { EuropeMap, EU_UNIVERSITIES as EU_UNIVERSITIES_DATA, COUNTRY_NAMES as EU_COUNTRY_NAMES } from './maps/EuropeMap'
 import { AsiaPacificMap } from './maps/AsiaPacificMap'
 import { US_UNIVERSITIES, STATE_NAMES, getUniversitiesByState, getStatesWithUniversities } from '../data/us-universities'
+import { toSlug } from '../data/university-utils'
 
 interface SimpleUniversity {
   readonly name: string
@@ -144,8 +145,9 @@ function USDetailSection() {
             </span>
             <div className="space-y-0">
               {US_UNIVERSITIES.slice(0, 10).map((uni) => (
-                <div
+                <Link
                   key={uni.rank}
+                  to={`/university/${toSlug(uni.name)}`}
                   className="grid grid-cols-12 gap-4 py-5 border-b border-outline-variant/15 group hover:bg-surface-container-low/50 transition-colors px-4 -mx-4"
                 >
                   <div className="col-span-1">
@@ -154,12 +156,12 @@ function USDetailSection() {
                     </span>
                   </div>
                   <div className="col-span-6">
-                    <h4 className="font-headline text-xl text-primary">{uni.name}</h4>
+                    <h4 className="font-headline text-xl text-primary group-hover:text-secondary transition-colors">{uni.name}</h4>
                   </div>
                   <div className="col-span-5 text-right">
                     <span className="font-body text-sm text-on-surface-variant">{uni.city}, {uni.state}</span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -228,8 +230,9 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
             </span>
             <div className="space-y-0">
               {region.universities.map((uni, i) => (
-                <div
+                <Link
                   key={uni.name}
+                  to={`/university/${toSlug(uni.name)}`}
                   className="grid grid-cols-12 gap-4 py-6 border-b border-outline-variant/15 group hover:bg-surface-container-low/50 transition-colors px-4 -mx-4"
                 >
                   <div className="col-span-1">
@@ -238,7 +241,7 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
                     </span>
                   </div>
                   <div className="col-span-5">
-                    <h4 className="font-headline text-xl text-primary">{uni.name}</h4>
+                    <h4 className="font-headline text-xl text-primary group-hover:text-secondary transition-colors">{uni.name}</h4>
                   </div>
                   <div className="col-span-3">
                     <span className="font-body text-sm text-on-surface-variant">{uni.city}</span>
@@ -248,7 +251,7 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
                       {uni.program}
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -305,8 +308,9 @@ function GenericDetailSection({ region }: { region: RegionData }) {
             </span>
             <div className="space-y-0">
               {region.universities.map((uni, i) => (
-                <div
+                <Link
                   key={uni.name}
+                  to={`/university/${toSlug(uni.name)}`}
                   className="grid grid-cols-12 gap-4 py-6 border-b border-outline-variant/15 group hover:bg-surface-container-low/50 transition-colors px-4 -mx-4"
                 >
                   <div className="col-span-1">
@@ -315,7 +319,7 @@ function GenericDetailSection({ region }: { region: RegionData }) {
                     </span>
                   </div>
                   <div className="col-span-5">
-                    <h4 className="font-headline text-xl text-primary">{uni.name}</h4>
+                    <h4 className="font-headline text-xl text-primary group-hover:text-secondary transition-colors">{uni.name}</h4>
                   </div>
                   <div className="col-span-3">
                     <span className="font-body text-sm text-on-surface-variant">{uni.city}</span>
@@ -325,7 +329,7 @@ function GenericDetailSection({ region }: { region: RegionData }) {
                       {uni.program}
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

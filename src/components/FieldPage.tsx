@@ -7,6 +7,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { FIELDS, type Field, type FieldUniversity } from '../data/fields'
+import { toSlug } from '../data/university-utils'
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
 
@@ -170,8 +171,9 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
           </span>
           <div className="border-t border-outline-variant/20">
             {selectedField.universities.map((uni, i) => (
-              <div
+              <Link
                 key={uni.rank}
+                to={`/university/${toSlug(uni.name)}`}
                 className="flex items-center gap-4 py-5 md:py-7 border-b border-outline-variant/15 group hover:bg-surface-container-low/50 transition-colors px-2 md:px-6 -mx-2 md:-mx-6"
                 style={{ animation: `fadeIn 0.4s ease ${i * 0.04}s both` }}
               >
@@ -179,16 +181,14 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
                   {String(uni.rank).padStart(2, '0')}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-headline text-base md:text-2xl text-primary truncate">{uni.name}</h3>
+                  <h3 className="font-headline text-base md:text-2xl text-primary truncate group-hover:text-secondary transition-colors">{uni.name}</h3>
                   <span className="font-body text-xs md:text-sm text-on-surface-variant">{uni.city}, {uni.country}</span>
                 </div>
-                <Link to="/consultation" className="shrink-0 font-label text-[10px] uppercase tracking-widest text-secondary hover:text-primary transition-colors hidden sm:block">
-                  Inquire
-                </Link>
-                <Link to="/consultation" className="shrink-0 sm:hidden">
-                  <span className="material-symbols-outlined text-secondary text-sm">arrow_forward</span>
-                </Link>
-              </div>
+                <span className="shrink-0 font-label text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors hidden sm:block">
+                  View
+                </span>
+                <span className="material-symbols-outlined text-secondary text-sm shrink-0 sm:hidden group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </Link>
             ))}
           </div>
         </div>
