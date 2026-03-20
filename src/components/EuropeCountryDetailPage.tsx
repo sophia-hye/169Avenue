@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
+import { MobileShell, MobileFooter } from './MobileShell'
 import { EU_UNIVERSITIES, COUNTRY_NAMES } from './maps/EuropeMap'
 import { getCountryDetail } from '../data/eu-countries-detail'
 
@@ -80,13 +81,10 @@ export function EuropeCountryDetailPage() {
   const prevId = currentIdx > 0 ? COUNTRY_ORDER[currentIdx - 1] : undefined
   const nextId = currentIdx < COUNTRY_ORDER.length - 1 ? COUNTRY_ORDER[currentIdx + 1] : undefined
 
-  return (
-    <div className="bg-surface selection:bg-secondary/30">
-      <Navbar />
-
-      <main className="pt-32">
+  const pageContent = (
+    <>
         {/* Back */}
-        <div className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-12">
+        <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
           <Link to="/destinations/eu" className="inline-flex items-center space-x-3 group">
             <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
             <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
@@ -261,9 +259,18 @@ export function EuropeCountryDetailPage() {
             </Link>
           </div>
         </section>
-      </main>
+    </>
+  )
 
-      <Footer />
+  return (
+    <div className="bg-surface selection:bg-secondary/30">
+      <div className="hidden md:block">
+        <Navbar />
+        <main className="pt-32">{pageContent}</main>
+        <Footer />
+      </div>
+      <MobileShell activeTab="destinations">{pageContent}</MobileShell>
+      <MobileFooter />
     </div>
   )
 }

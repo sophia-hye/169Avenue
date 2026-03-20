@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
+import { MobileShell, MobileFooter } from './MobileShell'
 import { USMap } from './maps/USMap'
 import { UKMap } from './maps/UKMap'
 import { EuropeMap, EU_UNIVERSITIES as EU_UNIVERSITIES_DATA, COUNTRY_NAMES as EU_COUNTRY_NAMES } from './maps/EuropeMap'
@@ -346,31 +347,24 @@ export function RegionDetailPage() {
   const prevId = currentIndex > 0 ? REGION_ORDER[currentIndex - 1] : undefined
   const nextId = currentIndex < REGION_ORDER.length - 1 ? REGION_ORDER[currentIndex + 1] : undefined
 
-  return (
-    <div className="bg-surface selection:bg-secondary/30">
-      <Navbar />
-
-      <main className="pt-32">
+  const pageContent = (
+    <>
         {/* Back */}
-        <div className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-12">
+        <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
           <Link to="/destinations" className="inline-flex items-center space-x-3 group">
-            <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">
-              arrow_back
-            </span>
-            <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
-              All Destinations
-            </span>
+            <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">All Destinations</span>
           </Link>
         </div>
 
         {/* Hero */}
-        <header className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+        <header className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-12 md:mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-end">
             <div className="lg:col-span-7">
               <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4 block">
                 {region.tag}
               </span>
-              <h1 className="font-headline text-6xl md:text-8xl text-primary tracking-tighter leading-none mb-8">
+              <h1 className="font-headline text-4xl md:text-6xl lg:text-8xl text-primary tracking-tighter leading-none mb-6 md:mb-8">
                 {region.title}
               </h1>
               <p className="font-body text-on-surface-variant text-lg leading-relaxed max-w-2xl">
@@ -430,9 +424,18 @@ export function RegionDetailPage() {
             </Link>
           </div>
         </section>
-      </main>
+    </>
+  )
 
-      <Footer />
+  return (
+    <div className="bg-surface selection:bg-secondary/30">
+      <div className="hidden md:block">
+        <Navbar />
+        <main className="pt-32">{pageContent}</main>
+        <Footer />
+      </div>
+      <MobileShell activeTab="destinations">{pageContent}</MobileShell>
+      <MobileFooter />
     </div>
   )
 }

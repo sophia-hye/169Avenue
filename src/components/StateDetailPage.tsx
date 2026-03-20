@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
+import { MobileShell, MobileFooter } from './MobileShell'
 import { US_UNIVERSITIES, STATE_NAMES, getUniversitiesByState, getStatesWithUniversities } from '../data/us-universities'
 import { getStateDetail } from '../data/us-states-detail'
 
@@ -110,13 +111,10 @@ export function StateDetailPage() {
   const prevState = currentIdx > 0 ? statesWithUnis[currentIdx - 1] : undefined
   const nextState = currentIdx < statesWithUnis.length - 1 ? statesWithUnis[currentIdx + 1] : undefined
 
-  return (
-    <div className="bg-surface selection:bg-secondary/30">
-      <Navbar />
-
-      <main className="pt-32">
+  const pageContent = (
+    <>
         {/* Back */}
-        <div className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-12">
+        <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
           <Link to="/destinations/us" className="inline-flex items-center space-x-3 group">
             <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">
               arrow_back
@@ -128,13 +126,13 @@ export function StateDetailPage() {
         </div>
 
         {/* Header */}
-        <header className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-20">
+        <header className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-12 md:mb-20">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
             <div>
               <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4 block">
                 {code} &middot; {universities.length} {universities.length === 1 ? 'Institution' : 'Institutions'} in Top 100
               </span>
-              <h1 className="font-headline text-6xl md:text-8xl text-primary tracking-tighter leading-none">
+              <h1 className="font-headline text-4xl md:text-6xl lg:text-8xl text-primary tracking-tighter leading-none">
                 {stateName}
               </h1>
             </div>
@@ -148,7 +146,7 @@ export function StateDetailPage() {
         </header>
 
         {/* State Overview: Images + Description */}
-        <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-20">
+        <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-12 md:mb-20">
           {/* Image Gallery - adaptive layout based on image count */}
           <ImageGallery images={stateDetail.images} stateName={stateName} />
 
@@ -183,7 +181,7 @@ export function StateDetailPage() {
         </section>
 
         {/* University List */}
-        <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
+        <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
           <div className="border-t border-outline-variant/20">
             {universities.map((uni, i) => (
               <div
@@ -229,7 +227,7 @@ export function StateDetailPage() {
         </section>
 
         {/* Other States Quick Links */}
-        <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-20">
+        <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-12 md:mb-20">
           <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
             Explore Other States
           </h3>
@@ -319,9 +317,18 @@ export function StateDetailPage() {
             </Link>
           </div>
         </section>
-      </main>
+    </>
+  )
 
-      <Footer />
+  return (
+    <div className="bg-surface selection:bg-secondary/30">
+      <div className="hidden md:block">
+        <Navbar />
+        <main className="pt-32">{pageContent}</main>
+        <Footer />
+      </div>
+      <MobileShell activeTab="destinations">{pageContent}</MobileShell>
+      <MobileFooter />
     </div>
   )
 }
