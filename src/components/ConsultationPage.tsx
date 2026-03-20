@@ -1,7 +1,137 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useRef, useEffect, useMemo, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
+import { getAllUniversities } from '../data/university-utils'
+
+function UniversitySearchInput() {
+  const [query, setQuery] = useState('')
+  const [selected, setSelected] = useState<string[]>([])
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const allUniversities = useMemo(() => getAllUniversities(), [])
+
+  const results = useMemo(() => {
+    if (query.length < 1) return []
+    const q = query.toLowerCase()
+    return allUniversities
+      .filter(u => !selected.includes(u.name) &&
+        (u.name.toLowerCase().includes(q) || u.city.toLowerCase().includes(q)))
+      .slice(0, 8)
+  }, [query, selected, allUniversities])
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const select = (name: string) => {
+    if (selected.length < 3) setSelected(prev => [...prev, name])
+    setQuery('')
+    setOpen(false)
+  }
+
+  const remove = (name: string) => {
+    setSelected(prev => prev.filter(s => s !== name))
+  }
+
+  return (
+    <div ref={containerRef} className="space-y-3 md:col-span-2">
+      {/* Selected chips */}
+      {selected.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-2">
+          {selected.map((name, i) => (
+            <div key={name} className="flex items-center gap-2 bg-surface-container px-3 py-2 border border-outline-variant/20">
+              <span className="font-label text-[10px] uppercase tracking-widest text-secondary">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="font-label text-[10px] uppercase tracking-widest text-primary">{name}</span>
+              <button
+                type="button"
+                onClick={() => remove(name)}
+                className="text-outline-variant hover:text-primary transition-colors ml-1"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>close</span>
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Search input — hidden once 3 selected */}
+      {selected.length < 3 && (
+        <div className="relative">
+          <div className="flex items-center border-b border-outline-variant focus-within:border-secondary transition-colors gap-3">
+            <span
+              className="material-symbols-outlined text-outline-variant/50"
+              style={{ fontVariationSettings: "'wght' 200", fontSize: '18px' }}
+            >
+              search
+            </span>
+            <input
+              value={query}
+              onChange={e => { setQuery(e.target.value); setOpen(true) }}
+              onFocus={() => { if (query) setOpen(true) }}
+              placeholder={selected.length === 0
+                ? 'Search by institution name or city…'
+                : `Add ${3 - selected.length} more…`}
+              className="flex-1 bg-transparent py-3 md:py-4 font-body text-sm md:font-headline md:text-xl md:italic placeholder:text-stone-300 focus:outline-none"
+            />
+            {query && (
+              <button
+                type="button"
+                onMouseDown={e => { e.preventDefault(); setQuery(''); setOpen(false) }}
+                className="text-outline-variant hover:text-primary transition-colors"
+              >
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+            )}
+          </div>
+
+          {/* Dropdown */}
+          {open && results.length > 0 && (
+            <div className="absolute top-full left-0 right-0 bg-surface border border-outline-variant/20 shadow-xl z-20 max-h-56 overflow-y-auto">
+              {results.map(u => (
+                <button
+                  key={u.name}
+                  type="button"
+                  onMouseDown={e => { e.preventDefault(); select(u.name) }}
+                  className="w-full text-left px-4 py-3 flex items-center justify-between hover:bg-surface-container-low transition-colors group border-b border-outline-variant/10 last:border-0"
+                >
+                  <div>
+                    <p className="font-headline text-sm md:text-base text-primary group-hover:text-secondary transition-colors">
+                      {u.name}
+                    </p>
+                    <p className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">
+                      {u.city}, {u.country}
+                    </p>
+                  </div>
+                  <span className="material-symbols-outlined text-xs text-outline-variant group-hover:text-secondary transition-colors">add</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {open && query.length > 0 && results.length === 0 && (
+            <div className="absolute top-full left-0 right-0 bg-surface border border-outline-variant/20 shadow-xl z-20 px-4 py-3">
+              <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60">No institutions found</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {selected.length === 3 && (
+        <p className="font-label text-[10px] uppercase tracking-widest text-secondary">Maximum 3 institutions selected</p>
+      )}
+    </div>
+  )
+}
 
 const OFFICES = [
   { city: 'Seoul', district: 'Gangnam-gu' },
@@ -111,9 +241,22 @@ function MobileConsultation() {
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Autumn Term 2025" type="text" />
               </div>
 
-              {/* Concierge Notes */}
+              {/* Institutions of Interest */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">03</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Institutions of Interest</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">
+                  Universities of Interest <span className="text-on-surface-variant/40 normal-case font-normal">(optional · up to 3)</span>
+                </label>
+                <UniversitySearchInput />
+              </div>
+
+              {/* Concierge Notes */}
+              <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
+                <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
                 <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Concierge Notes</span>
               </div>
 
@@ -325,10 +468,25 @@ export function ConsultationPage() {
                     </div>
                   </div>
                 </div>
-                {/* Step 3 */}
+                {/* Step 3 — Institutions of Interest */}
                 <div className="space-y-12">
                   <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
                     <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">03</span>
+                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Institutions of Interest</h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                    <div className="flex flex-col space-y-2 md:col-span-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
+                        Universities of Interest <span className="text-on-surface-variant/40">(optional · up to 3)</span>
+                      </label>
+                      <UniversitySearchInput />
+                    </div>
+                  </div>
+                </div>
+                {/* Step 4 */}
+                <div className="space-y-12">
+                  <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
+                    <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
                     <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Concierge Notes</h2>
                   </div>
                   <div className="flex flex-col space-y-4">
