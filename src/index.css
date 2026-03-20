@@ -21,9 +21,9 @@
   --color-outline-variant: #c5c6ca;
   --color-error: #ba1a1a;
 
-  --font-headline: "Newsreader", serif;
-  --font-body: "Manrope", sans-serif;
-  --font-label: "Manrope", sans-serif;
+  --font-headline: "Newsreader", "Noto Serif KR", serif;
+  --font-body: "Manrope", "Noto Sans KR", sans-serif;
+  --font-label: "Manrope", "Noto Sans KR", sans-serif;
 }
 
 @layer base {

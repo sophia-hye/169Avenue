@@ -1,14 +1,17 @@
 import { useState, useRef, useEffect, useMemo, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
+import { SearchOverlay } from './SearchOverlay'
 import { getAllUniversities } from '../data/university-utils'
+import { useLanguage } from '../context/LanguageContext'
 
 function UniversitySearchInput() {
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<string[]>([])
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const { t } = useLanguage()
 
   const allUniversities = useMemo(() => getAllUniversities(), [])
 
@@ -79,8 +82,8 @@ function UniversitySearchInput() {
               onChange={e => { setQuery(e.target.value); setOpen(true) }}
               onFocus={() => { if (query) setOpen(true) }}
               placeholder={selected.length === 0
-                ? 'Search by institution name or city…'
-                : `Add ${3 - selected.length} more…`}
+                ? t.consult_search_placeholder
+                : t.add_more(3 - selected.length)}
               className="flex-1 bg-transparent py-3 md:py-4 font-body text-sm md:font-headline md:text-xl md:italic placeholder:text-stone-300 focus:outline-none"
             />
             {query && (
@@ -120,18 +123,41 @@ function UniversitySearchInput() {
 
           {open && query.length > 0 && results.length === 0 && (
             <div className="absolute top-full left-0 right-0 bg-surface border border-outline-variant/20 shadow-xl z-20 px-4 py-3">
-              <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60">No institutions found</p>
+              <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60">{t.consult_no_results}</p>
             </div>
           )}
         </div>
       )}
 
       {selected.length === 3 && (
-        <p className="font-label text-[10px] uppercase tracking-widest text-secondary">Maximum 3 institutions selected</p>
+        <p className="font-label text-[10px] uppercase tracking-widest text-secondary">{t.consult_max_selected}</p>
       )}
     </div>
   )
 }
+
+const COUNTRY_CODES: { code: string; label: string; placeholder: string }[] = [
+  { code: '+1',   label: '+1  US / CA', placeholder: '202-555-0100' },
+  { code: '+44',  label: '+44  UK',     placeholder: '7700 900123' },
+  { code: '+82',  label: '+82  KR',     placeholder: '10-1234-5678' },
+  { code: '+81',  label: '+81  JP',     placeholder: '90-1234-5678' },
+  { code: '+86',  label: '+86  CN',     placeholder: '131-0000-0000' },
+  { code: '+852', label: '+852 HK',     placeholder: '9123 4567' },
+  { code: '+65',  label: '+65  SG',     placeholder: '9123 4567' },
+  { code: '+61',  label: '+61  AU',     placeholder: '412 345 678' },
+  { code: '+49',  label: '+49  DE',     placeholder: '151 23456789' },
+  { code: '+33',  label: '+33  FR',     placeholder: '6 12 34 56 78' },
+  { code: '+39',  label: '+39  IT',     placeholder: '312 345 6789' },
+  { code: '+34',  label: '+34  ES',     placeholder: '612 345 678' },
+  { code: '+31',  label: '+31  NL',     placeholder: '6 12345678' },
+  { code: '+41',  label: '+41  CH',     placeholder: '79 123 45 67' },
+  { code: '+46',  label: '+46  SE',     placeholder: '70-123 45 67' },
+  { code: '+7',   label: '+7   RU',     placeholder: '912 345-67-89' },
+  { code: '+971', label: '+971 AE',     placeholder: '50 123 4567' },
+  { code: '+91',  label: '+91  IN',     placeholder: '98765 43210' },
+  { code: '+55',  label: '+55  BR',     placeholder: '11 91234-5678' },
+  { code: '+52',  label: '+52  MX',     placeholder: '55 1234 5678' },
+]
 
 const OFFICES = [
   { city: 'Seoul', district: 'Gangnam-gu' },
@@ -141,6 +167,11 @@ const OFFICES = [
 
 function MobileConsultation() {
   const [submitted, setSubmitted] = useState(false)
+  const [countryCode, setCountryCode] = useState('+82')
+  const [searchOpen, setSearchOpen] = useState(false)
+  const phonePlaceholder = COUNTRY_CODES.find(c => c.code === countryCode)?.placeholder ?? '000-0000'
+  const navigate = useNavigate()
+  const { language, setLanguage, t } = useLanguage()
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -150,27 +181,42 @@ function MobileConsultation() {
   return (
     <div className="md:hidden">
       {/* Mobile Top Bar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md flex justify-between items-center w-full px-6 py-4">
-        <Link to="/">
-          <span className="material-symbols-outlined text-primary">arrow_back</span>
-        </Link>
-        <h1 className="text-xl font-headline italic text-primary tracking-tight">169 Avenue</h1>
-        <div className="w-16" />
+      <header className="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md flex justify-between items-center w-full px-4 py-3">
+        <div className="flex items-center gap-2">
+          <button onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}>
+            <span className="material-symbols-outlined text-primary">arrow_back</span>
+          </button>
+          <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</Link>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setSearchOpen(true)} className="text-primary/70 p-1" aria-label="Search">
+            <span className="material-symbols-outlined text-xl">search</span>
+          </button>
+          <div className="flex items-center border border-outline-variant/30 overflow-hidden">
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-2 py-1 font-label text-[10px] uppercase tracking-widest transition-colors duration-200 ${language === 'en' ? 'bg-outline-variant/30 text-primary' : 'text-primary/40'}`}
+            >EN</button>
+            <span className="w-px h-3 bg-outline-variant/30" />
+            <button
+              onClick={() => setLanguage('ko')}
+              className={`px-2 py-1 font-label text-[10px] uppercase tracking-widest transition-colors duration-200 ${language === 'ko' ? 'bg-outline-variant/30 text-primary' : 'text-primary/40'}`}
+            >한</button>
+          </div>
+        </div>
       </header>
+      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
 
       <main className="pt-28 pb-20 px-6 max-w-lg mx-auto">
         {submitted ? (
           <div className="py-20 text-center space-y-8">
             <span className="material-symbols-outlined text-secondary text-6xl">check_circle</span>
-            <h2 className="font-headline text-3xl italic text-primary">Thank you.</h2>
+            <h2 className="font-headline text-3xl italic text-primary">{t.consult_success_title}</h2>
             <p className="font-body text-on-surface-variant text-sm max-w-xs mx-auto leading-relaxed">
-              A senior curator will review your dossier and respond within 48 hours.
+              {t.consult_success_body}
             </p>
-            <Link
-              to="/"
-              className="inline-block bg-primary text-on-primary px-10 py-4 text-xs tracking-widest uppercase"
-            >
-              Return Home
+            <Link to="/" className="inline-block bg-primary text-on-primary px-10 py-4 text-xs tracking-widest uppercase">
+              {t.return_home}
             </Link>
           </div>
         ) : (
@@ -178,10 +224,10 @@ function MobileConsultation() {
             {/* Hero */}
             <section className="mb-16">
               <h2 className="font-headline italic text-4xl text-primary leading-tight tracking-tighter mb-4">
-                The Beginning of Your Legacy
+                {t.consult_title_1} {t.consult_title_2}
               </h2>
               <p className="text-sm font-body text-on-surface-variant opacity-80 max-w-[280px] leading-relaxed">
-                Refining the narrative of global ambition through bespoke educational curation.
+                {t.consult_hero_body}
               </p>
             </section>
 
@@ -190,66 +236,76 @@ function MobileConsultation() {
               {/* Personal Narrative */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">01</span>
-                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Personal Narrative</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step1}</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Full Legal Name <span className="text-secondary">*</span></label>
-                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="The Honorable..." type="text" required />
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_name} <span className="text-secondary">*</span></label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. James Whitmore" type="text" required />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Direct Correspondence (Email) <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_email} <span className="text-secondary">*</span></label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="contact@example.com" type="email" required />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Phone / Secure Messenger</label>
-                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="+1 (000) 000-0000" type="tel" />
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_phone}</label>
+                <div className="flex items-end gap-2 border-b border-outline-variant focus-within:border-secondary transition-colors">
+                  <select
+                    className="bg-transparent py-3 font-body text-sm appearance-none focus:outline-none text-primary shrink-0 pr-1"
+                    value={countryCode}
+                    onChange={e => setCountryCode(e.target.value)}
+                  >
+                    {COUNTRY_CODES.map(c => <option key={c.code} value={c.code}>{c.label}</option>)}
+                  </select>
+                  <span className="text-outline-variant/40 pb-3">|</span>
+                  <input className="flex-1 bg-transparent py-3 font-body text-sm placeholder:text-stone-300 focus:outline-none" placeholder={phonePlaceholder} type="tel" />
+                </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Current Residency</label>
-                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Geneva, Switzerland" type="text" />
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_residency}</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder={t.consult_residency_placeholder} type="text" />
               </div>
 
               {/* Academic Aspirations */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">02</span>
-                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Academic Aspirations</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step2}</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Intended Level of Study <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_level} <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
-                    <option value="" disabled>Select Tier</option>
+                    <option value="" disabled>{t.consult_level_placeholder}</option>
                     {STUDY_LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
                   </select>
                   <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Primary Geographic Region <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_region} <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
-                    <option value="" disabled>Select Region</option>
+                    <option value="" disabled>{t.consult_region_placeholder}</option>
                     {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
                   </select>
                   <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Anticipated Commencement</label>
-                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Autumn Term 2025" type="text" />
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_commencement}</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder={t.consult_commencement_placeholder} type="text" />
               </div>
 
               {/* Institutions of Interest */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">03</span>
-                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Institutions of Interest</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step3}</span>
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">
-                  Universities of Interest <span className="text-on-surface-variant/40 normal-case font-normal">(optional · up to 3)</span>
+                  {t.consult_universities} <span className="text-on-surface-variant/40 normal-case font-normal">{t.consult_universities_sub}</span>
                 </label>
                 <UniversitySearchInput />
               </div>
@@ -257,22 +313,22 @@ function MobileConsultation() {
               {/* Concierge Notes */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
-                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Concierge Notes</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step4}</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Share your story or unique objectives</label>
-                <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder="Briefly describe the student's unique profile, challenges, and ultimate vision..." rows={3} />
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_notes_label}</label>
+                <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder={t.consult_notes_placeholder} rows={3} />
               </div>
 
-              <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant"><span className="text-secondary">*</span> Required fields</p>
+              <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant"><span className="text-secondary">*</span> {t.consult_required}</p>
 
               <div>
                 <button type="submit" className="w-full bg-primary text-on-primary py-5 font-label uppercase tracking-[0.2em] text-xs active:scale-95 transition-all duration-300">
-                  Submit Inquiry
+                  {t.consult_submit}
                 </button>
                 <p className="mt-4 font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60 text-center">
-                  A senior curator will review your dossier within 48 hours.
+                  {t.consult_disclaimer}
                 </p>
               </div>
             </form>
@@ -281,16 +337,16 @@ function MobileConsultation() {
             <section className="mt-20 flex flex-col items-center text-center gap-12">
               <div className="flex flex-col items-center gap-3">
                 <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>lock</span>
-                <p className="font-headline italic text-lg text-primary">Absolute Discretion</p>
+                <p className="font-headline italic text-lg text-primary">{t.consult_discretion}</p>
                 <p className="text-xs font-body text-on-surface-variant/60 max-w-[240px] leading-relaxed">
-                  All inquiries are handled with the utmost confidentiality, adhering to the highest standards of institutional privacy.
+                  {t.consult_discretion_body}
                 </p>
               </div>
 
               {/* Global Offices */}
               <div className="w-full h-px bg-outline-variant opacity-20" />
               <div className="flex flex-col gap-6 w-full">
-                <p className="font-label uppercase tracking-widest text-[10px] text-on-surface-variant/40">Global Ateliers</p>
+                <p className="font-label uppercase tracking-widest text-[10px] text-on-surface-variant/40">{t.consult_offices}</p>
                 <div className="grid grid-cols-3 gap-4">
                   {OFFICES.map((office, i) => (
                     <div key={office.city} className={`flex flex-col gap-1 ${i === 1 ? 'border-x border-outline-variant/20' : ''}`}>
@@ -369,6 +425,9 @@ const FULL_OFFICES = [
 
 export function ConsultationPage() {
   const [submitted, setSubmitted] = useState(false)
+  const [countryCode, setCountryCode] = useState('+82')
+  const phonePlaceholder = COUNTRY_CODES.find(c => c.code === countryCode)?.placeholder ?? '000-0000'
+  const { t } = useLanguage()
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -389,11 +448,11 @@ export function ConsultationPage() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
             <div className="md:col-span-8">
               <h1 className="font-headline text-5xl md:text-7xl lg:text-8xl text-primary leading-none tracking-tight mb-8">
-                The Beginning of <br />
-                <span className="italic font-light">Your Legacy</span>
+                {t.consult_title_1} <br />
+                <span className="italic font-light">{t.consult_title_2}</span>
               </h1>
               <p className="font-headline italic text-xl md:text-2xl text-on-surface-variant max-w-2xl leading-relaxed">
-                We believe that education is the ultimate curator of destiny. Our bespoke consultation is a private, intentional dialogue designed to architect your academic future with the precision of a master artisan.
+                {t.consult_hero_body}
               </p>
             </div>
             <div className="hidden md:block md:col-span-4 pb-4">
@@ -410,9 +469,9 @@ export function ConsultationPage() {
             {submitted ? (
               <div className="py-20 text-center space-y-8">
                 <span className="material-symbols-outlined text-secondary text-6xl">check_circle</span>
-                <h2 className="font-headline text-4xl italic text-primary">Thank you for your inquiry.</h2>
-                <p className="font-body text-on-surface-variant text-lg max-w-md mx-auto leading-relaxed">A senior curator will review your dossier and respond within 48 hours.</p>
-                <Link to="/" className="inline-block bg-primary text-on-primary px-12 py-5 text-sm tracking-widest uppercase hover:bg-secondary transition-all mt-8">Return Home</Link>
+                <h2 className="font-headline text-4xl italic text-primary">{t.consult_success_title_desktop}</h2>
+                <p className="font-body text-on-surface-variant text-lg max-w-md mx-auto leading-relaxed">{t.consult_success_body}</p>
+                <Link to="/" className="inline-block bg-primary text-on-primary px-12 py-5 text-sm tracking-widest uppercase hover:bg-secondary transition-all mt-8">{t.home}</Link>
               </div>
             ) : (
               <form className="space-y-24" onSubmit={handleSubmit}>
@@ -420,24 +479,34 @@ export function ConsultationPage() {
                 <div className="space-y-12">
                   <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
                     <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">01</span>
-                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Personal Narrative</h2>
+                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step1}</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Full Legal Name <span className="text-secondary">*</span></label>
-                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="The Honorable..." type="text" required />
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_name} <span className="text-secondary">*</span></label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. James Whitmore" type="text" required />
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Direct Correspondence (Email) <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_email} <span className="text-secondary">*</span></label>
                       <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="contact@example.com" type="email" required />
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Phone / Secure Messenger</label>
-                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="+1 (000) 000-0000" type="tel" />
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_phone}</label>
+                      <div className="flex items-end gap-3 border-b border-outline-variant focus-within:border-secondary transition-colors">
+                        <select
+                          className="bg-transparent py-4 font-headline text-xl italic appearance-none focus:outline-none text-primary shrink-0 pr-2"
+                          value={countryCode}
+                          onChange={e => setCountryCode(e.target.value)}
+                        >
+                          {COUNTRY_CODES.map(c => <option key={c.code} value={c.code}>{c.label}</option>)}
+                        </select>
+                        <span className="text-outline-variant/40 pb-4">|</span>
+                        <input className="flex-1 bg-transparent py-4 font-headline text-xl italic placeholder:text-stone-300 focus:outline-none" placeholder={phonePlaceholder} type="tel" />
+                      </div>
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Current Residency</label>
-                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Geneva, Switzerland" type="text" />
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_residency}</label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder={t.consult_residency_placeholder} type="text" />
                     </div>
                   </div>
                 </div>
@@ -445,26 +514,26 @@ export function ConsultationPage() {
                 <div className="space-y-12">
                   <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
                     <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">02</span>
-                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Academic Aspirations</h2>
+                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step2}</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Intended Level of Study <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_level} <span className="text-secondary">*</span></label>
                       <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
-                        <option value="" disabled>Select Tier</option>
+                        <option value="" disabled>{t.consult_level_placeholder}</option>
                         {STUDY_LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
                       </select>
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Primary Geographic Region <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_region} <span className="text-secondary">*</span></label>
                       <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
-                        <option value="" disabled>Select Region</option>
+                        <option value="" disabled>{t.consult_region_placeholder}</option>
                         {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
                       </select>
                     </div>
                     <div className="flex flex-col space-y-2 md:col-span-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Anticipated Commencement</label>
-                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Autumn Term 2025" type="text" />
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_commencement}</label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder={t.consult_commencement_placeholder} type="text" />
                     </div>
                   </div>
                 </div>
@@ -472,12 +541,12 @@ export function ConsultationPage() {
                 <div className="space-y-12">
                   <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
                     <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">03</span>
-                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Institutions of Interest</h2>
+                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step3}</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                     <div className="flex flex-col space-y-2 md:col-span-2">
                       <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
-                        Universities of Interest <span className="text-on-surface-variant/40">(optional · up to 3)</span>
+                        {t.consult_universities} <span className="text-on-surface-variant/40">{t.consult_universities_sub}</span>
                       </label>
                       <UniversitySearchInput />
                     </div>
@@ -487,23 +556,23 @@ export function ConsultationPage() {
                 <div className="space-y-12">
                   <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
                     <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
-                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Concierge Notes</h2>
+                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step4}</h2>
                   </div>
                   <div className="flex flex-col space-y-4">
-                    <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Share your story or unique objectives</label>
-                    <textarea className="bg-surface-container-low border-none p-8 font-headline text-xl italic placeholder:text-stone-400 focus:bg-surface-container-lowest focus:outline-none transition-colors" placeholder="Briefly describe the student's unique profile, challenges, and ultimate vision..." rows={4} />
+                    <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_notes_label}</label>
+                    <textarea className="bg-surface-container-low border-none p-8 font-headline text-xl italic placeholder:text-stone-400 focus:bg-surface-container-lowest focus:outline-none transition-colors" placeholder={t.consult_notes_placeholder} rows={4} />
                   </div>
                 </div>
                 {/* Submit */}
                 <div className="pt-8">
-                  <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8"><span className="text-secondary">*</span> Required fields</p>
+                  <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8"><span className="text-secondary">*</span> {t.consult_required}</p>
                 </div>
                 <div>
                   <button type="submit" className="group flex items-center space-x-6 bg-primary text-on-primary px-12 py-6 hover:bg-secondary transition-all duration-500">
-                    <span className="font-label text-xs uppercase tracking-[0.3em]">Submit Inquiry</span>
+                    <span className="font-label text-xs uppercase tracking-[0.3em]">{t.consult_submit}</span>
                     <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
                   </button>
-                  <p className="mt-6 font-label text-[9px] uppercase tracking-widest text-on-surface-variant opacity-60">Upon submission, a senior curator will review your dossier within 48 hours.</p>
+                  <p className="mt-6 font-label text-[9px] uppercase tracking-widest text-on-surface-variant opacity-60">{t.consult_upon_submit}</p>
                 </div>
               </form>
             )}
@@ -513,32 +582,32 @@ export function ConsultationPage() {
           <div className="lg:col-span-4 space-y-20">
             <div className="bg-surface-container-lowest p-10 shadow-[0_10px_40px_-10px_rgba(0,1,1,0.04)] border border-surface-container">
               <span className="material-symbols-outlined text-secondary mb-6 block" style={{ fontVariationSettings: "'FILL' 1" }}>format_quote</span>
-              <p className="font-headline italic text-xl leading-relaxed text-primary mb-8">"We do not merely fill applications; we articulate the depth of a student's soul."</p>
+              <p className="font-headline italic text-xl leading-relaxed text-primary mb-8">{t.consult_sidebar_quote}</p>
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-[1px] bg-secondary" />
-                <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold">Director Alistair Thorne</span>
+                <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold">{t.consult_sidebar_director}</span>
               </div>
             </div>
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
                 <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'wght' 200" }}>verified_user</span>
                 <div>
-                  <h4 className="font-label text-[11px] uppercase tracking-widest font-bold text-primary mb-2">Absolute Discretion</h4>
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed">Our engagement is bound by a strict non-disclosure framework.</p>
+                  <h4 className="font-label text-[11px] uppercase tracking-widest font-bold text-primary mb-2">{t.consult_verified}</h4>
+                  <p className="font-body text-sm text-on-surface-variant leading-relaxed">{t.consult_verified_body}</p>
                 </div>
               </div>
             </div>
             <div className="aspect-video bg-surface-container-high relative overflow-hidden">
               <img alt="London street view" className="w-full h-full object-cover grayscale brightness-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9ttfmvUbJ6W2BkaCHf0lJ7NdRnv0Rt7ovPhdKH51Yyqax8YuriNeEghuudsiw8o8_g6ZRr3S0Z-PlamFmc2qYRtNTkHRqtQzi4NDinnpqvy_zffDifUwWYmtrBDoQJ_AIQ8kFcXWraT15btYH_G6j0teYoK80Pxp_echfGGl_tBJfAbD0pCTHYFmjXH9_Py7gCYvr4e95I_1tkuch-EkibaW51UWjpTnLLs-YkvdGwJtolG7dERLWd6PcsvYzDFmdtZVj8CIwwk" />
               <div className="absolute inset-0 bg-secondary/5" />
-              <div className="absolute bottom-6 left-6"><span className="font-label text-[10px] uppercase tracking-widest text-white bg-primary px-3 py-1">London Office</span></div>
+              <div className="absolute bottom-6 left-6"><span className="font-label text-[10px] uppercase tracking-widest text-white bg-primary px-3 py-1">{t.consult_london}</span></div>
             </div>
           </div>
         </section>
 
         {/* Offices */}
         <section id="offices" className="mt-40 border-t border-outline-variant/30 pt-20 px-6 md:px-12 max-w-7xl mx-auto">
-          <h3 className="font-headline text-3xl italic text-primary mb-16">Global Offices</h3>
+          <h3 className="font-headline text-3xl italic text-primary mb-16">{t.consult_offices_full}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {FULL_OFFICES.map((office) => (
               <div key={office.city} className="space-y-4">
