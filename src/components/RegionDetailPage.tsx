@@ -6,8 +6,9 @@ import { MobileShell, MobileFooter } from './MobileShell'
 import { USMap } from './maps/USMap'
 import { UKMap } from './maps/UKMap'
 import { EuropeMap, EU_UNIVERSITIES as EU_UNIVERSITIES_DATA, COUNTRY_NAMES as EU_COUNTRY_NAMES } from './maps/EuropeMap'
-import { AsiaPacificMap } from './maps/AsiaPacificMap'
+import { AsiaPacificMap, AP_UNIVERSITIES, AP_COUNTRY_NAMES } from './maps/AsiaPacificMap'
 import { US_UNIVERSITIES, STATE_NAMES, getUniversitiesByState, getStatesWithUniversities } from '../data/us-universities'
+import { UK_UNIVERSITIES, UK_NATION_NAMES, getUniversitiesByNation, getNationsWithUniversities } from '../data/uk-universities'
 import { toSlug } from '../data/university-utils'
 
 interface SimpleUniversity {
@@ -82,7 +83,7 @@ const REGION_DATA: Record<string, RegionData> = {
       { name: 'Tsinghua University', city: 'Beijing, China', program: 'Engineering & CS' },
       { name: 'KAIST', city: 'Daejeon, Korea', program: 'Advanced Technology' },
     ],
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCI3FMV-mLdpNBSKQATtIojxXzBzXT6-6sCkmahz74S324Bv6OLOZd1eq0HGNQeDUzbna8mopESYDNS-ikA8vZdIEdBk8dRXDpBO9oUaFCCgEooqF8gm5B2iZdQckJ4oJjS1hGKaGO7Dt4bwWCRjQn1knytQTriJl5sMhZl8iVpdKVvm8EP5oSOKk5D8_zs3X32BOnNabDomEES3uQA-_E7WLCR6F1D8cRbZihCTmE5leSTn6jR4XdMX3uhHphrRMQXBYi4U-0n_IM',
+    image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200&q=80',
   },
 }
 
@@ -189,6 +190,108 @@ function USDetailSection() {
   )
 }
 
+function UKDetailSection() {
+  const [hoveredNation, setHoveredNation] = useState<string | null>(null)
+  const navigate = useNavigate()
+
+  const displayedUnis = hoveredNation
+    ? getUniversitiesByNation(hoveredNation)
+    : UK_UNIVERSITIES.slice(0, 8)
+
+  return (
+    <>
+      {/* Map */}
+      <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-8">
+        <div className="bg-surface-container-lowest p-8 md:p-12 shadow-sm">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary block mb-1">
+                Interactive Map
+              </span>
+              <p className="font-body text-sm text-on-surface-variant">
+                {hoveredNation
+                  ? `${UK_NATION_NAMES[hoveredNation] || hoveredNation} — ${getUniversitiesByNation(hoveredNation).length} universities — Click to explore`
+                  : 'Hover over a nation, then click to explore its universities'
+                }
+              </p>
+            </div>
+          </div>
+          <UKMap
+            hoveredNation={hoveredNation}
+            onHoverNation={setHoveredNation}
+            onNavigateNation={(id) => navigate(`/destinations/uk/${id}`)}
+          />
+          <div className="mt-6 text-center">
+            <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60">
+              {UK_UNIVERSITIES.length} Top Universities Across {getNationsWithUniversities().length} Nations
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* Overview & Top Universities */}
+      <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+          <div className="lg:col-span-5">
+            <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
+              Regional Overview
+            </span>
+            <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
+              The United Kingdom offers an unparalleled depth of academic heritage. Oxford and Cambridge
+              remain the pinnacle of intellectual rigour. The Russell Group universities provide
+              world-class research environments, while London's institutions offer global connectivity.
+            </p>
+          </div>
+          <div className="lg:col-span-7">
+            <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
+              {hoveredNation ? `${UK_NATION_NAMES[hoveredNation]} Institutions` : 'Top Institutions'}
+            </span>
+            <div className="space-y-0">
+              {displayedUnis.map((uni) => (
+                <Link
+                  key={uni.rank}
+                  to={`/university/${toSlug(uni.name)}`}
+                  className="grid grid-cols-12 gap-4 py-5 border-b border-outline-variant/15 group hover:bg-surface-container-low/50 transition-colors px-4 -mx-4"
+                >
+                  <div className="col-span-1">
+                    <span className="font-headline italic text-2xl text-outline-variant/40 group-hover:text-secondary transition-colors">
+                      {String(uni.rank).padStart(2, '0')}
+                    </span>
+                  </div>
+                  <div className="col-span-7">
+                    <h4 className="font-headline text-xl text-primary group-hover:text-secondary transition-colors">{uni.name}</h4>
+                  </div>
+                  <div className="col-span-4 text-right">
+                    <span className="font-body text-sm text-on-surface-variant">{uni.city}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Nations Quick Links */}
+      <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
+        <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
+          Browse by Nation
+        </h3>
+        <div className="flex flex-wrap gap-3">
+          {getNationsWithUniversities().map((n) => (
+            <Link
+              key={n}
+              to={`/destinations/uk/${n}`}
+              className="px-4 py-2 font-label text-[10px] uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all duration-200"
+            >
+              {UK_NATION_NAMES[n]} ({getUniversitiesByNation(n).length})
+            </Link>
+          ))}
+        </div>
+      </section>
+    </>
+  )
+}
+
 function EuropeDetailSection({ region }: { region: RegionData }) {
   const [hoveredCountry] = useState<string | null>(null)
   const navigate = useNavigate()
@@ -279,19 +382,41 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
   )
 }
 
-function GenericDetailSection({ region }: { region: RegionData }) {
-  const MapComponent = region.id === 'uk' ? UKMap : AsiaPacificMap
+function APDetailSection({ region }: { region: RegionData }) {
+  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null)
+  const navigate = useNavigate()
+
+  const AP_COUNTRY_ORDER = ['702', '410', '392', '156', '036', '554', '356']
 
   return (
     <>
-      <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
-        <div className="bg-surface-container-lowest p-8 md:p-16 shadow-sm">
-          <div className="max-w-4xl mx-auto">
-            <MapComponent />
+      {/* Map */}
+      <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-8">
+        <div className="bg-surface-container-lowest p-8 md:p-12 shadow-sm">
+          <div className="mb-8">
+            <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary block mb-1">
+              Interactive Map
+            </span>
+            <p className="font-body text-sm text-on-surface-variant">
+              {hoveredCountry
+                ? `${AP_COUNTRY_NAMES[hoveredCountry]} — ${AP_UNIVERSITIES.filter((u) => u.countryId === hoveredCountry).length} universities — Click to explore`
+                : 'Click a country to explore its universities'
+              }
+            </p>
+          </div>
+          <AsiaPacificMap
+            selectedCountry={hoveredCountry}
+            onNavigateCountry={(id) => navigate(`/destinations/ap/${id}`)}
+          />
+          <div className="mt-6 text-center">
+            <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60">
+              {AP_UNIVERSITIES.length} Top Universities Across {Object.keys(AP_COUNTRY_NAMES).length} Countries
+            </span>
           </div>
         </div>
       </section>
 
+      {/* Overview + Universities */}
       <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           <div className="lg:col-span-5">
@@ -335,6 +460,24 @@ function GenericDetailSection({ region }: { region: RegionData }) {
           </div>
         </div>
       </section>
+
+      {/* Browse by Country */}
+      <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
+        <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
+          Browse by Country
+        </h3>
+        <div className="flex flex-wrap gap-3">
+          {AP_COUNTRY_ORDER.map((cId) => (
+            <Link
+              key={cId}
+              to={`/destinations/ap/${cId}`}
+              className="px-4 py-2 font-label text-[10px] uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all duration-200"
+            >
+              {AP_COUNTRY_NAMES[cId]} ({AP_UNIVERSITIES.filter((u) => u.countryId === cId).length})
+            </Link>
+          ))}
+        </div>
+      </section>
     </>
   )
 }
@@ -354,7 +497,7 @@ export function RegionDetailPage() {
   const pageContent = (
     <>
         {/* Back */}
-        <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
+        <div className="hidden md:block px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
           <Link to="/destinations" className="inline-flex items-center space-x-3 group">
             <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
             <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">All Destinations</span>
@@ -379,7 +522,7 @@ export function RegionDetailPage() {
               <div className="aspect-[16/9] overflow-hidden">
                 <img
                   alt={region.title}
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                  className="w-full h-full object-cover hover:grayscale transition-all duration-1000"
                   src={region.image}
                 />
               </div>
@@ -388,7 +531,15 @@ export function RegionDetailPage() {
         </header>
 
         {/* Region-specific content */}
-        {region.id === 'us' ? <USDetailSection /> : region.id === 'eu' ? <EuropeDetailSection region={region} /> : <GenericDetailSection region={region} />}
+        {region.id === 'us'
+          ? <USDetailSection />
+          : region.id === 'eu'
+          ? <EuropeDetailSection region={region} />
+          : region.id === 'uk'
+          ? <UKDetailSection />
+          : region.id === 'ap'
+          ? <APDetailSection region={region} />
+          : null}
 
         {/* Prev / Next */}
         <section className="border-t border-outline-variant/20 px-8 md:px-16 max-w-screen-2xl mx-auto">
