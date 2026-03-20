@@ -8,23 +8,14 @@ export interface UniversityStats {
   readonly images: readonly string[]
 }
 
-// Image pool (campus / architecture images already used in the project)
-const IMGS = [
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuCaEoay5g6u34JFGZrJmfZBE7WkO3dkyrBDrzybWjtJlV6khyy6anZ-Hs37lnZ6Qsf6Ha5rUJWybWg2fBaixahp1TuAmEVPO9_3ei_i0j3GWSi0i_vsGuAmxxYNQfqbu9-XxDnHaBqVFwPVsjOylbwz7r5o0AxSGhubJNq6VEj6InQ17Qz3Ww1DJMXwZ7aYePcqj4pfr9L9nMa25Pp0BIfrtrZzkEhCu6L0dw_O7aWFGedXXBzEsx3SpoinE8jiFNyKJwGkD63kspg',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuAjDuyxJt_PGfsC1bXlc7cpsgCXl-lryDzsR5AAtJ8phIcHLekrsyLChbobNrSzHshi_1bBFGhV7vYHNu4GBd9hkShvP5rUVS2drPYonEuDEX0yCo247sCERMJz8P9uRJPzZPAkEUAyZ5c9aQUFsJJ2HNFyK-lVT6WuDXq1iFyXph1r0kd6IUdflsZsyJpq5KVWhZCev-i-ZBVSbmVKiR2LvYAuk8NMI3R0XfB9etz23Exd2ZFEenyikGpf-PkW0xJxjQbaxcpRzv8',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuBIJuanZH--r2rB6b7w1He3VUDciTPOw-sEVJoxUYT3cj8DzinO5w2pBMA3Fhp-hMrtCA0-SLBu3DLggvRWqgzHlCMTrqtSrgqUd3W1dB98P3TNtG6eurYzvOKBjtuj8tbys93p1Xr719RdoUGseJ8cqlXoOlbG00ggGUFSbqnVTehsDaI6p54yfZaKusZorGKl0F13NtN9EuEe-IeRVCzQl5PYas7RmEZX9UPhxNsqv1jfAjsEcbKQwnqjDU1uTeM4OYQObmzDLps',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9ttfmvUbJ6W2BkaCHf0lJ7NdRnv0Rt7ovPhdKH51Yyqax8YuriNeEghuudsiw8o8_g6ZRr3S0Z-PlamFmc2qYPopy_zffDifUwWYmtrBDoQJ_AIQ8kFcXWraT15btYH_G6j0teYoK80Pxp_echfGGl_tBJfAbD0pCTHYFmjXH9_Py7gCYvr4e95I_1tkuch-EkibaW51UWjpTnLLs-YkvdGwJtolG7dERLWd6PcsvYzDFmdtZVj8CIwwk',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuCLJ-HcGwAaBfcmIISTJhzbHBZZhGxwmR4sTSLNHJdMbVn9s5vAfxHlLzfD1ujN3hVv5-dU2ZnW3WA_njz_29xGG7T4CHqme83IPBuce5TYlLUXornqxkiihLfJvsCb7kFni4Pc5l9sQBxFLrZf_7hDO2v7Hp3LRbMhekZZuEzsg9BjlELxg5a2dWUmubeoLw9FuHC9HFHLvhk7nJAOCFhLcscTtf6ze1bRTpUwwnQLA_C5T7u4lJcLjQlAgYcxFEJ4Akdkae3RN_0',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuCI3u0WZAPn4zsTTIaFSz2naiEUT1HGVkZ_433tyLQFbbPlst51xsed-qkE451LHYUSMNgkpFO5wBmDv6vZkFcRaIg3zsLxkDL0558SDExr3ftWkZMqYgSLBSTOyXOrwRy4PVuU3W1ADFklF7ttLK_RsUdtpgrgzFA5nDMolbEyTiS9n2JFFV3D3JK6MrfEgOgdnLWhSffld8PhRkiZxZTCm4q8ckLrFnb1XvH1hkwkQaoS3wAteQPvRLOsqnpiItOmP1SoqipT6ug',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuBWBWB9Nt1Oc8ydni8l6XQRokXm0cd1A2PZD8k8cGbUHqPtFRAVexpaBZVZSmsYSQNLutZhdkvGTz0446sOqs5ah5TaOUbqLy1mmeXPYFMDeAvUKrPDuaQhcsx0VlXzhwK1zJbmiwN9OBoKkBb4OGMBHp9FOw6_A99DvNf4JimYCRQrVxTem7RVYPm4A-v0XORnG9lhbKkZ4dsMQsKbaXbjI7F4hn0JQGWPXXX4g-gHp47Ybn-5PIewmk4rTLsaDgaSogNQQ911qOg',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuDLBr8X8SHLdaAkJqwYup39DoONL5j3zOs3VV-CJFE1Fj5plqMD3aF0oRh2KNurLZTu176Wc2D9HoiNa2p5Tl3VYPLnwV4Xj3L0JtQTkPbFQ_uOmTCbfSiogCYs9FvY_A6wUKRR2ghbMbCDTx80M5UfcLkkVmOJGB6oaL0N8mmvxbXqG_uPoRGFn0b-h-urrlbO9lMmpuKyIo68TiTbb8NgDmdKQVibiZhCG7PQT7NPX2euF-imprluMBQewPpSQfGbCenl-NIEg-M',
-]
-
 function pickImages(slug: string, count = 3): string[] {
   let hash = 0
   for (let i = 0; i < slug.length; i++) hash = (hash * 31 + slug.charCodeAt(i)) & 0xffffff
   const result: string[] = []
-  for (let i = 0; i < count; i++) result.push(IMGS[(hash + i) % IMGS.length])
+  for (let i = 0; i < count; i++) {
+    const seed = ((hash + i * 137) & 0xffffff).toString()
+    result.push(`https://picsum.photos/seed/${seed}/1200/800`)
+  }
   return result
 }
 
