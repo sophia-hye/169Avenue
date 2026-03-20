@@ -267,7 +267,6 @@ export function EuropeMap({ selectedCountry = null, onSelectCountry, onNavigateC
         if (!f) return null
         const centroid = pathGenerator.centroid(f.geometry)
         if (!centroid || isNaN(centroid[0])) return null
-        const name = COUNTRY_NAMES[activeCountryId] || ''
         const uniCount = EU_UNIVERSITIES.filter((u) => u.countryId === activeCountryId).length
         if (uniCount === 0) return null
         const tooltipW = 180

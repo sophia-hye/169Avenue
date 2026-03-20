@@ -4,8 +4,6 @@ import { Footer } from './Footer'
 import { EU_UNIVERSITIES, COUNTRY_NAMES } from './maps/EuropeMap'
 import { getCountryDetail } from '../data/eu-countries-detail'
 
-const U = (id: string) => `https://images.unsplash.com/photo-${id}?w=800&q=80`
-
 function GalleryImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
   return (
     <div className={`overflow-hidden group ${className || ''}`}>

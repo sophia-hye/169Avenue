@@ -194,7 +194,7 @@ export function USMap({ selectedState, hoveredState, onSelectState, onHoverState
               transition: 'opacity 0.3s ease',
               cursor: 'pointer',
             }}
-            onMouseEnter={(e) => {
+            onMouseEnter={() => {
               if (!svgRef.current) return
               const rect = svgRef.current.getBoundingClientRect()
               const svgWidth = rect.width
