@@ -12,7 +12,7 @@ import { EuropeCountryDetailPage } from './components/EuropeCountryDetailPage'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/169Avenue">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
