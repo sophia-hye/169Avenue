@@ -56,7 +56,7 @@ export function Navbar() {
               to="/consultation"
               className="bg-primary text-on-primary px-8 py-3 font-body text-sm uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95"
             >
-              Consultation
+              Consult
             </Link>
           </div>
         </div>
