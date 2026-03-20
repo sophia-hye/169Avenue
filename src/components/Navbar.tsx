@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 const ROUTE_LINKS = [
   { label: 'About', to: '/about' },
   { label: 'Partners', to: '/partners' },
+  { label: 'Field', to: '/field' },
   { label: 'Destinations', to: '/destinations' },
   { label: 'Success Stories', to: '/stories' },
 ]

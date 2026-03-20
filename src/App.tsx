@@ -9,6 +9,7 @@ import { DestinationsPage } from './components/DestinationsPage'
 import { RegionDetailPage } from './components/RegionDetailPage'
 import { StateDetailPage } from './components/StateDetailPage'
 import { EuropeCountryDetailPage } from './components/EuropeCountryDetailPage'
+import { FieldPage } from './components/FieldPage'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/partners" element={<PartnersPage />} />
+        <Route path="/field" element={<FieldPage />} />
         <Route path="/destinations" element={<DestinationsPage />} />
         <Route path="/destinations/us/:stateCode" element={<StateDetailPage />} />
         <Route path="/destinations/eu/:countryId" element={<EuropeCountryDetailPage />} />
