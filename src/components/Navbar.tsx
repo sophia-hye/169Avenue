@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const ROUTE_LINKS = [
@@ -10,8 +9,6 @@ const ROUTE_LINKS = [
 ]
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false)
-
   return (
     <nav className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md">
       <div className="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
@@ -37,38 +34,7 @@ export function Navbar() {
         >
           Consultation
         </Link>
-
-        <button
-          className="md:hidden text-primary"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          <span className="material-symbols-outlined text-3xl">
-            {mobileOpen ? 'close' : 'menu'}
-          </span>
-        </button>
       </div>
-
-      {mobileOpen && (
-        <div className="md:hidden bg-surface/95 backdrop-blur-md px-8 pb-8 space-y-4">
-          {ROUTE_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              to={link.to}
-              className="block font-headline text-lg text-primary/70 hover:text-secondary py-2"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            to="/consultation"
-            className="block w-full text-center bg-primary text-on-primary px-8 py-3 font-body text-sm uppercase tracking-widest"
-            onClick={() => setMobileOpen(false)}
-          >
-            Consultation
-          </Link>
-        </div>
-      )}
     </nav>
   )
 }

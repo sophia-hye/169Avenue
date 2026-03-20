@@ -41,12 +41,17 @@ function MobileAbout() {
   return (
     <div className="md:hidden">
       {/* Mobile Top Bar */}
-      <header className="fixed top-0 z-50 w-full bg-surface flex justify-between items-center px-6 py-4">
+      <header className="fixed top-0 z-50 w-full bg-surface/80 backdrop-blur-md flex justify-between items-center px-6 py-4">
         <Link to="/">
-          <span className="material-symbols-outlined text-primary">menu</span>
+          <span className="material-symbols-outlined text-primary">arrow_back</span>
         </Link>
         <h1 className="text-xl font-headline italic text-primary tracking-tight">169 Avenue</h1>
-        <div className="w-6" />
+        <Link
+          to="/consultation"
+          className="bg-primary text-on-primary px-4 py-2 font-body text-xs uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95"
+        >
+          Consult
+        </Link>
       </header>
 
       <main className="pt-24 pb-32">
@@ -160,21 +165,21 @@ function MobileAbout() {
           <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>info</span>
           <span className="text-[8px] font-label uppercase tracking-widest">About</span>
         </Link>
-        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">public</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">Destinations</span>
+        <Link to="/partners" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">handshake</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Partners</span>
         </Link>
         <Link to="/field" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">school</span>
           <span className="text-[8px] font-label uppercase tracking-widest">Field</span>
         </Link>
+        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">public</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Destinations</span>
+        </Link>
         <Link to="/stories" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">auto_stories</span>
           <span className="text-[8px] font-label uppercase tracking-widest">Stories</span>
-        </Link>
-        <Link to="/consultation" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">mail</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">Consultation</span>
         </Link>
       </nav>
     </div>

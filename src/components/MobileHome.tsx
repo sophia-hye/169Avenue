@@ -123,21 +123,21 @@ export function MobileHome() {
           <span className="material-symbols-outlined text-lg">info</span>
           <span className="text-[8px] font-label uppercase tracking-widest">About</span>
         </Link>
-        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">public</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">Destinations</span>
+        <Link to="/partners" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">handshake</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Partners</span>
         </Link>
         <Link to="/field" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">school</span>
           <span className="text-[8px] font-label uppercase tracking-widest">Field</span>
         </Link>
+        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">public</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Destinations</span>
+        </Link>
         <Link to="/stories" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">auto_stories</span>
           <span className="text-[8px] font-label uppercase tracking-widest">Stories</span>
-        </Link>
-        <Link to="/consultation" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">mail</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">Consultation</span>
         </Link>
       </nav>
     </div>

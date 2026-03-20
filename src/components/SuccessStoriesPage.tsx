@@ -7,19 +7,20 @@ function MobileStories() {
   return (
     <div className="md:hidden">
       {/* Mobile Top Bar */}
-      <nav className="bg-surface sticky top-0 z-50 flex justify-between items-center w-full px-6 py-4">
-        <div className="flex items-center gap-4">
-          <Link to="/">
-            <span className="material-symbols-outlined text-primary cursor-pointer">menu</span>
-          </Link>
-          <span className="text-xl font-headline italic text-primary tracking-tight">169 Avenue</span>
-        </div>
-        <Link to="/consultation">
-          <span className="material-symbols-outlined text-primary cursor-pointer">mail</span>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md flex justify-between items-center w-full px-6 py-4">
+        <Link to="/">
+          <span className="material-symbols-outlined text-primary">arrow_back</span>
         </Link>
-      </nav>
+        <span className="text-xl font-headline italic text-primary tracking-tight">169 Avenue</span>
+        <Link
+          to="/consultation"
+          className="bg-primary text-on-primary px-4 py-2 font-body text-xs uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95"
+        >
+          Consult
+        </Link>
+      </header>
 
-      <main className="min-h-screen">
+      <main className="min-h-screen pt-16 pb-20">
         {/* Header */}
         <header className="px-6 pt-12 pb-8">
           <div className="inline-block border-b border-outline-variant/20 mb-4 pb-1">
@@ -134,21 +135,21 @@ function MobileStories() {
           <span className="material-symbols-outlined text-lg">info</span>
           <span className="text-[8px] font-label uppercase tracking-widest">About</span>
         </Link>
-        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">public</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">Destinations</span>
+        <Link to="/partners" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">handshake</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Partners</span>
         </Link>
         <Link to="/field" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">school</span>
           <span className="text-[8px] font-label uppercase tracking-widest">Field</span>
         </Link>
+        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">public</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Destinations</span>
+        </Link>
         <Link to="/stories" className="flex flex-col items-center gap-1 text-secondary font-bold">
           <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>auto_stories</span>
           <span className="text-[8px] font-label uppercase tracking-widest">Stories</span>
-        </Link>
-        <Link to="/consultation" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">mail</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">Consultation</span>
         </Link>
       </nav>
       <div className="h-16" />

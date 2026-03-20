@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom'
 
 interface MobileShellProps {
   children: ReactNode
-  activeTab?: 'about' | 'destinations' | 'field' | 'stories' | 'consultation'
+  activeTab?: 'about' | 'partners' | 'field' | 'destinations' | 'stories'
 }
 
 const TABS = [
   { id: 'about', label: 'About', to: '/about', icon: 'info' },
-  { id: 'destinations', label: 'Destinations', to: '/destinations', icon: 'public' },
+  { id: 'partners', label: 'Partners', to: '/partners', icon: 'handshake' },
   { id: 'field', label: 'Field', to: '/field', icon: 'school' },
+  { id: 'destinations', label: 'Destinations', to: '/destinations', icon: 'public' },
   { id: 'stories', label: 'Stories', to: '/stories', icon: 'auto_stories' },
-  { id: 'consultation', label: 'Consultation', to: '/consultation', icon: 'mail' },
 ] as const
 
 export function MobileShell({ children, activeTab }: MobileShellProps) {
@@ -23,7 +23,12 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
           <span className="material-symbols-outlined text-primary">arrow_back</span>
         </Link>
         <Link to="/" className="text-xl font-headline italic text-primary tracking-tight">169 Avenue</Link>
-        <div className="w-6" />
+        <Link
+          to="/consultation"
+          className="bg-primary text-on-primary px-4 py-2 font-body text-xs uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95"
+        >
+          Consult
+        </Link>
       </header>
 
       {/* Content */}
@@ -31,7 +36,7 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
         {children}
       </main>
 
-      {/* Bottom Nav - 5 tabs matching desktop menu */}
+      {/* Bottom Nav - matching desktop menu */}
       <nav className="fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl flex justify-around items-center px-2 py-3 z-50 border-t border-outline-variant/10">
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id
