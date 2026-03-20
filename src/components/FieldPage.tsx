@@ -212,7 +212,7 @@ export function FieldPage() {
       </div>
 
       {/* Mobile */}
-      <MobileShell activeTab="fields">
+      <MobileShell activeTab="field">
         <FieldContent selectedField={selectedField} setSelectedField={setSelectedField} />
       </MobileShell>
       <MobileFooter />

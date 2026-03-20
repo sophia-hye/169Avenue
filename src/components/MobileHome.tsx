@@ -118,22 +118,26 @@ export function MobileHome() {
       </footer>
 
       {/* Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl border-t border-primary/5 flex justify-around items-center px-4 py-3">
-        <Link to="/destinations" className="flex flex-col items-center gap-1 text-secondary">
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
-          <span className="uppercase tracking-widest text-[9px] font-label">Destinations</span>
+      <nav className="fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl flex justify-around items-center px-2 py-3 z-50 border-t border-outline-variant/10">
+        <Link to="/about" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">info</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">About</span>
         </Link>
-        <Link to="/field" className="flex flex-col items-center gap-1 text-on-surface-variant/60">
-          <span className="material-symbols-outlined">auto_stories</span>
-          <span className="uppercase tracking-widest text-[9px] font-label">Fields</span>
+        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">public</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Destinations</span>
         </Link>
-        <Link to="/stories" className="flex flex-col items-center gap-1 text-on-surface-variant/60">
-          <span className="material-symbols-outlined">edit_note</span>
-          <span className="uppercase tracking-widest text-[9px] font-label">Stories</span>
+        <Link to="/field" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">school</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Field</span>
         </Link>
-        <Link to="/consultation" className="flex flex-col items-center gap-1 text-on-surface-variant/60">
-          <span className="material-symbols-outlined">mail</span>
-          <span className="uppercase tracking-widest text-[9px] font-label">Inquire</span>
+        <Link to="/stories" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">auto_stories</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Stories</span>
+        </Link>
+        <Link to="/consultation" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+          <span className="material-symbols-outlined text-lg">mail</span>
+          <span className="text-[8px] font-label uppercase tracking-widest">Consultation</span>
         </Link>
       </nav>
     </div>
