@@ -47,8 +47,10 @@ function pickImages(slug: string, count = 3): string[] {
   const tags = UNIVERSITY_TAGS[slug] ?? 'university,campus,architecture,building'
   const result: string[] = []
   for (let i = 0; i < count; i++) {
-    const lock = (((hash >>> 0) + i * 137) % 9999) + 1
-    result.push(`https://loremflickr.com/1200/800/${tags}?lock=${lock}`)
+    // Cap lock at 30 to stay within available Flickr CC photo counts and avoid solid-color placeholders
+    const lock = (((hash >>> 0) + i * 11) % 30) + 1
+    // Request 4:3 ratio to match common photo format and reduce letterboxing
+    result.push(`https://loremflickr.com/1200/900/${tags}?lock=${lock}`)
   }
   return result
 }

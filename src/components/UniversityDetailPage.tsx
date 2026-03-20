@@ -30,20 +30,20 @@ function PhotoGallery({ images, name }: { images: readonly string[]; name: strin
         Campus Gallery
       </span>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div className="md:col-span-2 overflow-hidden group aspect-[16/10]">
+        <div className="md:col-span-2 overflow-hidden group aspect-[16/10] bg-surface-container">
           <img
             src={main}
             alt={`${name} campus`}
-            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700 group-hover:scale-105"
           />
         </div>
         <div className="grid grid-rows-2 gap-3">
           {rest.map((img, i) => (
-            <div key={i} className="overflow-hidden group aspect-[4/3]">
+            <div key={i} className="overflow-hidden group aspect-[4/3] bg-surface-container">
               <img
                 src={img}
                 alt={`${name} ${i + 2}`}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700 group-hover:scale-105"
               />
             </div>
           ))}
