@@ -74,7 +74,7 @@ function UniversityContent({ slug }: { slug: string }) {
   return (
     <>
       {/* Back */}
-      <div className="px-6 md:px-16 max-w-screen-2xl mx-auto pt-6 md:pt-10 mb-6 md:mb-10">
+      <div className="hidden md:block px-6 md:px-16 max-w-screen-2xl mx-auto pt-6 md:pt-10 mb-6 md:mb-10">
         <button
           onClick={() => window.history.back()}
           className="inline-flex items-center gap-2 group font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 hover:text-secondary transition-colors"

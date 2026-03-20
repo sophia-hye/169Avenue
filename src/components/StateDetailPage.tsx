@@ -115,7 +115,7 @@ export function StateDetailPage() {
   const pageContent = (
     <>
         {/* Back */}
-        <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
+        <div className="hidden md:block px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
           <Link to="/destinations/us" className="inline-flex items-center space-x-3 group">
             <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">
               arrow_back

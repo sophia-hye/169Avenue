@@ -12,7 +12,7 @@ function GalleryImage({ src, alt, className }: { src: string; alt: string; class
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+        className="w-full h-full object-cover group-hover:grayscale transition-all duration-700 group-hover:scale-105"
       />
     </div>
   )
@@ -85,7 +85,7 @@ export function EuropeCountryDetailPage() {
   const pageContent = (
     <>
         {/* Back */}
-        <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
+        <div className="hidden md:block px-6 md:px-16 max-w-screen-2xl mx-auto mb-8 md:mb-12">
           <Link to="/destinations/eu" className="inline-flex items-center space-x-3 group">
             <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
             <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">

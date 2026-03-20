@@ -19,7 +19,7 @@ export function StoryDetailPage() {
   const content = (
     <>
       {/* Back Link */}
-      <div className="px-6 md:px-12 max-w-7xl mx-auto mb-8 md:mb-12">
+      <div className="hidden md:block px-6 md:px-12 max-w-7xl mx-auto mb-8 md:mb-12">
         <Link to="/stories" className="inline-flex items-center space-x-3 group">
           <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
           <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">All Success Stories</span>
