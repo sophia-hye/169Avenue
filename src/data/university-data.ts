@@ -8,51 +8,37 @@ export interface UniversityStats {
   readonly images: readonly string[]
 }
 
-// Per-university Flickr CC image search tags (loremflickr.com)
-// loremflickr searches Flickr CC-licensed photos and returns consistent results via `lock`
-const UNIVERSITY_TAGS: Record<string, string> = {
-  'mit': 'mit,massachusetts,institute,technology',
-  'stanford-university': 'stanford,university,california',
-  'harvard-university': 'harvard,university,cambridge',
-  'harvard-medical-school': 'harvard,medical,school,boston',
-  'harvard-law-school': 'harvard,law,university',
-  'harvard-business-school': 'harvard,business,school',
-  'university-of-oxford': 'oxford,university,england,historic',
-  'university-of-cambridge': 'cambridge,university,kings,college',
-  'imperial-college-london': 'imperial,college,london,university',
-  'eth-zurich': 'eth,zurich,switzerland,university',
-  'caltech': 'caltech,california,technology,university',
-  'yale-university': 'yale,university,newhaven',
-  'princeton-university': 'princeton,university,newjersey',
-  'carnegie-mellon-university': 'carnegie,mellon,pittsburgh,university',
-  'uc-berkeley': 'berkeley,university,california,campus',
-  'national-university-of-singapore': 'singapore,university,campus',
-  'tsinghua-university': 'tsinghua,university,beijing,china',
-  'johns-hopkins-university': 'johns,hopkins,university,baltimore',
-  'london-school-of-economics': 'london,school,economics,lse',
-  'ucl': 'ucl,london,university,college',
-  'kaist': 'kaist,korea,university,technology',
-  'epfl': 'epfl,lausanne,switzerland,university',
-  'insead': 'insead,fontainebleau,business,school',
-  'london-business-school': 'london,business,school,campus',
-  'the-juilliard-school': 'juilliard,lincoln,center,new,york',
-  'royal-college-of-art': 'royal,college,art,london,kensington',
-  'loughborough-university': 'loughborough,university,campus,sport',
-}
+// Curated pool of aspirational university/campus/classroom photos (Unsplash, verified)
+const ASPIRATIONAL_POOL = [
+  '1606761568499-6d2451b23c66', // lecture hall full of students
+  '1524995997946-a1c2e315a42f', // circular library corridor (stunning architecture)
+  '1507842217343-583bb7270b66', // classic warm library bookshelves
+  '1541339907198-e08756dedf3f', // graduation ceremony, caps in the air
+  '1576495199011-eb94736d05d6', // modern campus, students walking outside
+  '1562774053-701939374585',    // grand brick university building
+  '1481627834876-b7833e8f5570', // atmospheric library hallway with lights
+  '1532012197267-da84d127e765', // open book surrounded by stacked books
+  '1498243691581-b145c3f54a5a', // quiet library aisle between shelves
+  '1531482615713-2afd69097998', // students collaborating on computers
+  '1509062522246-3755977927d7', // classroom — teacher and students engaged
+  '1488190211105-8b0e65b80b4e', // student studying at desk with laptop
+  '1592280771190-3e2e4d571952', // modern red-brick campus building
+  '1580582932707-520aed937b7b', // classic classroom with rows of desks
+] as const
 
 function pickImages(slug: string, count = 3): string[] {
   let hash = 0
   for (let i = 0; i < slug.length; i++) hash = (hash * 31 + slug.charCodeAt(i)) & 0xffffff
 
-  const tags = UNIVERSITY_TAGS[slug] ?? 'university,campus,architecture,building'
-  const result: string[] = []
-  for (let i = 0; i < count; i++) {
-    // Cap lock at 30 to stay within available Flickr CC photo counts and avoid solid-color placeholders
-    const lock = (((hash >>> 0) + i * 11) % 30) + 1
-    // Request 4:3 ratio to match common photo format and reduce letterboxing
-    result.push(`https://loremflickr.com/1200/900/${tags}?lock=${lock}`)
-  }
-  return result
+  const n = ASPIRATIONAL_POOL.length
+  const start = hash % n
+  // Spread picks across pool so all 3 images are visually distinct
+  const step = Math.floor(n / count)
+
+  return Array.from({ length: count }, (_, i) => {
+    const idx = (start + i * step) % n
+    return `https://images.unsplash.com/photo-${ASPIRATIONAL_POOL[idx]}?auto=format&fit=crop&w=1200&q=80`
+  })
 }
 
 const SPECIFIC: Record<string, Omit<UniversityStats, 'images'>> = {
