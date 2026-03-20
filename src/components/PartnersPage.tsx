@@ -6,7 +6,7 @@ const CURATORS = [
   {
     name: 'Elena Moretti',
     role: 'Lead Architect of Ivy League Admissions',
-    mobileRole: 'Strategy & Institutional Alignment',
+    mobileRole: 'Lead Architect of Ivy League Admissions',
     tag: 'Strategy',
     bio: 'A Harvard alumna with over a decade of experience navigating the nuanced landscapes of Cambridge and New Haven. Elena specializes in high-stakes narrative positioning.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCI3u0WZAPn4zsTTIaFSz2naiEUT1HGVkZ_433tyLQFbbPlst51xsed-qkE451LHYUSMNgkpFO5wBmDv6vZkFcRaIg3zsLxkDL0558SDExr3ftWkZMqYgSLBSTOyXOrwRy4PVuU3W1ADFklF7ttLK_RsUdtpgrgzFA5nDMolbEyTiS9n2JFFV3D3JK6MrfEgOgdnLWhSffld8PhRkiZxZTCm4q8ckLrFnb1XvH1hkwkQaoS3wAteQPvRLOsqnpiItOmP1SoqipT6ug',
@@ -14,7 +14,7 @@ const CURATORS = [
   {
     name: 'Julian Thorne',
     role: 'Senior Curator of Narrative Strategy',
-    mobileRole: 'Narrative Architecture',
+    mobileRole: 'Senior Curator of Narrative Strategy',
     tag: 'Narrative',
     bio: 'Former editor at a leading academic press and Stanford graduate. Julian crafts intellectual portfolios that capture the singular voice of the scholar.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBWBWB9Nt1Oc8ydni8l6XQRokXm0cd1A2PZD8k8cGbUHqPtFRAVexpaBZVZSmsYSQNLutZhdkvGTz0446sOqs5ah5TaOUbqLy1mmeXPYFMDeAvUKrPDuaQhcsx0VlXzhwK1zJbmiwN9OBoKkBb4OGMBHp9FOw6_A99DvNf4JimYCRQrVxTem7RVYPm4A-v0XORnG9lhbKkZ4dsMQsKbaXbjI7F4hn0JQGWPXXX4g-gHp47Ybn-5PIewmk4rTLsaDgaSogNQQ911qOg',
@@ -22,7 +22,7 @@ const CURATORS = [
   {
     name: 'Dr. Sarah Jenkins',
     role: 'Director of Institutional Ethics',
-    mobileRole: 'Global Research & Ethics',
+    mobileRole: 'Director of Institutional Ethics',
     tag: 'Ethics',
     bio: 'Holding a doctorate from Princeton, Sarah ensures every application maintains the highest standards of academic integrity while maximizing institutional fit.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDLBr8X8SHLdaAkJqwYup39DoONL5j3zOs3VV-CJFE1Fj5plqMD3aF0oRh2KNurLZTu176Wc2D9HoiNa2p5Tl3VYPLnwV4Xj3L0JtQTkPbFQ_uOmTCbfSiogCYs9FvY_A6wUKRR2ghbMbCDTx80M5UfcLkkVmOJGB6oaL0N8mmvxbXqG_uPoRGFn0b-h-urrlbO9lMmpuKyIo68TiTbb8NgDmdKQVibiZhCG7PQT7NPX2euF-imprluMBQewPpSQfGbCenl-NIEg-M',

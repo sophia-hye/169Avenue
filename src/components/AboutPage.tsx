@@ -7,19 +7,19 @@ const PILLARS = [
     number: '01',
     title: 'Narrative Sculpting',
     description: 'We move beyond the template essay. Our editors work as literary curators, helping you extract the philosophical core of your experiences to craft statements of purpose that resonate with admissions committees on a profound level.',
-    mobileDescription: 'We don\'t just edit essays; we refine your personal history into a compelling visual and textual narrative that resonates with admission committees of the world\'s most elite institutions.',
+    mobileDescription: 'We move beyond the template essay. Our editors work as literary curators, helping you extract the philosophical core of your experiences to craft statements of purpose that resonate with admissions committees on a profound level.',
   },
   {
     number: '02',
     title: 'Strategic Architecture',
     description: 'Long-term profile building is an exercise in intentionality. We curate extracurricular paths and research opportunities that aren\'t just \'impressive\' — they are essential to the story you are telling to the world.',
-    mobileDescription: 'Building a multi-year roadmap that balances intellectual rigor with authentic extracurricular distinction. Every decision is a brushstroke on your academic masterpiece.',
+    mobileDescription: 'Long-term profile building is an exercise in intentionality. We curate extracurricular paths and research opportunities that aren\'t just \'impressive\' — they are essential to the story you are telling to the world.',
   },
   {
     number: '03',
     title: 'Vocal Artistry',
     description: 'Communication is the ultimate differentiator. Our mastery sessions prepare you for the intellectual rigor of Oxbridge or Ivy interviews, focusing on critical thinking, poise, and the articulation of complex ideas.',
-    mobileDescription: 'Mastering the nuances of high-stakes interviews. We cultivate the confidence and rhetorical precision required to articulate your vision with poise and intellectual depth.',
+    mobileDescription: 'Communication is the ultimate differentiator. Our mastery sessions prepare you for the intellectual rigor of Oxbridge or Ivy interviews, focusing on critical thinking, poise, and the articulation of complex ideas.',
   },
 ]
 

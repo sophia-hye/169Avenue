@@ -55,67 +55,82 @@ function MobileConsultation() {
               </p>
             </section>
 
-            {/* Form */}
+            {/* Form - same fields as desktop */}
             <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">
-                  Full Name <span className="text-secondary">*</span>
-                </label>
-                <input
-                  className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors duration-300"
-                  placeholder="Enter your full name"
-                  type="text"
-                  required
-                />
+              {/* Personal Narrative */}
+              <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3">
+                <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">01</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Personal Narrative</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">
-                  Academic Aspirations <span className="text-secondary">*</span>
-                </label>
-                <input
-                  className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors duration-300"
-                  placeholder="Desired institution or field"
-                  type="text"
-                  required
-                />
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Full Legal Name <span className="text-secondary">*</span></label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="The Honorable..." type="text" required />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Direct Correspondence (Email) <span className="text-secondary">*</span></label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="contact@example.com" type="email" required />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Phone / Secure Messenger</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="+1 (000) 000-0000" type="tel" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Current Residency</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Geneva, Switzerland" type="text" />
+              </div>
+
+              {/* Academic Aspirations */}
+              <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
+                <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">02</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Academic Aspirations</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">
-                  Narrative Background
-                </label>
-                <textarea
-                  className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors duration-300 resize-none"
-                  placeholder="A brief summary of your journey"
-                  rows={1}
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">
-                  Preferred Office
-                </label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Intended Level of Study <span className="text-secondary">*</span></label>
                 <div className="relative">
-                  <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors duration-300">
-                    <option value="" disabled selected>Select an atelier</option>
-                    <option value="seoul">Seoul</option>
-                    <option value="new-york">New York</option>
-                    <option value="london">London</option>
+                  <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                    <option value="" disabled>Select Tier</option>
+                    {STUDY_LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
                   </select>
-                  <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">
-                    expand_more
-                  </span>
+                  <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
                 </div>
               </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Primary Geographic Region <span className="text-secondary">*</span></label>
+                <div className="relative">
+                  <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                    <option value="" disabled>Select Region</option>
+                    {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Anticipated Commencement</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Autumn Term 2025" type="text" />
+              </div>
 
-              <div className="mt-8">
-                <button
-                  type="submit"
-                  className="w-full bg-primary text-on-primary py-5 font-label uppercase tracking-[0.2em] text-xs active:scale-95 transition-all duration-300"
-                >
+              {/* Concierge Notes */}
+              <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
+                <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">03</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Concierge Notes</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Share your story or unique objectives</label>
+                <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder="Briefly describe the student's unique profile, challenges, and ultimate vision..." rows={3} />
+              </div>
+
+              <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant"><span className="text-secondary">*</span> Required fields</p>
+
+              <div>
+                <button type="submit" className="w-full bg-primary text-on-primary py-5 font-label uppercase tracking-[0.2em] text-xs active:scale-95 transition-all duration-300">
                   Submit Inquiry
                 </button>
+                <p className="mt-4 font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60 text-center">
+                  A senior curator will review your dossier within 48 hours.
+                </p>
               </div>
             </form>
 

@@ -15,7 +15,7 @@ export function MobileHome() {
         </div>
         <div className="max-w-xs">
           <h2 className="text-4xl font-headline italic leading-[1.1] tracking-tighter text-primary">
-            The Digital Curator of Academic Ambition
+            Scholar <span className="font-normal">Atelier</span>
           </h2>
           <div className="mt-6 w-12 h-[2px] bg-secondary" />
         </div>
@@ -29,10 +29,10 @@ export function MobileHome() {
           </span>
           <div className="ml-auto w-4/5">
             <p className="text-2xl font-headline leading-relaxed text-on-surface-variant italic">
-              "Education is not the filling of a pail, but the lighting of a fire. We curate the sparks that define a legacy."
+              "Education is the most powerful weapon which you can use to change the world."
             </p>
             <p className="mt-8 text-sm leading-7 text-on-surface-variant max-w-sm">
-              Moving beyond traditional consultancy, we treat your academic journey as a bespoke exhibition. Every choice is intentional; every strategy is curated to reflect the prestige of your future institution.
+              Curating academic journeys for the next generation of global leaders. We transform aspirations into heritage through bespoke admissions strategy.
             </p>
           </div>
         </div>
@@ -52,9 +52,9 @@ export function MobileHome() {
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPxKyKhL_RrinwdU0C-cEIxQlF-oVDTCbqipxtNoXgqyVZiOWJpebhVKvyiJXdjdfx05Xkr7d5jhs0F8b1ATtCuIP0CR4eFU8I-ecavFNbWgoEPhtKswmbUIEjc7UAvucCNbCPcJ_KR6yEiqgpCWT0FqQe__lSD1EsRiZSUCd0Vqhxh3qFdU6_Ut5qw0_S8uuU_b_ylGAp_wSvkwMrPK-hKlBCOrjphxnrKNtzEoWY-l58g4e43wfTUOCrxRj2yNZPnh0n1Nthqd8"
               />
             </div>
-            <h3 className="text-xl font-headline mb-3">Portfolio Curation</h3>
+            <h3 className="text-xl font-headline mb-3">Editorial Essay Mentoring</h3>
             <p className="text-sm text-on-surface-variant leading-relaxed">
-              Strategic assembly of academic achievements and extracurricular narratives into a singular, compelling identity.
+              Crafting compelling personal narratives that highlight individual brilliance and intellectual curiosity.
             </p>
           </Link>
 
@@ -66,9 +66,9 @@ export function MobileHome() {
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIdi0QEtI-rwlTubVcMNiBVA3vmUKN-3pW-J-KjLIGowlIukbvq6dA5EmKBUG8FDAaSHzDUOYHpNU--cV3q_mCSVeEbyH6clAu8CfkU3rqGAntnyo9NL37KMuGDg2SudOr0UcG8fUyZ5Dg0Vinr_pLizAHBABnS8T1TIYwmXePtgUC-vUZUmekqtUKpCddIvcHno4dIglYZgrNhovtQbkUXjpu3yUX63TSEkVLMrnSjRajJM9W-11ztKvzsIZhGpXuM9oFhHgtAvI"
               />
             </div>
-            <h3 className="text-xl font-headline mb-3">Narrative Crafting</h3>
+            <h3 className="text-xl font-headline mb-3">Strategic Profile Building</h3>
             <p className="text-sm text-on-surface-variant leading-relaxed">
-              Developing the personal statement from a mere essay into a literary testament of potential and purpose.
+              Developing a 4-year roadmap of extracurricular and academic achievements designed for impact.
             </p>
           </Link>
         </div>
@@ -79,7 +79,7 @@ export function MobileHome() {
         <div className="absolute top-0 right-0 w-32 h-32 bg-surface-container-high opacity-50 -mr-16 -mt-16 rotate-45" />
         <div className="bg-surface-container-lowest p-10 shadow-sm relative z-10">
           <p className="text-xl font-headline italic text-primary leading-snug">
-            Scholar Atelier represents the apex of educational strategy, where heritage meets global ambition.
+            Our approach is not a process; it is a curation. We look beyond the transcript to find the narrative that resonates with admissions committees.
           </p>
           <div className="mt-6 flex items-center gap-3">
             <div className="w-8 h-[1px] bg-outline-variant" />
