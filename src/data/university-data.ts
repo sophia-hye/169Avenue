@@ -8,13 +8,47 @@ export interface UniversityStats {
   readonly images: readonly string[]
 }
 
+// Per-university Flickr CC image search tags (loremflickr.com)
+// loremflickr searches Flickr CC-licensed photos and returns consistent results via `lock`
+const UNIVERSITY_TAGS: Record<string, string> = {
+  'mit': 'mit,massachusetts,institute,technology',
+  'stanford-university': 'stanford,university,california',
+  'harvard-university': 'harvard,university,cambridge',
+  'harvard-medical-school': 'harvard,medical,school,boston',
+  'harvard-law-school': 'harvard,law,university',
+  'harvard-business-school': 'harvard,business,school',
+  'university-of-oxford': 'oxford,university,england,historic',
+  'university-of-cambridge': 'cambridge,university,kings,college',
+  'imperial-college-london': 'imperial,college,london,university',
+  'eth-zurich': 'eth,zurich,switzerland,university',
+  'caltech': 'caltech,california,technology,university',
+  'yale-university': 'yale,university,newhaven',
+  'princeton-university': 'princeton,university,newjersey',
+  'carnegie-mellon-university': 'carnegie,mellon,pittsburgh,university',
+  'uc-berkeley': 'berkeley,university,california,campus',
+  'national-university-of-singapore': 'singapore,university,campus',
+  'tsinghua-university': 'tsinghua,university,beijing,china',
+  'johns-hopkins-university': 'johns,hopkins,university,baltimore',
+  'london-school-of-economics': 'london,school,economics,lse',
+  'ucl': 'ucl,london,university,college',
+  'kaist': 'kaist,korea,university,technology',
+  'epfl': 'epfl,lausanne,switzerland,university',
+  'insead': 'insead,fontainebleau,business,school',
+  'london-business-school': 'london,business,school,campus',
+  'the-juilliard-school': 'juilliard,lincoln,center,new,york',
+  'royal-college-of-art': 'royal,college,art,london,kensington',
+  'loughborough-university': 'loughborough,university,campus,sport',
+}
+
 function pickImages(slug: string, count = 3): string[] {
   let hash = 0
   for (let i = 0; i < slug.length; i++) hash = (hash * 31 + slug.charCodeAt(i)) & 0xffffff
+
+  const tags = UNIVERSITY_TAGS[slug] ?? 'university,campus,architecture,building'
   const result: string[] = []
   for (let i = 0; i < count; i++) {
-    const seed = ((hash + i * 137) & 0xffffff).toString()
-    result.push(`https://picsum.photos/seed/${seed}/1200/800`)
+    const lock = (((hash >>> 0) + i * 137) % 9999) + 1
+    result.push(`https://loremflickr.com/1200/800/${tags}?lock=${lock}`)
   }
   return result
 }
