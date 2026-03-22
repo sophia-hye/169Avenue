@@ -14,6 +14,9 @@ import { UKRegionDetailPage } from './components/UKRegionDetailPage'
 import { EuropeCountryDetailPage } from './components/EuropeCountryDetailPage'
 import { APCountryDetailPage } from './components/APCountryDetailPage'
 import { FieldPage } from './components/FieldPage'
+import { DomesticPage } from './components/DomesticPage'
+import { DomesticFreshmanPage } from './components/DomesticFreshmanPage'
+import { DomesticTransferPage } from './components/DomesticTransferPage'
 import { UniversityDetailPage } from './components/UniversityDetailPage'
 import { TermsPage } from './components/TermsPage'
 import { PrivacyPage } from './components/PrivacyPage'
@@ -28,6 +31,9 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/partners" element={<PartnersPage />} />
         <Route path="/field" element={<FieldPage />} />
+        <Route path="/domestic" element={<DomesticPage />} />
+        <Route path="/domestic/freshman" element={<DomesticFreshmanPage />} />
+        <Route path="/domestic/transfer" element={<DomesticTransferPage />} />
         <Route path="/university/:slug" element={<UniversityDetailPage />} />
         <Route path="/destinations" element={<DestinationsPage />} />
         <Route path="/destinations/us/:stateCode" element={<StateDetailPage />} />

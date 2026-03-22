@@ -3,16 +3,50 @@ import { Link } from 'react-router-dom'
 import { SearchOverlay } from './SearchOverlay'
 import { useLanguage } from '../context/LanguageContext'
 
+function DropdownMenu({ label, items, isOpen, onToggle }: {
+  label: string
+  items: { label: string; to: string }[]
+  isOpen: boolean
+  onToggle: () => void
+}) {
+  return (
+    <div
+      className="relative"
+      onMouseEnter={onToggle}
+      onMouseLeave={onToggle}
+    >
+      <button className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300 flex items-center gap-1">
+        {label}
+        <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'wght' 300" }}>
+          expand_more
+        </span>
+      </button>
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-2 bg-surface/95 backdrop-blur-md shadow-lg border border-outline-variant/10 min-w-[240px] py-2 z-50">
+          {items.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="block px-6 py-3 font-body text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false)
+  const [domesticOpen, setDomesticOpen] = useState(false)
   const { language, setLanguage, t } = useLanguage()
 
-  const ROUTE_LINKS = [
-    { label: t.nav_about, to: '/about' },
-    { label: t.nav_partners, to: '/partners' },
-    { label: t.nav_field, to: '/field' },
-    { label: t.nav_destinations, to: '/destinations' },
-    { label: t.nav_stories, to: '/stories' },
+  const DOMESTIC_ITEMS = [
+    { label: 'Overview', to: '/domestic' },
+    { label: 'Foreign HS → Korean Uni', to: '/domestic/freshman' },
+    { label: 'Foreign Uni → Korean Uni Transfer', to: '/domestic/transfer' },
   ]
 
   return (
@@ -24,15 +58,24 @@ export function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-10">
-            {ROUTE_LINKS.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300"
-              >
-                {link.label}
-              </Link>
-            ))}
+            <Link to="/about" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+              {t.nav_about}
+            </Link>
+            <Link to="/partners" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+              {t.nav_partners}
+            </Link>
+            <DropdownMenu
+              label="Domestic"
+              items={DOMESTIC_ITEMS}
+              isOpen={domesticOpen}
+              onToggle={() => setDomesticOpen(!domesticOpen)}
+            />
+            <Link to="/destinations" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+              International
+            </Link>
+            <Link to="/stories" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+              {t.nav_stories}
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center gap-3">
