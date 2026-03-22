@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Hero } from './Hero'
+import { Stats } from './Stats'
 import { Destinations } from './Destinations'
 import { Expertise } from './Expertise'
 import { SuccessStory } from './SuccessStory'
@@ -55,6 +56,7 @@ export function HomePage() {
       {/* Desktop Content */}
       <main className="hidden md:block pt-24 overflow-x-hidden">
         <Hero />
+        <Stats />
         <Destinations />
         <Expertise />
         <SuccessStory />

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { HERO_IMAGE, DESTINATIONS_LAYOUT } from '../data/home'
 import { FEATURED_STORY } from '../data/stories'
+import { Stats } from './Stats'
 import { useLanguage } from '../context/LanguageContext'
 
 export function MobileHome() {
@@ -24,6 +25,9 @@ export function MobileHome() {
           <div className="mt-6 w-12 h-[2px] bg-secondary" />
         </div>
       </section>
+
+      {/* Stats */}
+      <Stats />
 
       {/* Our Philosophy */}
       <section className="bg-surface-container-low py-24 px-6">
