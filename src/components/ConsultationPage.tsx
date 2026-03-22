@@ -266,28 +266,54 @@ function MobileConsultation() {
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder={t.consult_residency_placeholder} type="text" />
               </div>
 
-              {/* Academic Aspirations */}
+              {/* Academic Background */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">02</span>
                 <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step2}</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_level} <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Current School Country <span className="text-secondary">*</span></label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. South Korea, United States" type="text" required />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Curriculum <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
-                    <option value="" disabled>{t.consult_level_placeholder}</option>
-                    {STUDY_LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
+                    <option value="" disabled>Select curriculum</option>
+                    {CURRICULUMS.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                   <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_region} <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">GPA / Expected Grade</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. 3.8/4.0, A*AA, 42/45 IB" type="text" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Intended Major <span className="text-secondary">*</span></label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Computer Science, Economics" type="text" required />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Preferred Universities</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. MIT, Stanford, Oxford" type="text" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Admission Type <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
-                    <option value="" disabled>{t.consult_region_placeholder}</option>
-                    {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+                    <option value="" disabled>Select type</option>
+                    {ADMISSION_TYPES.map((a) => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_level} <span className="text-secondary">*</span></label>
+                <div className="relative">
+                  <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                    <option value="" disabled>{t.consult_level_placeholder}</option>
+                    {STUDY_LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
                   </select>
                   <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
                 </div>
@@ -403,6 +429,20 @@ function MobileConsultation() {
 // Desktop Consultation (unchanged)
 // ============================================================
 
+const CURRICULUMS = [
+  'IB (International Baccalaureate)',
+  'AP (Advanced Placement)',
+  'A-Level',
+  'American Curriculum',
+  'Korean Curriculum',
+  'Other',
+]
+
+const ADMISSION_TYPES = [
+  'Freshman Admission',
+  'Transfer Admission',
+]
+
 const STUDY_LEVELS = [
   'Elite Boarding Prep',
   'Undergraduate Ivy/Oxbridge',
@@ -410,12 +450,6 @@ const STUDY_LEVELS = [
   'MBA / Law / Medical',
 ]
 
-const REGIONS = [
-  'United States (Ivy League+)',
-  'United Kingdom (G5)',
-  'Continental Europe',
-  'Pan-Asia',
-]
 
 const FULL_OFFICES = [
   { city: 'Seoul', address: 'Cheongdam-dong, Gangnam-gu', detail: 'Private Academic Salon', phone: '+82 2-555-0000' },
@@ -518,6 +552,36 @@ export function ConsultationPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                     <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Current School Country <span className="text-secondary">*</span></label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. South Korea" type="text" required />
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Curriculum <span className="text-secondary">*</span></label>
+                      <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                        <option value="" disabled>Select curriculum</option>
+                        {CURRICULUMS.map((c) => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">GPA / Expected Grade</label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. 3.8/4.0, A*AA, 42/45 IB" type="text" />
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Intended Major <span className="text-secondary">*</span></label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Computer Science, Economics" type="text" required />
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Preferred Universities</label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. MIT, Stanford, Oxford" type="text" />
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Admission Type <span className="text-secondary">*</span></label>
+                      <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                        <option value="" disabled>Select type</option>
+                        {ADMISSION_TYPES.map((a) => <option key={a} value={a}>{a}</option>)}
+                      </select>
+                    </div>
+                    <div className="flex flex-col space-y-2">
                       <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_level} <span className="text-secondary">*</span></label>
                       <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                         <option value="" disabled>{t.consult_level_placeholder}</option>
@@ -525,13 +589,6 @@ export function ConsultationPage() {
                       </select>
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_region} <span className="text-secondary">*</span></label>
-                      <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
-                        <option value="" disabled>{t.consult_region_placeholder}</option>
-                        {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
-                      </select>
-                    </div>
-                    <div className="flex flex-col space-y-2 md:col-span-2">
                       <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.consult_commencement}</label>
                       <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder={t.consult_commencement_placeholder} type="text" />
                     </div>
