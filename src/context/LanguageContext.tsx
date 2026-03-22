@@ -3,7 +3,7 @@ import { translations } from '../i18n/translations'
 
 export type Language = 'en' | 'ko'
 
-type Translations = typeof translations.en
+type Translations = typeof translations.en | typeof translations.ko
 
 interface LanguageContextType {
   language: Language

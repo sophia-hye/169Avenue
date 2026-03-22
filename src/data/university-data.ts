@@ -260,7 +260,7 @@ const SPECIFIC: Record<string, Omit<UniversityStats, 'images'>> = {
   },
 }
 
-function deriveStats(slug: string, country: string): Omit<UniversityStats, 'images'> {
+function deriveStats(_slug: string, country: string): Omit<UniversityStats, 'images'> {
   const isUK = country === 'UK'
   const isEU = ['Germany', 'France', 'Switzerland', 'Netherlands', 'Italy', 'Finland', 'Austria', 'Sweden', 'Norway', 'Denmark', 'Belgium', 'Spain'].includes(country)
   const isAsia = ['Japan', 'China', 'South Korea', 'Singapore', 'India'].includes(country)

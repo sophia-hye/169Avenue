@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { SearchOverlay } from './SearchOverlay'
 import { useLanguage } from '../context/LanguageContext'
 
 export function Navbar() {
-  const { pathname } = useLocation()
-  const isHome = pathname === '/'
   const [searchOpen, setSearchOpen] = useState(false)
   const { language, setLanguage, t } = useLanguage()
 

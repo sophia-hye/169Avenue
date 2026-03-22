@@ -383,7 +383,7 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
 }
 
 function APDetailSection({ region }: { region: RegionData }) {
-  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null)
+  const [hoveredCountry] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const AP_COUNTRY_ORDER = ['702', '410', '392', '156', '036', '554', '356']
