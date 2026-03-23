@@ -141,12 +141,20 @@ export function MobileHome() {
         <p className="text-sm font-body opacity-70 mb-12 max-w-xs mx-auto leading-relaxed">
           {t.mobile_cta_body}
         </p>
-        <Link
-          to="/consultation"
-          className="inline-block bg-surface text-primary px-10 py-4 font-label uppercase text-[11px] tracking-[0.3em] font-bold hover:bg-secondary-fixed-dim transition-colors"
-        >
-          {t.cta_inquire}
-        </Link>
+        <div className="flex flex-col gap-4 max-w-xs mx-auto">
+          <Link
+            to="/domestic"
+            className="block bg-surface text-primary py-4 font-label uppercase text-[11px] tracking-[0.2em] font-bold active:scale-95 transition-all"
+          >
+            Domestic Admissions
+          </Link>
+          <Link
+            to="/destinations"
+            className="block border border-on-primary/30 text-on-primary py-4 font-label uppercase text-[11px] tracking-[0.2em] font-bold active:scale-95 transition-all"
+          >
+            International Admissions
+          </Link>
+        </div>
       </section>
 
       {/* Mobile Footer */}

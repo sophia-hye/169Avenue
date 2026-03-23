@@ -18,19 +18,19 @@ export function Hero() {
           <p className="max-w-md font-body text-on-surface-variant text-lg leading-relaxed mb-10">
             {t.hero_body}
           </p>
-          <div className="flex items-center space-x-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <Link
-              to="/consultation"
-              className="bg-primary text-on-primary px-10 py-4 text-sm tracking-widest uppercase transition-all hover:bg-secondary"
+              to="/domestic"
+              className="bg-primary text-on-primary px-8 py-4 text-sm tracking-widest uppercase transition-all hover:bg-secondary"
             >
-              {t.hero_cta}
+              Domestic Admissions
             </Link>
-            <a
-              className="font-label text-xs tracking-widest uppercase border-b border-primary/20 pb-1 hover:border-primary transition-all"
-              href="#destinations"
+            <Link
+              to="/destinations"
+              className="border border-primary text-primary px-8 py-4 text-sm tracking-widest uppercase transition-all hover:bg-primary hover:text-on-primary"
             >
-              {t.hero_explore}
-            </a>
+              International Admissions
+            </Link>
           </div>
         </div>
 
