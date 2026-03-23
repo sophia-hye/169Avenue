@@ -554,6 +554,12 @@ export function ConsultationPage() {
                 {language === 'ko' ? '무료 가능성 진단' : 'Free Feasibility'} <br />
                 <span className="italic font-light">{language === 'ko' ? '받기' : 'Diagnosis'}</span>
               </h1>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="material-symbols-outlined text-secondary text-2xl">timer</span>
+                <span className="font-label text-xs uppercase tracking-widest text-secondary font-bold">
+                  {language === 'ko' ? '1분 입력 → 전략 안내' : '1-min form → strategy guidance'}
+                </span>
+              </div>
               <p className="font-headline italic text-xl md:text-2xl text-on-surface-variant max-w-2xl leading-relaxed">
                 {language === 'ko'
                   ? '입력하신 정보를 바탕으로 지원 가능 대학과 전략을 안내드립니다.'

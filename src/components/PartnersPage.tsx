@@ -4,6 +4,7 @@ import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { MidPageCTA } from './PageCTA'
 
 const SERVICES_DATA = [
   {
@@ -105,6 +106,8 @@ function ServicesContent() {
           </table>
         </div>
       </section>
+
+      <MidPageCTA />
 
       {/* Service Cards */}
       {SERVICES_DATA.map((s, idx) => (

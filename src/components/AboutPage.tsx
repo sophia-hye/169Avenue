@@ -4,6 +4,7 @@ import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { MidPageCTA } from './PageCTA'
 
 const SERVICES = [
   { icon: 'flight_land',
@@ -97,6 +98,8 @@ function AboutContent() {
           ))}
         </div>
       </section>
+
+      <MidPageCTA />
 
       {/* ⑤ Our Approach */}
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
