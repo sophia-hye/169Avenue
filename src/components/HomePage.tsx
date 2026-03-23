@@ -7,6 +7,7 @@ import { Destinations } from './Destinations'
 import { CaseStudies } from './CaseStudies'
 import { FAQ } from './FAQ'
 import { TrustSection } from './TrustSection'
+import { MiniCTA } from './MiniCTA'
 import { CallToAction } from './CallToAction'
 import { Footer } from './Footer'
 import { MobileHome } from './MobileHome'
@@ -58,8 +59,10 @@ export function HomePage() {
       <main className="hidden md:block pt-24 overflow-x-hidden">
         <Hero />
         <ProcessSection />
+        <MiniCTA />
         <Destinations />
         <CaseStudies />
+        <MiniCTA text="Want to see how your case would be analyzed?" linkText="Request Case Analysis" />
         <FAQ />
         <TrustSection />
         <CallToAction />

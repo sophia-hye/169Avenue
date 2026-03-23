@@ -11,8 +11,14 @@ const TRUST_ITEMS = [
   },
   {
     icon: 'description',
-    title: 'Deliverables After Consultation',
-    items: ['Target university list (reach/match/safety)', 'Curriculum gap analysis report', 'Personalized preparation timeline', 'Strategic positioning document'],
+    title: 'What You Receive After Consultation',
+    items: [
+      'Target university table: Reach / Match / Safety tiers',
+      'Major fit analysis with competitiveness scoring',
+      'Document strategy: essays, recommendations, portfolio',
+      'Preparation timeline with monthly milestones',
+      'Credit transfer mapping (for transfer applicants)',
+    ],
   },
 ]
 
