@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Hero } from './Hero'
+import { TargetCards } from './TargetCards'
+import { ProblemSection } from './ProblemSection'
 import { ProcessSection } from './ProcessSection'
 import { Destinations } from './Destinations'
 import { CaseStudies } from './CaseStudies'
@@ -58,6 +60,8 @@ export function HomePage() {
       {/* Desktop Content */}
       <main className="hidden md:block pt-24 overflow-x-hidden">
         <Hero />
+        <TargetCards />
+        <ProblemSection />
         <ProcessSection />
         <MiniCTA />
         <Destinations />

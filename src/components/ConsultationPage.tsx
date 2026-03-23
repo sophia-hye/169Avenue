@@ -273,8 +273,24 @@ function MobileConsultation() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Current School Country <span className="text-secondary">*</span></label>
-                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. South Korea, United States" type="text" required />
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">School Location <span className="text-secondary">*</span></label>
+                <div className="relative">
+                  <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                    <option value="" disabled>Select location</option>
+                    {SCHOOL_LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Grade Level <span className="text-secondary">*</span></label>
+                <div className="relative">
+                  <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                    <option value="" disabled>Select grade</option>
+                    {GRADE_LEVELS.map((g) => <option key={g} value={g}>{g}</option>)}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-0 bottom-3 pointer-events-none text-outline-variant">expand_more</span>
+                </div>
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Curriculum <span className="text-secondary">*</span></label>
@@ -289,6 +305,10 @@ function MobileConsultation() {
               <div className="flex flex-col gap-2">
                 <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">GPA / Expected Grade</label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. 3.8/4.0, A*AA, 42/45 IB" type="text" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">IB / AP Score (if applicable)</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. IB 42/45, AP 5 (Calc BC), AP 4 (Econ)" type="text" />
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Intended Major <span className="text-secondary">*</span></label>
@@ -347,12 +367,24 @@ function MobileConsultation() {
                 <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder="e.g. Student Council President, Math Olympiad Gold, Volunteer at Red Cross, Published research paper..." rows={3} />
               </div>
 
-              {/* Concierge Notes */}
+              {/* Additional Questions */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">05</span>
-                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step4}</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Tell Us More</span>
               </div>
 
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Your strongest subject</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Mathematics, Biology, Economics" type="text" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Why this major?</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="Brief reason for your major choice" type="text" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Your biggest concern right now</label>
+                <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Not sure if my grades are competitive enough" type="text" />
+              </div>
               <div className="flex flex-col gap-2">
                 <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{t.consult_notes_label}</label>
                 <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder={t.consult_notes_placeholder} rows={3} />
@@ -449,9 +481,27 @@ const CURRICULUMS = [
   'Other',
 ]
 
+const SCHOOL_LOCATIONS = [
+  'South Korea',
+  'United States',
+  'Southeast Asia',
+  'Europe',
+  'China / Japan',
+  'Other',
+]
+
+const GRADE_LEVELS = [
+  'Grade 10 (High School Sophomore)',
+  'Grade 11 (High School Junior)',
+  'Grade 12 (High School Senior)',
+  'University Student',
+  'Gap Year / Other',
+]
+
 const ADMISSION_TYPES = [
   'Freshman Admission',
   'Transfer Admission',
+  'Not sure yet',
 ]
 
 const STUDY_LEVELS = [
@@ -563,8 +613,18 @@ export function ConsultationPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Current School Country <span className="text-secondary">*</span></label>
-                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. South Korea" type="text" required />
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">School Location <span className="text-secondary">*</span></label>
+                      <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                        <option value="" disabled>Select location</option>
+                        {SCHOOL_LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                      </select>
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Grade Level <span className="text-secondary">*</span></label>
+                      <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
+                        <option value="" disabled>Select grade</option>
+                        {GRADE_LEVELS.map((g) => <option key={g} value={g}>{g}</option>)}
+                      </select>
                     </div>
                     <div className="flex flex-col space-y-2">
                       <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Curriculum <span className="text-secondary">*</span></label>
@@ -576,6 +636,10 @@ export function ConsultationPage() {
                     <div className="flex flex-col space-y-2">
                       <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">GPA / Expected Grade</label>
                       <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. 3.8/4.0, A*AA, 42/45 IB" type="text" />
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">IB / AP Score (if applicable)</label>
+                      <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. IB 42/45, AP 5 (Calc BC)" type="text" />
                     </div>
                     <div className="flex flex-col space-y-2">
                       <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Intended Major <span className="text-secondary">*</span></label>
