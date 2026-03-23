@@ -144,13 +144,13 @@ export function MobileHome() {
         <div className="flex flex-col gap-4 max-w-xs mx-auto">
           <Link
             to="/domestic"
-            className="block bg-surface text-primary py-4 font-label uppercase text-[11px] tracking-[0.2em] font-bold active:scale-95 transition-all"
+            className="block border-2 border-on-primary/60 text-on-primary py-4 font-label uppercase text-[11px] tracking-[0.2em] font-bold active:scale-95 transition-all duration-300 hover:bg-surface hover:text-primary hover:border-surface"
           >
             Domestic Admissions
           </Link>
           <Link
             to="/destinations"
-            className="block border border-on-primary/30 text-on-primary py-4 font-label uppercase text-[11px] tracking-[0.2em] font-bold active:scale-95 transition-all"
+            className="block border-2 border-on-primary/60 text-on-primary py-4 font-label uppercase text-[11px] tracking-[0.2em] font-bold active:scale-95 transition-all duration-300 hover:bg-surface hover:text-primary hover:border-surface"
           >
             International Admissions
           </Link>

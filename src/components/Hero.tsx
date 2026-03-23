@@ -21,13 +21,13 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <Link
               to="/domestic"
-              className="bg-primary text-on-primary px-8 py-4 text-sm tracking-widest uppercase transition-all hover:bg-secondary"
+              className="border-2 border-primary text-primary px-8 py-4 text-sm tracking-widest uppercase transition-all duration-300 hover:bg-primary hover:text-on-primary"
             >
               Domestic Admissions
             </Link>
             <Link
               to="/destinations"
-              className="border border-primary text-primary px-8 py-4 text-sm tracking-widest uppercase transition-all hover:bg-primary hover:text-on-primary"
+              className="border-2 border-primary text-primary px-8 py-4 text-sm tracking-widest uppercase transition-all duration-300 hover:bg-primary hover:text-on-primary"
             >
               International Admissions
             </Link>
