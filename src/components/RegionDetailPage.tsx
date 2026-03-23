@@ -3,6 +3,8 @@ import { useParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
+import { MidPageCTA } from './PageCTA'
+import { useLanguage } from '../context/LanguageContext'
 import { USMap } from './maps/USMap'
 import { UKMap } from './maps/UKMap'
 import { EuropeMap, EU_UNIVERSITIES as EU_UNIVERSITIES_DATA, COUNTRY_NAMES as EU_COUNTRY_NAMES } from './maps/EuropeMap'
@@ -484,6 +486,7 @@ function APDetailSection({ region }: { region: RegionData }) {
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const { language } = useLanguage()
   const region = id ? REGION_DATA[id] : undefined
 
   if (!region) {
@@ -564,6 +567,8 @@ export function RegionDetailPage() {
             ) : <div className="py-16" />}
           </div>
         </section>
+
+        <MidPageCTA text={language === 'ko' ? '이 지역 대학 지원 전략이 필요하신가요?' : 'Need a strategy for universities in this region?'} />
 
         {/* CTA */}
         <section className="px-8 md:px-16 py-32 text-center bg-primary text-on-primary">

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { SearchOverlay } from './SearchOverlay'
+import { MidPageCTA } from './PageCTA'
 import { FEATURED_STORY, STORIES } from '../data/stories'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageTitle } from '../hooks/usePageTitle'
@@ -248,6 +249,8 @@ export function SuccessStoriesPage() {
             ))}
           </div>
         </section>
+
+        <MidPageCTA text="Have a similar case? Get your strategy designed." buttonText="Get My Case Analyzed" />
 
         {/* Editorial Insight */}
         <section className="mb-48 relative">

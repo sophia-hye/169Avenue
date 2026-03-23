@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
+import { MidPageCTA } from './PageCTA'
 import { EU_UNIVERSITIES, COUNTRY_NAMES } from './maps/EuropeMap'
 import { getCountryDetail } from '../data/eu-countries-detail'
 import { toSlug } from '../data/university-utils'
@@ -188,6 +189,8 @@ export function EuropeCountryDetailPage() {
             ))}
           </div>
         </section>
+
+        <MidPageCTA />
 
         {/* Other Countries Quick Links */}
         <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-20">
