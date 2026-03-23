@@ -2,7 +2,7 @@ export const translations = {
   en: {
     // Nav
     nav_about: 'About',
-    nav_partners: 'Partners',
+    nav_partners: 'Services',
     nav_field: 'Field',
     nav_destinations: 'Destinations',
     nav_stories: 'Success Stories',
@@ -19,7 +19,7 @@ export const translations = {
     home: 'Home',
     stories: 'Stories',
     about: 'About',
-    partners: 'Partners',
+    partners: 'Services',
     field: 'Field',
     destinations: 'Destinations',
     copyright: '© 2025 169 Avenue. The Digital Curator.',
@@ -82,7 +82,7 @@ export const translations = {
     footer_directory: 'Directory',
     footer_offices: 'Offices',
     footer_connect: 'Connect',
-    footer_links_directory: ['About Our House', 'Consultancy Fees', 'Destinations', 'Press Room'],
+    footer_links_directory: ['About Our House', 'Consultancy Fees', 'Destinations', { label: 'Announcements', to: '/about' }],
     footer_links_offices: ['Seoul, Gangnam', 'New York, Madison Ave', 'London, Mayfair', 'Office Locations'],
     footer_links_connect: [
       { label: 'Admissions Hub' },
@@ -230,7 +230,7 @@ export const translations = {
 
     // MobileShell bottom nav
     bottom_about: 'About',
-    bottom_partners: 'Partners',
+    bottom_partners: 'Services',
     bottom_field: 'Field',
     bottom_destinations: 'Destinations',
     bottom_stories: 'Stories',
@@ -242,7 +242,7 @@ export const translations = {
   ko: {
     // Nav
     nav_about: '소개',
-    nav_partners: '파트너',
+    nav_partners: '서비스',
     nav_field: '전공',
     nav_destinations: '유학지',
     nav_stories: '성공 사례',
@@ -259,7 +259,7 @@ export const translations = {
     home: '홈',
     stories: '성공 사례',
     about: '소개',
-    partners: '파트너',
+    partners: '서비스',
     field: '전공',
     destinations: '유학지',
     copyright: '© 2025 169 Avenue. 디지털 큐레이터.',
@@ -322,7 +322,7 @@ export const translations = {
     footer_directory: '안내',
     footer_offices: '오피스',
     footer_connect: '연락',
-    footer_links_directory: ['회사 소개', '컨설팅 비용', '유학지', '보도자료'],
+    footer_links_directory: ['회사 소개', '컨설팅 비용', '유학지', { label: '공지사항', to: '/about' }],
     footer_links_offices: ['서울, 강남', '뉴욕, 매디슨 애비뉴', '런던, 메이페어', '오피스 위치'],
     footer_links_connect: [
       { label: '입학 허브' },
@@ -470,7 +470,7 @@ export const translations = {
 
     // MobileShell bottom nav
     bottom_about: '소개',
-    bottom_partners: '파트너',
+    bottom_partners: '서비스',
     bottom_field: '전공',
     bottom_destinations: '유학지',
     bottom_stories: '사례',
