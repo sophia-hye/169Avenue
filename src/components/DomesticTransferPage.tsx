@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const STEPS = [
   { number: '01', title: 'Transfer Eligibility Review', desc: 'We assess your current university credits, GPA, and coursework to determine eligibility for transfer into Korean universities. Each institution has different credit requirements and acceptance policies for transfer students.' },
@@ -128,6 +129,7 @@ function PageContent() {
 }
 
 export function DomesticTransferPage() {
+  usePageTitle('편입 전략 - Transfer Admission Strategy')
   return (
     <div className="bg-surface selection:bg-secondary/30">
       <div className="hidden md:block">

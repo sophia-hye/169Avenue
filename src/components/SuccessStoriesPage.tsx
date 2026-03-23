@@ -5,6 +5,7 @@ import { Footer } from './Footer'
 import { SearchOverlay } from './SearchOverlay'
 import { FEATURED_STORY, STORIES } from '../data/stories'
 import { useLanguage } from '../context/LanguageContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 function MobileStories() {
   const navigate = useNavigate()
@@ -172,6 +173,7 @@ function MobileStories() {
 
 export function SuccessStoriesPage() {
   const { t } = useLanguage()
+  usePageTitle('Case Studies - 케이스 스터디')
   return (
     <div className="bg-surface selection:bg-secondary/20">
       {/* Desktop */}

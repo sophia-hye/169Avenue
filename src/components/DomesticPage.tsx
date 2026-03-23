@@ -3,6 +3,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { useLanguage } from '../context/LanguageContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 function DomesticContent() {
   const { language } = useLanguage()
@@ -289,6 +290,7 @@ function DomesticContent() {
 }
 
 export function DomesticPage() {
+  usePageTitle('국내 입시 전략 - Korean University Admissions')
   return (
     <div className="bg-surface selection:bg-secondary/30">
       <div className="hidden md:block">

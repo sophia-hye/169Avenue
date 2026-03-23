@@ -5,6 +5,7 @@ import { Footer } from './Footer'
 import { SearchOverlay } from './SearchOverlay'
 import { getAllUniversities } from '../data/university-utils'
 import { useLanguage } from '../context/LanguageContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 function UniversitySearchInput() {
   const [query, setQuery] = useState('')
@@ -529,6 +530,7 @@ export function ConsultationPage() {
   const [countryCode, setCountryCode] = useState('+82')
   const phonePlaceholder = COUNTRY_CODES.find(c => c.code === countryCode)?.placeholder ?? '000-0000'
   const { t, language } = useLanguage()
+  usePageTitle('무료 가능성 진단 - Free Diagnosis')
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()

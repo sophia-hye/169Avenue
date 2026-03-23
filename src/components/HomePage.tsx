@@ -15,10 +15,12 @@ import { Footer } from './Footer'
 import { MobileHome } from './MobileHome'
 import { SearchOverlay } from './SearchOverlay'
 import { useLanguage } from '../context/LanguageContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 export function HomePage() {
   const { language, setLanguage, t } = useLanguage()
   const [searchOpen, setSearchOpen] = useState(false)
+  usePageTitle()
 
   return (
     <div className="bg-surface selection:bg-secondary/30">

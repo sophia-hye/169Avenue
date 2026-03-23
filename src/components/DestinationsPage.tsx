@@ -4,6 +4,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { WorldMap } from './WorldMap'
+import { usePageTitle } from '../hooks/usePageTitle'
 import { FIELDS, type Field } from '../data/fields'
 
 const REGIONS = [
@@ -146,6 +147,7 @@ function DestinationsContent() {
 }
 
 export function DestinationsPage() {
+  usePageTitle('International - 해외 대학 진학')
   return (
     <div className="bg-surface selection:bg-secondary/30">
       <div className="hidden md:block">

@@ -7,6 +7,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { FIELDS, type Field, type FieldUniversity } from '../data/fields'
+import { usePageTitle } from '../hooks/usePageTitle'
 import { toSlug } from '../data/university-utils'
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
@@ -199,6 +200,7 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
 
 export function FieldPage() {
   const [selectedField, setSelectedField] = useState<Field>(FIELDS[0])
+  usePageTitle('Fields of Study - 전공별 대학 순위')
 
   return (
     <div className="bg-surface selection:bg-secondary/30">

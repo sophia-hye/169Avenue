@@ -3,6 +3,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { useLanguage } from '../context/LanguageContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const SERVICES_DATA = [
   {
@@ -202,6 +203,7 @@ function ServicesContent() {
 }
 
 export function PartnersPage() {
+  usePageTitle('Services - 서비스 안내')
   return (
     <div className="bg-surface selection:bg-secondary/30">
       <div className="hidden md:block">

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const STEPS = [
   { number: '01', title: 'Eligibility Assessment', desc: 'We evaluate your qualifications under the 재외국민 특별전형 (Special Admission for Overseas Koreans) or 외국인 전형 (International Student Admission) tracks, depending on your citizenship and years of overseas education.' },
@@ -135,6 +136,7 @@ function PageContent() {
 }
 
 export function DomesticFreshmanPage() {
+  usePageTitle('해외고 한국대 진학 전략 - Overseas HS to Korean Uni')
   return (
     <div className="bg-surface selection:bg-secondary/30">
       <div className="hidden md:block">

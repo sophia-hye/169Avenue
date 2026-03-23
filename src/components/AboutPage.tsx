@@ -3,6 +3,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { useLanguage } from '../context/LanguageContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const SERVICES = [
   { icon: 'flight_land',
@@ -245,6 +246,7 @@ function AboutContent() {
 }
 
 export function AboutPage() {
+  usePageTitle('About - 합격 전략을 설계합니다')
   return (
     <div className="bg-surface selection:bg-secondary/30">
       <div className="hidden md:block">
