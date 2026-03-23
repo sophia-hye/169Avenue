@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { HERO_IMAGE, DESTINATIONS_LAYOUT } from '../data/home'
 import { FEATURED_STORY } from '../data/stories'
-import { Stats } from './Stats'
+import { ProcessSection } from './ProcessSection'
+import { CaseStudies } from './CaseStudies'
+import { FAQ } from './FAQ'
 import { useLanguage } from '../context/LanguageContext'
 
 export function MobileHome() {
@@ -18,16 +20,19 @@ export function MobileHome() {
           />
           <div className="absolute inset-0 bg-primary/5" />
         </div>
-        <div className="max-w-xs">
-          <h2 className="text-4xl font-headline italic leading-[1.1] tracking-tighter text-primary">
-            {t.hero_title_1} <span className="font-normal">{t.hero_title_2}</span>
+        <div>
+          <h2 className="text-3xl font-headline leading-[1.15] tracking-tighter text-primary mb-4">
+            Translating Global Education into <span className="italic font-normal">Admissions Strategy</span>
           </h2>
+          <p className="font-body text-sm text-on-surface-variant leading-relaxed max-w-xs">
+            1:1 consulting for overseas high school students, foreign university transfers, and international admissions.
+          </p>
           <div className="mt-6 w-12 h-[2px] bg-secondary" />
         </div>
       </section>
 
-      {/* Stats */}
-      <Stats />
+      {/* Process */}
+      <ProcessSection />
 
       {/* Our Philosophy */}
       <section className="bg-surface-container-low py-24 px-6">
@@ -135,9 +140,15 @@ export function MobileHome() {
         </div>
       </section>
 
+      {/* Case Studies */}
+      <CaseStudies />
+
+      {/* FAQ */}
+      <FAQ />
+
       {/* CTA Section */}
       <section className="py-24 px-6 text-center bg-primary text-on-primary">
-        <h2 className="text-3xl font-headline italic mb-8">{t.mobile_cta_title}</h2>
+        <h2 className="text-3xl font-headline italic mb-8">Check If Your Profile Qualifies</h2>
         <p className="text-sm font-body opacity-70 mb-12 max-w-xs mx-auto leading-relaxed">
           {t.mobile_cta_body}
         </p>

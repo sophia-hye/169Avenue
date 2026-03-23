@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Hero } from './Hero'
-import { Stats } from './Stats'
+import { ProcessSection } from './ProcessSection'
 import { Destinations } from './Destinations'
-import { Expertise } from './Expertise'
-import { SuccessStory } from './SuccessStory'
+import { CaseStudies } from './CaseStudies'
+import { FAQ } from './FAQ'
+import { TrustSection } from './TrustSection'
 import { CallToAction } from './CallToAction'
 import { Footer } from './Footer'
 import { MobileHome } from './MobileHome'
@@ -56,10 +57,11 @@ export function HomePage() {
       {/* Desktop Content */}
       <main className="hidden md:block pt-24 overflow-x-hidden">
         <Hero />
-        <Stats />
+        <ProcessSection />
         <Destinations />
-        <Expertise />
-        <SuccessStory />
+        <CaseStudies />
+        <FAQ />
+        <TrustSection />
         <CallToAction />
       </main>
       <div className="hidden md:block">

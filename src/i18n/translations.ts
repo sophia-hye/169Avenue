@@ -5,7 +5,7 @@ export const translations = {
     nav_partners: 'Services',
     nav_field: 'Field',
     nav_destinations: 'Destinations',
-    nav_stories: 'Success Stories',
+    nav_stories: 'Case Studies',
     nav_consult: 'Consult',
 
     // Common
@@ -144,9 +144,9 @@ export const translations = {
     mobile_partners_cta_title: 'Begin Your Curated Journey',
     mobile_head_quote: '"We do not merely submit applications; we curate legacies. Every student is a rare manuscript waiting for the right illumination."',
     curators: [
-      { name: 'Elena Moretti', role: 'Lead Architect of Ivy League Admissions', tag: 'Strategy', bio: 'A Harvard alumna with over a decade of experience navigating the nuanced landscapes of Cambridge and New Haven. Elena specializes in high-stakes narrative positioning.' },
-      { name: 'Julian Thorne', role: 'Senior Curator of Narrative Strategy', tag: 'Narrative', bio: 'Former editor at a leading academic press and Stanford graduate. Julian crafts intellectual portfolios that capture the singular voice of the scholar.' },
-      { name: 'Dr. Sarah Jenkins', role: 'Director of Institutional Ethics', tag: 'Ethics', bio: 'Holding a doctorate from Princeton, Sarah ensures every application maintains the highest standards of academic integrity while maximizing institutional fit.' },
+      { name: 'Elena Moretti', role: 'Head of Korean University Admissions', tag: 'Domestic', bio: 'Specializes in 재외국민 특별전형 and international student admission tracks. Manages all Korean university application strategies for overseas students.' },
+      { name: 'Julian Thorne', role: 'Head of International Admissions', tag: 'International', bio: 'Leads overseas university application strategy across US, UK, and Europe. Expert in essay development, profile positioning, and multi-country application management.' },
+      { name: 'Dr. Sarah Jenkins', role: 'Academic Curriculum & Document Strategist', tag: 'Curriculum', bio: 'Analyzes IB/AP/A-Level/Korean curricula for optimal positioning. Handles credit evaluation, transcript conversion, and supplementary document strategy.' },
     ],
 
     // Stories Page
@@ -245,7 +245,7 @@ export const translations = {
     nav_partners: '서비스',
     nav_field: '전공',
     nav_destinations: '유학지',
-    nav_stories: '성공 사례',
+    nav_stories: '사례 분석',
     nav_consult: '상담',
 
     // Common
@@ -384,9 +384,9 @@ export const translations = {
     mobile_partners_cta_title: '큐레이티드 여정 시작하기',
     mobile_head_quote: '"우리는 단순히 지원서를 제출하는 것이 아닙니다. 우리는 유산을 큐레이팅합니다. 모든 학생은 올바른 조명을 기다리는 희귀한 원고입니다."',
     curators: [
-      { name: 'Elena Moretti', role: '아이비리그 입학 수석 설계사', tag: '전략', bio: '하버드 동문으로 10년 이상 케임브리지와 뉴헤이븐의 미묘한 입학 환경을 탐색해온 경험을 보유합니다. Elena는 고위험 내러티브 포지셔닝을 전문으로 합니다.' },
-      { name: 'Julian Thorne', role: '내러티브 전략 시니어 큐레이터', tag: '내러티브', bio: '명문 학술 출판사 전 편집자이자 스탠퍼드 졸업생. Julian은 학자의 고유한 목소리를 담아내는 지적 포트폴리오를 제작합니다.' },
-      { name: 'Dr. Sarah Jenkins', role: '기관 윤리 디렉터', tag: '윤리', bio: '프린스턴 박사 학위 보유자로, Sarah는 모든 지원서가 학문적 성실성의 최고 기준을 유지하면서 기관 적합성을 극대화할 수 있도록 보장합니다.' },
+      { name: 'Elena Moretti', role: '한국 대학 입시 총괄', tag: '국내', bio: '재외국민 특별전형 및 외국인 전형을 전문으로 합니다. 해외 학생의 한국 대학 지원 전략 전체를 관리합니다.' },
+      { name: 'Julian Thorne', role: '해외 진학 전략 총괄', tag: '해외', bio: '미국, 영국, 유럽 등 해외 대학 지원 전략을 총괄합니다. 에세이 개발, 프로필 포지셔닝, 다국가 지원 관리 전문가입니다.' },
+      { name: 'Dr. Sarah Jenkins', role: '학력 커리큘럼 & 서류 전략가', tag: '커리큘럼', bio: 'IB/AP/A-Level/한국 교과과정을 분석하여 최적의 포지셔닝을 설계합니다. 학점 평가, 성적 변환, 보충 서류 전략을 담당합니다.' },
     ],
 
     // Stories Page
