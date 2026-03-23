@@ -181,7 +181,7 @@ export function MobileHome() {
         <div className="font-headline italic text-lg">169 Avenue</div>
         <div className="flex flex-col gap-3 text-sm font-body">
           <Link to="/about" className="text-on-surface-variant/60 hover:text-primary transition-colors">{t.nav_about}</Link>
-          <Link to="/partners" className="text-on-surface-variant/60 hover:text-primary transition-colors">{t.nav_partners}</Link>
+          <Link to="/services" className="text-on-surface-variant/60 hover:text-primary transition-colors">{t.nav_partners}</Link>
           <Link to="/stories" className="text-on-surface-variant/60 hover:text-primary transition-colors">{t.mobile_success_stories}</Link>
         </div>
         <div className="mt-8 text-xs text-on-surface-variant/40">
@@ -195,7 +195,7 @@ export function MobileHome() {
           <span className="material-symbols-outlined text-lg">info</span>
           <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_about}</span>
         </Link>
-        <Link to="/partners" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+        <Link to="/services" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">handshake</span>
           <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_partners}</span>
         </Link>

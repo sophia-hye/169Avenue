@@ -442,7 +442,7 @@ function MobileConsultation() {
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           <Link to="/" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">Home</Link>
           <Link to="/about" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">About</Link>
-          <Link to="/partners" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">Partners</Link>
+          <Link to="/services" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">Partners</Link>
         </div>
         <div className="text-[10px] font-body text-on-surface-variant/30 mt-4">&copy; 2025 169 Avenue. The Digital Curator.</div>
       </footer>
@@ -453,7 +453,7 @@ function MobileConsultation() {
           <span className="material-symbols-outlined text-lg">info</span>
           <span className="text-[8px] font-label uppercase tracking-widest">About</span>
         </Link>
-        <Link to="/partners" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+        <Link to="/services" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">handshake</span>
           <span className="text-[8px] font-label uppercase tracking-widest">Partners</span>
         </Link>

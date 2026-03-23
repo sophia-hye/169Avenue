@@ -129,7 +129,7 @@ function MobileStories() {
         <nav className="flex flex-wrap justify-center gap-4">
           <Link to="/" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.home}</Link>
           <Link to="/about" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.nav_about}</Link>
-          <Link to="/partners" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.nav_partners}</Link>
+          <Link to="/services" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.nav_partners}</Link>
         </nav>
         <p className="text-xs text-on-surface-variant/40 font-body tracking-wide">{t.copyright}</p>
       </footer>
@@ -140,7 +140,7 @@ function MobileStories() {
           <span className="material-symbols-outlined text-lg">info</span>
           <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_about}</span>
         </Link>
-        <Link to="/partners" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
+        <Link to="/services" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
           <span className="material-symbols-outlined text-lg">handshake</span>
           <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_partners}</span>
         </Link>

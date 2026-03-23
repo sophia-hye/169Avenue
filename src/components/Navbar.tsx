@@ -61,7 +61,7 @@ export function Navbar() {
             <Link to="/about" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
               {t.nav_about}
             </Link>
-            <Link to="/partners" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+            <Link to="/services" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
               {t.nav_partners}
             </Link>
             <DropdownMenu

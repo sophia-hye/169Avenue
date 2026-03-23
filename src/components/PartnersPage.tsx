@@ -125,7 +125,7 @@ function MobilePartners() {
           <span className="material-symbols-outlined text-lg">info</span>
           <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_about}</span>
         </Link>
-        <Link to="/partners" className="flex flex-col items-center gap-1 text-secondary font-bold">
+        <Link to="/services" className="flex flex-col items-center gap-1 text-secondary font-bold">
           <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>handshake</span>
           <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_partners}</span>
         </Link>

@@ -15,7 +15,7 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
 
   const TABS = [
     { id: 'about',        label: t.bottom_about,        to: '/about',        icon: 'info' },
-    { id: 'partners',     label: t.bottom_partners,     to: '/partners',     icon: 'handshake' },
+    { id: 'partners',     label: t.bottom_partners,     to: '/services',     icon: 'handshake' },
     { id: 'field',        label: t.bottom_field,        to: '/field',        icon: 'school' },
     { id: 'destinations', label: t.bottom_destinations, to: '/destinations', icon: 'public' },
     { id: 'stories',      label: t.bottom_stories,      to: '/stories',      icon: 'auto_stories' },
@@ -106,7 +106,7 @@ export function MobileFooter() {
       <div className="font-headline italic text-lg text-primary">169 Avenue</div>
       <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
         <Link to="/" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">{t.home}</Link>
-        <Link to="/partners" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">{t.nav_partners}</Link>
+        <Link to="/services" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">{t.nav_partners}</Link>
         <Link to="/consultation" className="text-sm font-body text-on-surface-variant/50 hover:text-primary transition-colors">{t.nav_consult}</Link>
       </div>
       <div className="text-[10px] font-body text-on-surface-variant/30">{t.copyright_short}</div>
