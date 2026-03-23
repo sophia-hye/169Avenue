@@ -222,12 +222,15 @@ function MobileConsultation() {
         ) : (
           <>
             {/* Hero */}
-            <section className="mb-16">
-              <h2 className="font-headline italic text-4xl text-primary leading-tight tracking-tighter mb-4">
-                {t.consult_title_1} {t.consult_title_2}
+            <section className="mb-12">
+              <h2 className="font-headline italic text-3xl text-primary leading-tight tracking-tighter mb-4">
+                {language === 'ko' ? '무료 가능성 진단 받기' : 'Free Feasibility Diagnosis'}
               </h2>
-              <p className="text-sm font-body text-on-surface-variant opacity-80 max-w-[280px] leading-relaxed">
-                {t.consult_hero_body}
+              <p className="text-sm font-body text-on-surface-variant opacity-80 max-w-[300px] leading-relaxed">
+                {language === 'ko'
+                  ? '입력하신 정보를 바탕으로 지원 가능 대학과 전략을 안내드립니다.'
+                  : 'Based on the information you provide, we\'ll present target universities and a strategic direction.'
+                }
               </p>
             </section>
 
@@ -364,7 +367,7 @@ function MobileConsultation() {
 
               <div className="flex flex-col gap-2">
                 <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Activities & Achievements</label>
-                <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder="e.g. Student Council President, Math Olympiad Gold, Volunteer at Red Cross, Published research paper..." rows={3} />
+                <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder="가장 오래 한 활동 또는 전공과 관련된 경험을 간단히 적어주세요 / Longest activity or major-related experience" rows={3} />
               </div>
 
               {/* Additional Questions */}
@@ -394,10 +397,13 @@ function MobileConsultation() {
 
               <div>
                 <button type="submit" className="w-full bg-primary text-on-primary py-5 font-label uppercase tracking-[0.2em] text-xs active:scale-95 transition-all duration-300">
-                  {t.consult_submit}
+                  {language === 'ko' ? '전략 진단 요청하기' : 'Request Strategy Diagnosis'}
                 </button>
-                <p className="mt-4 font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60 text-center">
-                  {t.consult_disclaimer}
+                <p className="mt-4 font-label text-[9px] tracking-widest text-on-surface-variant/60 text-center">
+                  {language === 'ko'
+                    ? '입력하신 정보를 바탕으로 맞춤 전략을 안내드립니다.'
+                    : 'We\'ll present a personalized strategy based on your information.'
+                  }
                 </p>
               </div>
             </form>
@@ -522,7 +528,7 @@ export function ConsultationPage() {
   const [submitted, setSubmitted] = useState(false)
   const [countryCode, setCountryCode] = useState('+82')
   const phonePlaceholder = COUNTRY_CODES.find(c => c.code === countryCode)?.placeholder ?? '000-0000'
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -542,12 +548,15 @@ export function ConsultationPage() {
         <section className="px-6 md:px-12 max-w-7xl mx-auto mb-24">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
             <div className="md:col-span-8">
-              <h1 className="font-headline text-5xl md:text-7xl lg:text-8xl text-primary leading-none tracking-tight mb-8">
-                {t.consult_title_1} <br />
-                <span className="italic font-light">{t.consult_title_2}</span>
+              <h1 className="font-headline text-5xl md:text-7xl text-primary leading-none tracking-tight mb-8">
+                {language === 'ko' ? '무료 가능성 진단' : 'Free Feasibility'} <br />
+                <span className="italic font-light">{language === 'ko' ? '받기' : 'Diagnosis'}</span>
               </h1>
               <p className="font-headline italic text-xl md:text-2xl text-on-surface-variant max-w-2xl leading-relaxed">
-                {t.consult_hero_body}
+                {language === 'ko'
+                  ? '입력하신 정보를 바탕으로 지원 가능 대학과 전략을 안내드립니다.'
+                  : 'Based on your information, we\'ll present target universities and a strategic direction.'
+                }
               </p>
             </div>
             <div className="hidden md:block md:col-span-4 pb-4">
@@ -692,7 +701,7 @@ export function ConsultationPage() {
                   </div>
                   <div className="flex flex-col space-y-4">
                     <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Activities & Achievements</label>
-                    <textarea className="bg-surface-container-low border-none p-8 font-headline text-xl italic placeholder:text-stone-400 focus:bg-surface-container-lowest focus:outline-none transition-colors" placeholder="e.g. Student Council President, Math Olympiad Gold Medal, Volunteer work at Red Cross, Published research paper in physics journal..." rows={4} />
+                    <textarea className="bg-surface-container-low border-none p-8 font-headline text-xl italic placeholder:text-stone-400 focus:bg-surface-container-lowest focus:outline-none transition-colors" placeholder="가장 오래 한 활동 또는 전공과 관련된 경험을 간단히 적어주세요 / Longest activity or major-related experience" rows={4} />
                   </div>
                 </div>
                 {/* Step 5 */}
@@ -712,10 +721,12 @@ export function ConsultationPage() {
                 </div>
                 <div>
                   <button type="submit" className="group flex items-center space-x-6 bg-primary text-on-primary px-12 py-6 hover:bg-secondary transition-all duration-500">
-                    <span className="font-label text-xs uppercase tracking-[0.3em]">{t.consult_submit}</span>
+                    <span className="font-label text-xs uppercase tracking-[0.3em]">{language === 'ko' ? '전략 진단 요청하기' : 'Request Strategy Diagnosis'}</span>
                     <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
                   </button>
-                  <p className="mt-6 font-label text-[9px] uppercase tracking-widest text-on-surface-variant opacity-60">{t.consult_upon_submit}</p>
+                  <p className="mt-6 font-label text-[9px] tracking-widest text-on-surface-variant opacity-60">
+                    {language === 'ko' ? '입력하신 정보를 바탕으로 맞춤 전략을 안내드립니다.' : 'We\'ll present a personalized strategy based on your information.'}
+                  </p>
                 </div>
               </form>
             )}

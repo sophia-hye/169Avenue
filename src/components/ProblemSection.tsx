@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
 export function ProblemSection() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   return (
     <section className="px-8 md:px-16 lg:px-24 mb-32 md:mb-40 max-w-screen-2xl mx-auto">
@@ -35,14 +35,21 @@ export function ProblemSection() {
             <p className="font-headline italic text-xl text-primary leading-snug mb-6">
               {t.problem_answer}
             </p>
-            <Link
-              to="/consultation"
-              className="inline-flex items-center space-x-3 group"
-            >
-              <span className="font-label text-xs uppercase tracking-widest bg-primary text-on-primary px-6 py-3 group-hover:bg-secondary transition-colors">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                to="/consultation"
+                className="font-label text-xs uppercase tracking-widest bg-primary text-on-primary px-6 py-3 hover:bg-secondary transition-colors text-center"
+              >
                 {t.problem_cta}
-              </span>
-            </Link>
+              </Link>
+              <Link
+                to="/about"
+                className="inline-flex items-center justify-center gap-2 font-label text-xs uppercase tracking-widest border border-primary text-primary px-6 py-3 hover:bg-primary hover:text-on-primary transition-all group"
+              >
+                {language === 'ko' ? '전략 방식 보기' : 'See Our Strategy'}
+                <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
