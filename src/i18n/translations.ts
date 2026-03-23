@@ -246,7 +246,7 @@ export const translations = {
     hero_bullet1: 'Overseas HS → Korean top university admission strategy',
     hero_bullet2: 'Foreign university → Korean university transfer planning',
     hero_bullet3: 'Korean student → Overseas university (US/UK/EU/Asia) admissions',
-    hero_cta1: 'Free Competitiveness Diagnosis',
+    hero_cta1: 'Free Diagnosis',
     hero_cta2: 'Check My Case',
     hero_quote2: '"We don\'t just guide applications — we architect your academic future."',
 
@@ -274,7 +274,7 @@ export const translations = {
       "I'm at a foreign university and considering transfer — is it feasible?",
     ],
     problem_answer: 'We don\'t just tell you "if it\'s possible" — we design exactly where and how you can get in.',
-    problem_cta: 'Free Feasibility Diagnosis',
+    problem_cta: 'Free Diagnosis',
 
     process_tag: 'How We Work',
     process_title: 'Our 5-Step Process',
@@ -319,7 +319,7 @@ export const translations = {
 
     final_cta_title: 'Knowing where you stand is the first step.',
     final_cta_body: 'Submit your profile and receive a target university list, competitiveness assessment, and strategic direction — all within 48 hours.',
-    final_cta1: 'Free Feasibility Diagnosis',
+    final_cta1: 'Free Diagnosis',
     final_cta2: 'Check My Eligibility',
 
     mini_cta_default: 'Not sure if your profile qualifies? Get a free diagnosis.',
@@ -579,7 +579,7 @@ export const translations = {
     hero_bullet1: '해외고 → 한국 상위권 대학 입학 전략',
     hero_bullet2: '해외대 → 한국 대학 편입 설계',
     hero_bullet3: '한국 학생 → 해외 대학 (미국/영국/유럽/아시아) 입시',
-    hero_cta1: '무료 경쟁력 진단 받기',
+    hero_cta1: '무료 진단',
     hero_cta2: '내 케이스 확인하기',
     hero_quote2: '"지원서를 안내하는 것이 아니라, 학업의 미래를 설계합니다."',
 
@@ -607,7 +607,7 @@ export const translations = {
       '편입이 가능한지 현실적인 판단이 필요해요',
     ],
     problem_answer: '"가능 여부"가 아니라 "어디를, 어떻게 붙일 수 있는지"를 설계합니다.',
-    problem_cta: '무료 가능성 진단 받기',
+    problem_cta: '무료 진단',
 
     process_tag: '상담 프로세스',
     process_title: '5단계 상담 과정',
@@ -652,7 +652,7 @@ export const translations = {
 
     final_cta_title: '지금, 내 위치를 정확히 아는 것이 가장 중요합니다.',
     final_cta_body: '프로필을 제출하면 48시간 이내에 지원 가능 대학 리스트, 경쟁력 평가, 전략 방향을 받아보실 수 있습니다.',
-    final_cta1: '무료 가능성 진단 받기',
+    final_cta1: '무료 진단',
     final_cta2: '내 자격 확인하기',
 
     mini_cta_default: '내 프로필이 자격이 되는지 확인해 보세요.',
@@ -662,7 +662,7 @@ export const translations = {
 
     mobile_hero_h1: '해외 성적으로 한국 대학, 가능할까요?',
     mobile_hero_sub: '한국 대학 및 해외 대학 입시 경쟁력을 진단합니다.',
-    mobile_hero_cta: '무료 진단 받기',
+    mobile_hero_cta: '무료 진단',
   },
 } as const satisfies Record<string, Record<string, unknown>>
 
