@@ -1,241 +1,216 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
-import { SearchOverlay } from './SearchOverlay'
+import { MobileShell, MobileFooter } from './MobileShell'
 import { useLanguage } from '../context/LanguageContext'
 
-const HEAD_CURATOR_IMAGE = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCSogN2yuQSIB2WFYGDJCgeHPqOmNm8zH-GhptcoYSVqNcS-ftEpmjVaGvlNp6PUty0vUKtGVq4Mn1HJHrbSiiWqZIkMyoiWgkhk6AeozQc-74cHuYcVR_bWWZet_znnuueASKRCVFBGq62gttEEeBtbaZEr3UZ_x5IMj1OqvkfS3T6PjGWuy326fKG7TEymIxAvCLznaB0ix3KceeMHqsu8nF0Od4H7r9K6eJ5fedEP1nKYhQ0PJhTymTHW-3ZUSx6MntH8x5vzQY'
-
-const CURATOR_IMAGES = [
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuCI3u0WZAPn4zsTTIaFSz2naiEUT1HGVkZ_433tyLQFbbPlst51xsed-qkE451LHYUSMNgkpFO5wBmDv6vZkFcRaIg3zsLxkDL0558SDExr3ftWkZMqYgSLBSTOyXOrwRy4PVuU3W1ADFklF7ttLK_RsUdtpgrgzFA5nDMolbEyTiS9n2JFFV3D3JK6MrfEgOgdnLWhSffld8PhRkiZxZTCm4q8ckLrFnb1XvH1hkwkQaoS3wAteQPvRLOsqnpiItOmP1SoqipT6ug',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuBWBWB9Nt1Oc8ydni8l6XQRokXm0cd1A2PZD8k8cGbUHqPtFRAVexpaBZVZSmsYSQNLutZhdkvGTz0446sOqs5ah5TaOUbqLy1mmeXPYFMDeAvUKrPDuaQhcsx0VlXzhwK1zJbmiwN9OBoKkBb4OGMBHp9FOw6_A99DvNf4JimYCRQrVxTem7RVYPm4A-v0XORnG9lhbKkZ4dsMQsKbaXbjI7F4hn0JQGWPXXX4g-gHp47Ybn-5PIewmk4rTLsaDgaSogNQQ911qOg',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuDLBr8X8SHLdaAkJqwYup39DoONL5j3zOs3VV-CJFE1Fj5plqMD3aF0oRh2KNurLZTu176Wc2D9HoiNa2p5Tl3VYPLnwV4Xj3L0JtQTkPbFQ_uOmTCbfSiogCYs9FvY_A6wUKRR2ghbMbCDTx80M5UfcLkkVmOJGB6oaL0N8mmvxbXqG_uPoRGFn0b-h-urrlbO9lMmpuKyIo68TiTbb8NgDmdKQVibiZhCG7PQT7NPX2euF-imprluMBQewPpSQfGbCenl-NIEg-M',
+const SERVICES_DATA = [
+  {
+    icon: 'flight_land',
+    titleEn: 'Overseas HS → Korean University',
+    titleKo: '해외고 → 한국대 진학',
+    descEn: 'IB, AP, GPA-based strategy for Korean university admission through 재외국민/외국인 전형 and 학종 tracks.',
+    descKo: 'IB, AP, GPA 기반 한국 대학 입시 전략 — 재외국민/외국인 전형 및 학종 대응.',
+    forEn: ['Students at overseas or international schools', 'IB / AP curriculum students', 'Planning to apply to Korean universities'],
+    forKo: ['해외고 또는 국제학교 재학생', 'IB / AP 커리큘럼 학생', '한국 대학 지원 예정자'],
+    resultsEn: ['Target university list (reach / match / safety)', 'Major fit analysis', 'Acceptance strategy design', 'Application timeline & execution plan'],
+    resultsKo: ['지원 가능 대학 리스트 (상향 / 적정 / 안정)', '전공 적합성 분석', '합격 전략 설계', '지원 일정 및 실행 계획'],
+    link: '/domestic/freshman',
+    tag: { en: 'IB / AP', ko: 'IB / AP' },
+    core: { en: 'Strategy Design', ko: '전략 설계' },
+  },
+  {
+    icon: 'school',
+    titleEn: 'Korean Domestic Admissions',
+    titleKo: '국내 입시 전략',
+    descEn: '학생부종합 and 정시 strategy design — major direction, narrative building, and university targeting.',
+    descKo: '학생부종합 및 정시 전략 설계 — 전공 방향, 스토리 구축, 지원 대학 매칭.',
+    forEn: ['Korean high school students', 'Students preparing for 수능 or 학종', 'Undecided on major direction'],
+    forKo: ['국내 고등학교 재학생', '수능 또는 학종 준비 중인 학생', '전공 방향 미정인 학생'],
+    resultsEn: ['Major direction & narrative structure', 'University targeting strategy', 'Document & interview preparation plan', 'Monthly milestone timeline'],
+    resultsKo: ['전공 방향 및 스토리 구조 설계', '지원 대학 전략 매칭', '서류 및 면접 준비 계획', '월별 마일스톤 일정표'],
+    link: '/consultation',
+    tag: { en: 'GPA / 내신', ko: 'GPA / 내신' },
+    core: { en: 'Direction Design', ko: '방향 설계' },
+  },
+  {
+    icon: 'swap_horiz',
+    titleEn: 'Foreign Univ → Korean Transfer',
+    titleKo: '해외대 → 한국대 편입',
+    descEn: 'Credit-based feasibility analysis and university-specific transfer strategy for students currently enrolled abroad.',
+    descKo: '해외 대학 재학생을 위한 학점 기반 가능성 분석 및 대학별 편입 전략.',
+    forEn: ['Currently enrolled at a foreign university', 'Considering transfer to a Korean university', 'Unsure about credit transferability'],
+    forKo: ['해외 대학 재학 중인 학생', '한국 대학 편입 고려 중', '학점 이전 가능 여부 불확실한 경우'],
+    resultsEn: ['Credit transfer mapping & feasibility report', 'Target university list with transfer windows', 'Transfer narrative & document strategy', 'Risk assessment & backup plan'],
+    resultsKo: ['학점 이전 매핑 및 가능성 리포트', '편입 시기별 지원 가능 대학 리스트', '편입 내러티브 및 서류 전략', '리스크 평가 및 백업 플랜'],
+    link: '/domestic/transfer',
+    tag: { en: 'University Student', ko: '대학 재학생' },
+    core: { en: 'Feasibility Analysis', ko: '가능성 분석' },
+  },
 ]
 
-function MobilePartners() {
-  const navigate = useNavigate()
-  const { language, setLanguage, t } = useLanguage()
-  const [searchOpen, setSearchOpen] = useState(false)
+function ServicesContent() {
+  const { language } = useLanguage()
+  const ko = language === 'ko'
+
   return (
-    <div className="md:hidden">
-      {/* Mobile Top Bar */}
-      <header className="fixed top-0 z-50 w-full bg-surface/80 backdrop-blur-md flex justify-between items-center px-4 py-3">
-        <div className="flex items-center gap-2">
-          <button onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}>
-            <span className="material-symbols-outlined text-primary">arrow_back</span>
-          </button>
-          <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</Link>
+    <>
+      {/* Header */}
+      <header className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-16 md:mb-24">
+        <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">
+          Our Services
+        </span>
+        <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-primary tracking-tighter leading-[1] mb-6">
+          {ko ? (
+            <>전략은 상황에 따라<br /><span className="italic">달라집니다</span></>
+          ) : (
+            <>Strategy differs by<br /><span className="italic">situation</span></>
+          )}
+        </h1>
+        <p className="font-body text-on-surface-variant text-base md:text-lg leading-relaxed max-w-2xl">
+          {ko
+            ? '모든 학생의 케이스는 다릅니다. 해외고, 국내 입시, 편입 — 각 상황에 맞는 전략을 설계합니다.'
+            : 'Every student\'s case is different. Overseas HS, domestic admissions, transfer — we design strategy for each situation.'
+          }
+        </p>
+      </header>
+
+      {/* Comparison Table */}
+      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-16 md:mb-24">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b-2 border-primary">
+                <th className="text-left py-4 pr-6 font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
+                  {ko ? '서비스' : 'Service'}
+                </th>
+                <th className="text-left py-4 pr-6 font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
+                  {ko ? '대상' : 'For'}
+                </th>
+                <th className="text-left py-4 font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
+                  {ko ? '핵심' : 'Core'}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {SERVICES_DATA.map((s) => (
+                <tr key={s.icon} className="border-b border-outline-variant/15 hover:bg-surface-container-low/50 transition-colors">
+                  <td className="py-4 pr-6 font-headline text-base text-primary">{ko ? s.titleKo : s.titleEn}</td>
+                  <td className="py-4 pr-6 font-body text-sm text-on-surface-variant">{ko ? s.tag.ko : s.tag.en}</td>
+                  <td className="py-4 font-label text-xs uppercase tracking-widest text-secondary">{ko ? s.core.ko : s.core.en}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <div className="flex items-center gap-2">
-          <button onClick={() => setSearchOpen(true)} className="text-primary/70 p-1" aria-label="Search">
-            <span className="material-symbols-outlined text-xl">search</span>
-          </button>
-          <div className="flex items-center border border-outline-variant/30 overflow-hidden">
-            <button
-              onClick={() => setLanguage('en')}
-              className={`px-2 py-1 font-label text-[10px] uppercase tracking-widest transition-colors duration-200 ${language === 'en' ? 'bg-outline-variant/30 text-primary' : 'text-primary/40'}`}
-            >EN</button>
-            <span className="w-px h-3 bg-outline-variant/30" />
-            <button
-              onClick={() => setLanguage('ko')}
-              className={`px-2 py-1 font-label text-[10px] uppercase tracking-widest transition-colors duration-200 ${language === 'ko' ? 'bg-outline-variant/30 text-primary' : 'text-primary/40'}`}
-            >한</button>
+      </section>
+
+      {/* Service Cards */}
+      {SERVICES_DATA.map((s, idx) => (
+        <section key={s.icon} className={`px-6 md:px-16 max-w-screen-2xl mx-auto mb-16 md:mb-24 ${idx % 2 === 1 ? '' : ''}`}>
+          <div className={`${idx % 2 === 1 ? 'bg-surface-container-low' : 'bg-surface-container-lowest shadow-sm'} p-8 md:p-16`}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+              {/* Left: Info */}
+              <div className="lg:col-span-7">
+                <span className="material-symbols-outlined text-secondary text-3xl mb-4 block">{s.icon}</span>
+                <h2 className="font-headline text-2xl md:text-4xl text-primary mb-4">
+                  {ko ? s.titleKo : s.titleEn}
+                </h2>
+                <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">
+                  {ko ? s.descKo : s.descEn}
+                </p>
+
+                {/* For whom */}
+                <div className="mb-8">
+                  <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary font-bold mb-4">
+                    {ko ? '이런 분들에게 추천합니다' : 'Recommended for'}
+                  </h4>
+                  <ul className="space-y-2">
+                    {(ko ? s.forKo : s.forEn).map((f) => (
+                      <li key={f} className="flex items-start gap-2 font-body text-sm text-on-surface-variant">
+                        <span className="material-symbols-outlined text-secondary text-xs mt-0.5">person</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link to="/consultation" className="bg-primary text-on-primary px-8 py-4 font-label text-xs uppercase tracking-widest hover:bg-secondary transition-colors text-center">
+                    {ko ? '무료 진단' : 'Free Diagnosis'}
+                  </Link>
+                  <Link to={s.link} className="border border-primary text-primary px-8 py-4 font-label text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all text-center">
+                    {ko ? '자세히 보기' : 'Learn More'}
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right: Results */}
+              <div className="lg:col-span-5">
+                <div className="bg-surface p-8 border border-outline-variant/15 h-full">
+                  <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary font-bold mb-6">
+                    {ko ? '이 서비스를 통해 얻는 것' : 'What You Get'}
+                  </h4>
+                  <ul className="space-y-4">
+                    {(ko ? s.resultsKo : s.resultsEn).map((r) => (
+                      <li key={r} className="flex items-start gap-3 font-body text-sm text-primary leading-relaxed">
+                        <span className="material-symbols-outlined text-secondary text-sm mt-0.5 shrink-0">check</span>
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
-          <Link
-            to="/consultation"
-            className="bg-primary text-on-primary px-3 py-1.5 font-body text-[10px] uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95"
-          >
-            {t.nav_consult}
+        </section>
+      ))}
+
+      {/* Process Link */}
+      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-16 md:mb-24">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-surface-container-low p-8 md:p-12">
+          <p className="font-headline italic text-xl md:text-2xl text-primary leading-snug text-center md:text-left">
+            {ko ? '상담은 어떻게 진행되나요?' : 'How does a consultation work?'}
+          </p>
+          <Link to="/about" className="shrink-0 inline-flex items-center gap-2 font-label text-xs uppercase tracking-widest border border-primary text-primary px-8 py-4 hover:bg-primary hover:text-on-primary transition-all group">
+            {ko ? '상담 프로세스 보기' : 'See Our Process'}
+            <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
           </Link>
         </div>
-      </header>
-      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
+      </section>
 
-      <main className="pt-20 pb-24">
-        {/* Hero */}
-        <section className="px-6 py-12">
-          <h2 className="text-5xl font-headline italic tracking-tight text-primary mb-12">
-            {t.partners_title}
-          </h2>
-
-          {/* Head Curator Spotlight */}
-          <div className="relative mb-20">
-            <div className="aspect-[3/4] overflow-hidden bg-surface-container-low mb-8">
-              <img alt="Dr. Alistair Vance" className="w-full h-full object-cover grayscale contrast-125" src={HEAD_CURATOR_IMAGE} />
-            </div>
-            <div className="bg-surface-container-lowest p-8 -mt-24 relative z-10 mx-4 shadow-sm">
-              <p className="text-xs font-label uppercase tracking-[0.1em] text-secondary mb-4">{t.partners_head_tag}</p>
-              <p className="text-2xl font-headline italic tracking-tight leading-relaxed text-on-surface">
-                {t.mobile_head_quote}
-              </p>
-              <p className="mt-6 text-sm font-label font-bold text-primary">-- DR. ALISTAIR VANCE</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Team Grid */}
-        <section className="px-6 space-y-20">
-          <div className="border-t border-outline-variant opacity-20 pt-12">
-            <p className="text-xs font-label uppercase tracking-[0.1em] text-on-surface-variant mb-12">{t.partners_council}</p>
-            <div className="flex flex-col gap-16">
-              {t.curators.map((curator, i) => (
-                <article key={curator.name} className="group">
-                  <div className="aspect-square overflow-hidden bg-surface-container-low mb-6">
-                    <img alt={curator.name} className="w-full h-full object-cover grayscale group-hover:scale-105 transition-transform duration-700" src={CURATOR_IMAGES[i]} />
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <div>
-                      <h3 className="text-2xl font-headline italic text-primary">{curator.name}</h3>
-                      <p className="text-sm font-body text-on-surface-variant">{curator.role}</p>
-                    </div>
-                    <span className="material-symbols-outlined text-secondary text-lg">arrow_outward</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="mt-24 px-6 mb-12">
-          <div className="bg-surface-container-low p-10 flex flex-col items-center text-center">
-            <h4 className="text-3xl font-headline italic mb-8">{t.mobile_partners_cta_title}</h4>
-            <Link to="/consultation" className="block w-full bg-primary text-on-primary py-4 px-8 font-label text-xs uppercase tracking-[0.1em] text-center hover:bg-secondary transition-colors duration-300">
-              {t.schedule_consultation}
-            </Link>
-          </div>
-        </section>
-      </main>
-
-      {/* Mobile Footer */}
-      <footer className="bg-surface-container-low w-full py-12 px-6 flex flex-col items-center text-center gap-6">
-        <h5 className="font-headline italic text-lg text-primary">169 Avenue</h5>
-        <div className="flex flex-wrap justify-center gap-6">
-          <Link to="/" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.home}</Link>
-          <Link to="/about" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.nav_about}</Link>
-          <Link to="/stories" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.stories}</Link>
+      {/* Final CTA */}
+      <section className="py-20 md:py-32 px-6 md:px-16 text-center bg-primary text-on-primary">
+        <div className="max-w-3xl mx-auto">
+          <p className="font-headline italic text-xl md:text-2xl text-on-primary/70 mb-4">
+            {ko ? '지금, 내 상황에 맞는 전략을 확인하세요.' : 'Find out the right strategy for your situation — today.'}
+          </p>
+          <p className="font-headline italic text-2xl md:text-4xl leading-snug mb-12">
+            {ko
+              ? '"가능 여부가 아니라, 어디를 어떻게 합격할 수 있는지를 설계합니다."'
+              : '"We don\'t just assess feasibility — we design where and how you can get accepted."'
+            }
+          </p>
+          <Link to="/consultation" className="bg-surface text-primary px-10 md:px-16 py-4 md:py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500">
+            {ko ? '무료 진단' : 'Free Diagnosis'}
+          </Link>
         </div>
-        <p className="text-on-surface-variant/40 text-sm font-body mt-4">{t.copyright}</p>
-      </footer>
-
-      {/* Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl flex justify-around items-center px-2 py-3 z-50 border-t border-outline-variant/10">
-        <Link to="/about" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">info</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_about}</span>
-        </Link>
-        <Link to="/services" className="flex flex-col items-center gap-1 text-secondary font-bold">
-          <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>handshake</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_partners}</span>
-        </Link>
-        <Link to="/field" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">school</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_field}</span>
-        </Link>
-        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">public</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_destinations}</span>
-        </Link>
-        <Link to="/stories" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">auto_stories</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_stories}</span>
-        </Link>
-      </nav>
-    </div>
+      </section>
+    </>
   )
 }
 
 export function PartnersPage() {
-  const { t } = useLanguage()
   return (
-    <div className="bg-surface selection:bg-secondary selection:text-surface">
-      {/* Desktop */}
+    <div className="bg-surface selection:bg-secondary/30">
       <div className="hidden md:block">
         <Navbar />
-      </div>
-
-      <main className="hidden md:block pt-24">
-        {/* Hero: Head Curator */}
-        <section className="relative min-h-[90vh] flex flex-col md:flex-row items-center overflow-hidden">
-          <div className="w-full md:w-7/12 h-[500px] md:h-screen relative overflow-hidden">
-            <img alt="Dr. Alistair Vance, Head Curator" className="w-full h-full object-cover grayscale brightness-90" src={HEAD_CURATOR_IMAGE} />
-          </div>
-          <div className="w-full md:w-5/12 bg-surface p-8 md:p-20 flex flex-col justify-center z-10">
-            <div className="mb-12">
-              <span className="font-label uppercase tracking-[0.3em] text-[10px] text-secondary font-semibold block mb-4">{t.partners_tag}</span>
-              <h1 className="font-headline text-5xl md:text-7xl leading-[1.1] text-primary tracking-tight">{t.partners_title}</h1>
-            </div>
-            <div className="bg-surface-container-lowest p-10 md:-ml-32 shadow-2xl shadow-on-surface/5 relative border-l-4 border-secondary" style={{ marginTop: '-4rem' }}>
-              <p className="font-headline italic text-2xl md:text-3xl text-on-surface-variant leading-relaxed">
-                {t.partners_head_quote}
-              </p>
-              <div className="mt-8">
-                <p className="font-label font-bold text-primary uppercase tracking-widest text-xs">-- Dr. Alistair Vance</p>
-                <p className="font-label text-on-surface-variant text-[10px] uppercase tracking-tighter italic">Founder & Head Curator, D.Phil Oxford</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Introduction */}
-        <section className="py-32 px-8 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-            <div className="md:col-span-4">
-              <h2 className="font-headline text-4xl text-primary leading-tight">{t.partners_head_title}</h2>
-            </div>
-            <div className="md:col-span-7 md:col-start-6">
-              <p className="font-body text-xl text-on-surface-variant leading-relaxed mb-8">
-                {t.partners_head_body}
-              </p>
-              <div className="h-px w-24 bg-secondary/30" />
-            </div>
-          </div>
-        </section>
-
-        {/* Team Grid */}
-        <section className="pb-32 px-8 max-w-screen-2xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 bg-surface-container-low">
-            {t.curators.map((curator, i) => (
-              <div key={curator.name} className={`group relative bg-surface p-1 overflow-hidden border-b border-surface-container-high ${i < 2 ? 'md:border-r' : ''}`}>
-                <div className="aspect-[4/5] overflow-hidden">
-                  <img alt={curator.name} className="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105" src={CURATOR_IMAGES[i]} />
-                </div>
-                <div className="pt-8 pb-12 px-6">
-                  <span className="font-label uppercase tracking-[0.2em] text-[9px] text-secondary mb-3 block">{curator.tag}</span>
-                  <h3 className="font-headline text-3xl mb-1 text-primary">{curator.name}</h3>
-                  <p className="font-label uppercase tracking-tighter text-[10px] text-on-surface-variant mb-6 italic">{curator.role}</p>
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed max-w-xs">{curator.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-40 bg-surface-container-low text-center px-8 relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 opacity-[0.03] pointer-events-none">
-            <span className="font-headline text-[25vw] leading-none whitespace-nowrap">169 AVENUE</span>
-          </div>
-          <div className="max-w-3xl mx-auto relative z-10">
-            <h2 className="font-headline text-5xl md:text-7xl text-primary mb-12">{t.partners_cta_title}</h2>
-            <p className="font-body text-on-surface-variant mb-16 max-w-xl mx-auto text-lg">
-              {t.partners_cta_body}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Link to="/consultation" className="w-full sm:w-auto bg-primary text-on-primary px-12 py-5 text-[11px] uppercase tracking-[0.3em] font-label hover:bg-secondary transition-colors duration-500 text-center">{t.partners_match}</Link>
-              <Link to="/about" className="w-full sm:w-auto border border-outline-variant/30 text-primary px-12 py-5 text-[11px] uppercase tracking-[0.3em] font-label hover:bg-primary hover:text-on-primary transition-all duration-500 text-center">{t.partners_philosophy}</Link>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <div className="hidden md:block">
+        <main className="pt-32"><ServicesContent /></main>
         <Footer />
       </div>
-
-      {/* Mobile */}
-      <MobilePartners />
+      <MobileShell activeTab="partners"><ServicesContent /></MobileShell>
+      <MobileFooter />
     </div>
   )
 }
