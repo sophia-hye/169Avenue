@@ -336,9 +336,20 @@ function MobileConsultation() {
                 <UniversitySearchInput />
               </div>
 
-              {/* Concierge Notes */}
+              {/* Extracurricular Activities */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Extracurricular Activities</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Activities & Achievements</label>
+                <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder="e.g. Student Council President, Math Olympiad Gold, Volunteer at Red Cross, Published research paper..." rows={3} />
+              </div>
+
+              {/* Concierge Notes */}
+              <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
+                <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">05</span>
                 <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step4}</span>
               </div>
 
@@ -609,10 +620,21 @@ export function ConsultationPage() {
                     </div>
                   </div>
                 </div>
-                {/* Step 4 */}
+                {/* Step 4 — Extracurricular Activities */}
                 <div className="space-y-12">
                   <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
                     <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
+                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Extracurricular Activities</h2>
+                  </div>
+                  <div className="flex flex-col space-y-4">
+                    <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Activities & Achievements</label>
+                    <textarea className="bg-surface-container-low border-none p-8 font-headline text-xl italic placeholder:text-stone-400 focus:bg-surface-container-lowest focus:outline-none transition-colors" placeholder="e.g. Student Council President, Math Olympiad Gold Medal, Volunteer work at Red Cross, Published research paper in physics journal..." rows={4} />
+                  </div>
+                </div>
+                {/* Step 5 */}
+                <div className="space-y-12">
+                  <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
+                    <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">05</span>
                     <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">{t.consult_step4}</h2>
                   </div>
                   <div className="flex flex-col space-y-4">
