@@ -237,6 +237,99 @@ export const translations = {
 
     // Consultation add search more
     add_more: (n: number) => `Add ${n} more…`,
+
+    // New sections (Hero, TargetCards, Problem, Process, CaseStudies, FAQ, Trust, CTA, MiniCTA)
+    hero_tag2: 'Overseas HS × Korean Uni × Transfer × International',
+    hero_h1_1: 'Can Your Overseas Grades',
+    hero_h1_2: 'Get You Into a Top Korean University?',
+    hero_sub: 'We diagnose your competitiveness and design a strategy — whether it\'s 재외국민 전형, 편입, or international admissions.',
+    hero_bullet1: 'Overseas HS → Korean top university admission strategy',
+    hero_bullet2: 'Foreign university → Korean university transfer planning',
+    hero_bullet3: 'Korean student → Overseas university (US/UK/EU/Asia) admissions',
+    hero_cta1: 'Free Competitiveness Diagnosis',
+    hero_cta2: 'Check My Case',
+    hero_quote2: '"We don\'t just guide applications — we architect your academic future."',
+
+    target_title: 'We design strategy for your situation',
+    target1_title: 'Overseas HS → Korean University',
+    target1_b1: 'IB / AP / GPA-based strategy design',
+    target1_b2: 'Special admission tracks (재외국민 / 외국인 전형)',
+    target1_cta: 'Diagnose My Eligibility',
+    target2_title: 'Korean Domestic Admissions',
+    target2_b1: '학생부종합 / 정시 strategy design',
+    target2_b2: 'Major direction & narrative building',
+    target2_cta: 'Book a Consultation',
+    target3_title: 'Foreign Univ → Korean Transfer',
+    target3_b1: 'Credit-based feasibility analysis',
+    target3_b2: 'University-specific transfer strategy',
+    target3_cta: 'Get Transfer Assessment',
+
+    problem_tag: 'Sound Familiar?',
+    problem_title: 'If you have these questions, you\'re in the right place.',
+    problem_items: [
+      'I went to school overseas — can I even apply to Korean universities?',
+      "I don't have IB or AP. Is a top Korean university still possible?",
+      "I want to know realistically which universities match my grades.",
+      "I'm not sure if my intended major is the right fit for my profile.",
+      "I'm at a foreign university and considering transfer — is it feasible?",
+    ],
+    problem_answer: 'We don\'t just tell you "if it\'s possible" — we design exactly where and how you can get in.',
+    problem_cta: 'Free Feasibility Diagnosis',
+
+    process_tag: 'How We Work',
+    process_title: 'Our 5-Step Process',
+    process_steps: [
+      { title: 'Academic Diagnosis', desc: 'We analyze your school country, curriculum (IB/AP/A-Level), GPA, and extracurricular profile to build a comprehensive academic portrait.' },
+      { title: 'University Matching', desc: 'Based on your profile, we identify target universities across reach, match, and safety tiers with data-driven precision.' },
+      { title: 'Strategy Design', desc: 'We craft a personalized admissions strategy — major fit analysis, document planning, and a competitive positioning roadmap.' },
+      { title: 'Application Execution', desc: 'Timeline management, essay development, recommendation letter coordination, and submission oversight for every target school.' },
+      { title: 'Interview & Final Prep', desc: 'Mock interviews, supplementary document review, and last-mile preparation to maximize your acceptance probability.' },
+    ],
+
+    case_tag: 'Real-World Strategy',
+    case_title: 'Case Studies',
+    case_sub: 'Anonymized examples of how we design admissions strategies for different student profiles.',
+    case_cta: 'Get Your Strategy Designed',
+    cases: [
+      { tag: 'Foreign HS → Korean University', title: 'US High School, GPA 3.8 / AP Calculus, Economics', strategy: 'Targeted top-tier Korean business programs through 재외국민 특별전형. Positioned AP coursework as equivalent rigor, crafted bilingual personal statement emphasizing cross-cultural leadership experience.', result: 'Reach: Yonsei · Korea Univ. Business / Match: Sungkyunkwan SKKU / Safety: Hanyang · Chung-Ang' },
+      { tag: 'International School → Korean University', title: 'Southeast Asia International School / No AP / Student Council', strategy: 'Designed application around leadership narrative and community impact. Compensated for lack of AP with IB predicted 36 points and curated extracurricular portfolio.', result: 'Reach: Sungkyunkwan SKKU / Match: Hanyang · Kyung Hee / Safety: Chung-Ang · Dongguk (+ TOPIK plan)' },
+      { tag: 'Foreign University → Korean Transfer', title: 'US University Sophomore / 72 Credits / GPA 3.5', strategy: 'Credit transfer analysis revealed 85% transferability. Built transfer narrative around desire for specialized Korean research programs unavailable abroad.', result: 'Reach: Korea Univ. · Sogang / Match: Sungkyunkwan · Hanyang / Mapped 61 of 72 credits transferable' },
+      { tag: 'International → Overseas University', title: 'Korean HS Student / TOEFL 112 / Science Olympiad Gold', strategy: 'Leveraged Olympiad achievement for STEM positioning at US/UK universities. Developed research narrative connecting Korean science education with global innovation goals.', result: 'Application strategy spanning MIT, Caltech, Imperial College, and ETH Zurich.' },
+    ],
+
+    faq_tag: 'Common Questions',
+    faq_title: 'Frequently Asked Questions',
+    faq_sub: 'Answers to the questions we hear most from students and parents navigating international-to-Korean admissions.',
+    faqs: [
+      { q: 'Can students from overseas high schools apply to Korean universities without a Korean student record (학생부)?', a: 'Yes. Most top Korean universities offer 재외국민 특별전형 (Special Admission for Overseas Koreans) or 외국인 전형 (International Student Admission) tracks that do not require a Korean 학생부.' },
+      { q: 'Is it difficult to enter top Korean universities without IB or AP coursework?', a: 'Not necessarily. While IB/AP coursework can strengthen your application, Korean universities also recognize other international curricula.' },
+      { q: 'What is the most important factor when transferring from a foreign university to a Korean university?', a: 'Credit transferability is the most critical factor. We conduct a detailed credit mapping analysis before you apply.' },
+      { q: 'Can I prepare for both Korean and overseas university admissions simultaneously?', a: 'Yes, and this is one of our core specialties. We design parallel strategies that maximize your options.' },
+      { q: 'What deliverables do I receive after a consultation?', a: 'Target university list (reach/match/safety tiers), curriculum gap analysis, personalized preparation timeline, and strategic positioning document.' },
+      { q: 'How early should I start preparing?', a: 'Ideally 12-18 months before the application deadline. Starting early allows time for TOPIK preparation, document gathering, and strategic course selection.' },
+    ],
+
+    trust_tag: 'What You Get',
+    trust_title: 'Transparent & Verifiable',
+    trust_items: [
+      { title: 'University Coverage', items: ['Korean SKY + top 15 universities', 'US Ivy League & Top 50', 'UK Russell Group & Oxbridge', 'EU/Asia-Pacific elite institutions'] },
+      { title: 'Diagnostic Framework', items: ['IB/AP/A-Level/Korean curriculum analysis', 'GPA conversion & competitiveness scoring', 'Extracurricular impact assessment', 'Language proficiency positioning'] },
+      { title: 'What You Receive After Consultation', items: ['Target university table: Reach / Match / Safety tiers', 'Major fit analysis with competitiveness scoring', 'Document strategy: essays, recommendations, portfolio', 'Preparation timeline with monthly milestones', 'Credit transfer mapping (for transfer applicants)'] },
+    ],
+
+    final_cta_title: 'Knowing where you stand is the first step.',
+    final_cta_body: 'Submit your profile and receive a target university list, competitiveness assessment, and strategic direction — all within 48 hours.',
+    final_cta1: 'Free Feasibility Diagnosis',
+    final_cta2: 'Check My Eligibility',
+
+    mini_cta_default: 'Not sure if your profile qualifies? Get a free diagnosis.',
+    mini_cta_default_btn: 'Free Diagnosis',
+    mini_cta_case: 'Want to see how your case would be analyzed?',
+    mini_cta_case_btn: 'Request Case Analysis',
+
+    mobile_hero_h1: 'Can Your Overseas Grades Get You In?',
+    mobile_hero_sub: 'We diagnose your competitiveness for Korean and overseas university admissions.',
+    mobile_hero_cta: 'Free Diagnosis',
   },
 
   ko: {
@@ -477,6 +570,99 @@ export const translations = {
 
     // Consultation add search more
     add_more: (n: number) => `${n}개 더 추가…`,
+
+    // New sections (Korean)
+    hero_tag2: '해외고 × 한국대 × 편입 × 해외진학',
+    hero_h1_1: 'Can Your Overseas Grades',
+    hero_h1_2: 'Get You Into a Top Korean University?',
+    hero_sub: '재외국민 전형, 편입, 해외 입시 — 여러분의 경쟁력을 진단하고 전략을 설계합니다.',
+    hero_bullet1: '해외고 → 한국 상위권 대학 입학 전략',
+    hero_bullet2: '해외대 → 한국 대학 편입 설계',
+    hero_bullet3: '한국 학생 → 해외 대학 (미국/영국/유럽/아시아) 입시',
+    hero_cta1: '무료 경쟁력 진단 받기',
+    hero_cta2: '내 케이스 확인하기',
+    hero_quote2: '"지원서를 안내하는 것이 아니라, 학업의 미래를 설계합니다."',
+
+    target_title: '당신의 상황에 맞는 전략을 설계합니다',
+    target1_title: '해외고 → 한국대 진학',
+    target1_b1: 'IB / AP / GPA 기반 전략 설계',
+    target1_b2: '재외국민 / 외국인 특별전형 대응',
+    target1_cta: '지원 가능성 진단하기',
+    target2_title: '국내 입시 전략',
+    target2_b1: '학생부종합 / 정시 전략 설계',
+    target2_b2: '전공 방향 및 스토리 구축',
+    target2_cta: '상담 신청',
+    target3_title: '해외대 → 한국대 편입',
+    target3_b1: '학점 기반 가능성 분석',
+    target3_b2: '대학별 편입 전략 설계',
+    target3_cta: '편입 상담 받기',
+
+    problem_tag: '이런 고민, 혹시 하고 계신가요?',
+    problem_title: '이런 질문이 있다면, 제대로 찾아오셨습니다.',
+    problem_items: [
+      '해외고인데 한국 대학 지원이 가능한지 모르겠어요',
+      'IB/AP 없이도 상위권 대학이 가능한지 궁금해요',
+      '내 성적으로 어느 대학까지 가능한지 알고 싶어요',
+      '전공 방향이 맞는지 확신이 없어요',
+      '편입이 가능한지 현실적인 판단이 필요해요',
+    ],
+    problem_answer: '"가능 여부"가 아니라 "어디를, 어떻게 붙일 수 있는지"를 설계합니다.',
+    problem_cta: '무료 가능성 진단 받기',
+
+    process_tag: '상담 프로세스',
+    process_title: '5단계 상담 과정',
+    process_steps: [
+      { title: '학력/커리큘럼 진단', desc: '학교 국가, 커리큘럼(IB/AP/A-Level), GPA, 비교과 활동을 분석하여 종합적인 학업 프로필을 구축합니다.' },
+      { title: '대학 매칭', desc: '프로필 기반으로 상향/적정/안정 대학군을 데이터 기반으로 도출합니다.' },
+      { title: '전략 설계', desc: '전공 적합성 분석, 서류 전략, 경쟁력 포지셔닝 로드맵을 포함한 맞춤 입시 전략을 설계합니다.' },
+      { title: '지원 실행', desc: '일정 관리, 에세이 개발, 추천서 조율, 각 대학별 지원 과정을 총괄합니다.' },
+      { title: '면접 및 최종 준비', desc: '모의 면접, 추가 서류 검토, 합격 확률을 극대화하기 위한 최종 준비를 진행합니다.' },
+    ],
+
+    case_tag: '실전 전략 예시',
+    case_title: '케이스 스터디',
+    case_sub: '다양한 학생 프로필에 맞춰 설계한 입시 전략의 익명화된 사례입니다.',
+    case_cta: '나만의 전략 설계 받기',
+    cases: [
+      { tag: '해외고 → 한국대', title: '미국고 GPA 3.8 / AP 미적분, 경제', strategy: '재외국민 특별전형으로 한국 상위권 경영 프로그램 타겟. AP 과목을 동등한 학업 강도로 포지셔닝, 이중 언어 자기소개서 작성.', result: '상향: 연세·고려 경영 / 적정: 성균관 SKKU / 안정: 한양·중앙' },
+      { tag: '국제학교 → 한국대', title: '동남아 국제학교 / AP 없음 / 학생회', strategy: '리더십 내러티브와 커뮤니티 임팩트 중심 지원 설계. AP 부재를 IB 예상 36점과 비교과 포트폴리오로 보완.', result: '상향: 성균관 SKKU / 적정: 한양·경희 / 안정: 중앙·동국 (+ TOPIK 계획)' },
+      { tag: '해외대 → 한국대 편입', title: '미국 대학 2학년 / 72학점 / GPA 3.5', strategy: '학점 이전 분석 결과 85% 이전 가능 확인. 해외에서 불가능한 한국 특화 연구 프로그램 지원 동기로 편입 내러티브 구축.', result: '상향: 고려·서강 / 적정: 성균관·한양 / 72학점 중 61학점 이전 가능' },
+      { tag: '한국 → 해외대 진학', title: '한국고 / TOEFL 112 / 과학올림피아드 금메달', strategy: '올림피아드 성과를 미국/영국 대학 STEM 포지셔닝에 활용. 한국 과학교육과 글로벌 혁신을 연결하는 연구 내러티브 개발.', result: 'MIT, 칼텍, 임페리얼 칼리지, ETH 취리히 지원 전략 수립' },
+    ],
+
+    faq_tag: '자주 묻는 질문',
+    faq_title: '자주 묻는 질문',
+    faq_sub: '해외-한국 입시를 준비하는 학생과 학부모에게 가장 많이 받는 질문입니다.',
+    faqs: [
+      { q: '해외고 출신이면 학생부가 없어도 한국 대학 지원이 가능한가요?', a: '네, 가능합니다. 대부분의 한국 상위권 대학은 재외국민 특별전형이나 외국인 전형을 통해 학생부 없이도 지원할 수 있습니다.' },
+      { q: 'IB/AP 없이도 한국 상위권 대학 입학이 어려운가요?', a: '반드시 그렇지는 않습니다. IB/AP가 유리하지만, A-Level, 미국식 등 다른 국제 커리큘럼도 인정됩니다.' },
+      { q: '해외대에서 한국대로 편입할 때 가장 중요한 요소는?', a: '학점 이전 가능성이 가장 중요합니다. 지원 전 상세한 학점 매핑 분석을 통해 어떤 학점이 인정되는지 정확히 파악합니다.' },
+      { q: '국내 입시와 해외 입시를 동시에 준비할 수 있나요?', a: '네, 이것이 저희 핵심 전문 분야입니다. 두 타임라인을 모두 관리하는 병렬 전략을 설계합니다.' },
+      { q: '상담 후 어떤 결과물을 받나요?', a: '지원 가능 대학 리스트(상향/적정/안정), 커리큘럼 갭 분석, 맞춤 준비 일정표, 전략 포지셔닝 문서를 제공합니다.' },
+      { q: '준비는 언제부터 시작해야 하나요?', a: '이상적으로는 지원 마감 12-18개월 전부터 시작하는 것이 좋습니다. TOPIK 준비, 서류 수집, 전략적 과목 선택에 시간이 필요합니다.' },
+    ],
+
+    trust_tag: '상담 결과물',
+    trust_title: '투명하고 검증 가능한',
+    trust_items: [
+      { title: '대학 커버리지', items: ['한국 SKY + 상위 15개 대학', '미국 아이비리그 & Top 50', '영국 러셀그룹 & 옥스브리지', '유럽/아시아-태평양 명문'] },
+      { title: '진단 프레임워크', items: ['IB/AP/A-Level/한국 교과과정 분석', 'GPA 변환 및 경쟁력 점수화', '비교과 활동 임팩트 평가', '어학 능력 포지셔닝'] },
+      { title: '상담 후 제공 산출물', items: ['지원 가능 대학표: 상향 / 적정 / 안정', '전공 적합성 분석 및 경쟁력 점수', '서류 전략: 에세이, 추천서, 포트폴리오', '월별 마일스톤 포함 준비 일정표', '학점 이전 매핑 (편입 지원자)'] },
+    ],
+
+    final_cta_title: '지금, 내 위치를 정확히 아는 것이 가장 중요합니다.',
+    final_cta_body: '프로필을 제출하면 48시간 이내에 지원 가능 대학 리스트, 경쟁력 평가, 전략 방향을 받아보실 수 있습니다.',
+    final_cta1: '무료 가능성 진단 받기',
+    final_cta2: '내 자격 확인하기',
+
+    mini_cta_default: '내 프로필이 자격이 되는지 확인해 보세요.',
+    mini_cta_default_btn: '무료 진단',
+    mini_cta_case: '내 케이스는 어떻게 분석될까요?',
+    mini_cta_case_btn: '케이스 분석 요청',
+
+    mobile_hero_h1: '해외 성적으로 한국 대학, 가능할까요?',
+    mobile_hero_sub: '한국 대학 및 해외 대학 입시 경쟁력을 진단합니다.',
+    mobile_hero_cta: '무료 진단 받기',
   },
 } as const satisfies Record<string, Record<string, unknown>>
 

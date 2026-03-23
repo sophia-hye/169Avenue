@@ -22,16 +22,16 @@ export function MobileHome() {
         </div>
         <div>
           <h2 className="text-3xl font-headline leading-[1.15] tracking-tighter text-primary mb-4">
-            Can Your Overseas Grades <span className="italic font-normal">Get You In?</span>
+            {t.mobile_hero_h1}
           </h2>
           <p className="font-body text-sm text-on-surface-variant leading-relaxed max-w-xs mb-6">
-            We diagnose your competitiveness for Korean and overseas university admissions.
+            {t.mobile_hero_sub}
           </p>
           <Link
             to="/consultation"
             className="inline-block bg-primary text-on-primary px-6 py-3 font-label text-[11px] uppercase tracking-widest active:scale-95 transition-all"
           >
-            Free Diagnosis
+            {t.mobile_hero_cta}
           </Link>
         </div>
       </section>
@@ -153,9 +153,9 @@ export function MobileHome() {
 
       {/* CTA Section */}
       <section className="py-24 px-6 text-center bg-primary text-on-primary">
-        <h2 className="text-3xl font-headline italic mb-4">Not sure if you qualify?</h2>
+        <h2 className="text-3xl font-headline italic mb-4">{t.mini_cta_default}</h2>
         <p className="text-sm font-body opacity-70 mb-8 max-w-xs mx-auto leading-relaxed">
-          Get a free competitiveness diagnosis — we'll tell you which universities are realistic for your profile.
+          {t.final_cta_body}
         </p>
         <p className="text-sm font-body opacity-70 mb-12 max-w-xs mx-auto leading-relaxed">
           {t.mobile_cta_body}
