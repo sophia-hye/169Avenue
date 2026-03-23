@@ -23,9 +23,15 @@ const DIFFERENTIATORS = [
 ]
 
 const TEAM = [
-  { titleEn: 'Korean University Admissions', titleKo: '국내 입시 총괄', descEn: '학생부종합 / 정시 design, 재외국민 전형, international student tracks', descKo: '학생부종합 / 정시 설계, 재외국민 전형, 외국인 전형 전담' },
-  { titleEn: 'International Admissions', titleKo: '해외 진학 전략 총괄', descEn: 'US/UK/EU application strategy, essay development, multi-country planning', descKo: '미국/영국/유럽 지원 전략, 에세이 개발, 다국가 지원 설계' },
-  { titleEn: 'Curriculum & Document Strategy', titleKo: '학력 분석 & 서류 전략', descEn: 'IB/AP/A-Level analysis, GPA conversion, transcript & recommendation strategy', descKo: 'IB/AP/A-Level 분석, GPA 변환, 성적표 & 추천서 전략' },
+  { titleEn: 'Korean University Admissions', titleKo: '국내 입시 전략 담당',
+    bulletsEn: ['학생부종합 / 정시 strategy design', '재외국민 전형 & 외국인 전형', 'Major narrative & story building'],
+    bulletsKo: ['학생부종합 / 정시 전략 설계', '재외국민 전형 & 외국인 전형', '전공 스토리 구조 설계'] },
+  { titleEn: 'International Admissions', titleKo: '해외 입시 전략 담당',
+    bulletsEn: ['IB / AP / GPA analysis', 'US/UK/EU multi-country strategy', 'Essay & interview coaching'],
+    bulletsKo: ['IB / AP / GPA 분석', '미국/영국/유럽 다국가 전략', '에세이 & 면접 코칭'] },
+  { titleEn: 'Curriculum & Document Strategy', titleKo: '학력 분석 & 서류 전략',
+    bulletsEn: ['IB/AP/A-Level curriculum interpretation', 'GPA conversion & competitiveness scoring', 'Transcript & recommendation strategy'],
+    bulletsKo: ['IB/AP/A-Level 커리큘럼 해석', 'GPA 변환 & 경쟁력 점수화', '성적표 & 추천서 전략'] },
 ]
 
 function AboutContent() {
@@ -54,7 +60,41 @@ function AboutContent() {
         </p>
       </header>
 
-      {/* ② What We Do */}
+      {/* ② Problem Definition */}
+      <section className="bg-primary text-on-primary py-20 md:py-32 px-6 md:px-16 mb-20 md:mb-32">
+        <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+          <div>
+            <h2 className="font-headline text-3xl md:text-4xl leading-snug mb-8">
+              {isKo ? (
+                <>해외고, 국내 입시, 편입 —<br />각각 <span className="italic text-secondary">다른 방식</span>으로 작동합니다</>
+              ) : (
+                <>Overseas HS, domestic admissions, transfer —<br />each operates on a <span className="italic text-secondary">different system</span></>
+              )}
+            </h2>
+            <p className="font-body text-on-primary/70 leading-relaxed">
+              {isKo
+                ? '재외국민 전형, 학생부종합, 정시, 편입 — 같은 "대학 입학"이지만 평가 기준, 서류, 일정이 완전히 다릅니다. 대부분의 컨설팅은 이 중 하나만 다룹니다.'
+                : 'Special admission, 학생부종합, regular admission, transfer — same goal of "university entry" but entirely different evaluation criteria, documents, and timelines. Most consultancies only handle one.'
+              }
+            </p>
+          </div>
+          <div className="flex flex-col justify-center">
+            <div className="border-l-4 border-secondary pl-8">
+              <p className="font-headline italic text-2xl md:text-3xl leading-snug mb-6">
+                {isKo
+                  ? '우리는 이 시스템들을 연결하여 하나의 전략으로 설계합니다.'
+                  : 'We connect these systems and design them as one unified strategy.'
+                }
+              </p>
+              <p className="font-label text-[10px] uppercase tracking-widest text-on-primary/50">
+                {isKo ? '169 Avenue의 핵심 차별점' : 'The core differentiator of 169 Avenue'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ③ What We Do */}
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
         <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-bold mb-4 block">
           {isKo ? '우리가 하는 일' : 'What We Do'}
@@ -138,7 +178,33 @@ function AboutContent() {
         </div>
       </section>
 
-      {/* ⑤ Team */}
+      {/* Results Block */}
+      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
+        <div className="bg-surface-container-lowest p-8 md:p-16 shadow-sm">
+          <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-bold mb-4 block">
+            {isKo ? '상담 후 결과물' : 'What You Get After Consultation'}
+          </span>
+          <h2 className="font-headline text-3xl md:text-4xl text-primary mb-10">
+            {isKo ? '상담은 "대화"로 끝나지 않습니다' : 'A consultation doesn\'t end with a conversation'}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: 'list_alt', en: 'Target University List', ko: '지원 가능 대학 리스트', subEn: 'Reach / Match / Safety tiers', subKo: '상향 / 적정 / 안정 분류' },
+              { icon: 'design_services', en: 'Acceptance Strategy', ko: '합격 전략 설계', subEn: 'Personalized admissions roadmap', subKo: '맞춤형 입시 로드맵' },
+              { icon: 'psychology', en: 'Major Fit Analysis', ko: '전공 적합성 분석', subEn: 'Courses × Activities × Narrative', subKo: '과목 × 활동 × 스토리 연결' },
+              { icon: 'event_note', en: 'Execution Timeline', ko: '실행 일정표', subEn: 'Monthly milestones & deadlines', subKo: '월별 마일스톤 및 마감일' },
+            ].map((item) => (
+              <div key={item.icon} className="border border-outline-variant/15 p-6">
+                <span className="material-symbols-outlined text-secondary text-2xl mb-4 block">{item.icon}</span>
+                <h4 className="font-headline text-lg text-primary mb-2">{isKo ? item.ko : item.en}</h4>
+                <p className="font-body text-xs text-on-surface-variant">{isKo ? item.subKo : item.subEn}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
       <section className="bg-surface-container-low py-20 md:py-32 px-6 md:px-16 mb-20 md:mb-32">
         <div className="max-w-screen-2xl mx-auto">
           <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-bold mb-4 block">
@@ -153,8 +219,15 @@ function AboutContent() {
                 <span className="font-headline italic text-4xl text-outline-variant/20 block mb-4">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <h4 className="font-headline text-xl text-primary mb-3">{isKo ? t.titleKo : t.titleEn}</h4>
-                <p className="font-body text-sm text-on-surface-variant leading-relaxed">{isKo ? t.descKo : t.descEn}</p>
+                <h4 className="font-headline text-xl text-primary mb-4">{isKo ? t.titleKo : t.titleEn}</h4>
+                <ul className="space-y-2">
+                  {(isKo ? t.bulletsKo : t.bulletsEn).map((b: string) => (
+                    <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant leading-relaxed">
+                      <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
