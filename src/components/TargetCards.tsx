@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
 const TARGET_META = [
+  { link: '/destinations', icon: 'public' },
   { link: '/domestic/freshman', icon: 'flight_land' },
-  { link: '/consultation', icon: 'school' },
   { link: '/domestic/transfer', icon: 'swap_horiz' },
 ]
 

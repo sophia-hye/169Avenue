@@ -31,7 +31,7 @@ export function Hero() {
               {t.hero_cta1}
             </Link>
             <Link
-              to="/domestic"
+              to="/consultation"
               className="border-2 border-primary text-primary px-8 py-4 text-sm tracking-widest uppercase transition-all duration-300 hover:bg-primary hover:text-on-primary"
             >
               {t.hero_cta2}
