@@ -22,12 +22,12 @@ function DestinationsContent() {
   return (
     <>
       <header className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-10 md:mb-16">
-        <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">International Admissions</span>
-        <h1 className="font-headline text-4xl md:text-6xl lg:text-8xl text-primary tracking-tighter leading-none mb-4">
-          Overseas <br /><span className="italic">Destinations</span>
+        <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">International Admissions Strategy</span>
+        <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-primary tracking-tighter leading-none mb-4">
+          Global University <br /><span className="italic">Application Strategy</span>
         </h1>
-        <p className="font-body text-on-surface-variant text-sm md:text-lg leading-relaxed max-w-md md:max-w-none md:border-l md:border-outline-variant/30 md:pl-8 mt-4">
-          Explore by academic field or click a region on the map.
+        <p className="font-body text-on-surface-variant text-sm md:text-lg leading-relaxed max-w-lg mt-4">
+          Select a region to see our application strategy, or filter by academic field to find the right universities for your profile.
         </p>
       </header>
 

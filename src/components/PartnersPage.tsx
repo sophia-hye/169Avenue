@@ -8,6 +8,20 @@ import { MidPageCTA } from './PageCTA'
 
 const SERVICES_DATA = [
   {
+    icon: 'public',
+    titleEn: 'Global University Admissions',
+    titleKo: '글로벌 대학 진학',
+    descEn: 'GPA and activity-based strategy for US, UK, EU, and Asia-Pacific universities. Essay, interview, and multi-country application management.',
+    descKo: 'GPA 및 활동 기반 미국/영국/유럽/아시아 대학 전략. 에세이, 면접, 다국가 지원 설계.',
+    forEn: ['Students targeting US / UK / EU / Asia universities', 'Need essay and interview strategy', 'Planning multi-country applications'],
+    forKo: ['미국/영국/유럽/아시아 대학 목표 학생', '에세이 및 면접 전략 필요', '다국가 동시 지원 계획'],
+    resultsEn: ['Global target university list (reach / match / safety)', 'Essay & interview preparation plan', 'Multi-country application strategy', 'Execution timeline with deadlines'],
+    resultsKo: ['글로벌 지원 대학 리스트 (상향 / 적정 / 안정)', '에세이 & 면접 준비 계획', '다국가 지원 전략', '마감일 포함 실행 일정표'],
+    link: '/destinations',
+    tag: { en: 'US / UK / EU / Asia', ko: '미국 / 영국 / 유럽 / 아시아' },
+    core: { en: 'Global Strategy', ko: '글로벌 전략' },
+  },
+  {
     icon: 'flight_land',
     titleEn: 'Overseas HS → Korean University',
     titleKo: '해외고 → 한국대 진학',
@@ -22,20 +36,6 @@ const SERVICES_DATA = [
     core: { en: 'Strategy Design', ko: '전략 설계' },
   },
   {
-    icon: 'school',
-    titleEn: 'Korean Domestic Admissions',
-    titleKo: '국내 입시 전략',
-    descEn: '학생부종합 and 정시 strategy design — major direction, narrative building, and university targeting.',
-    descKo: '학생부종합 및 정시 전략 설계 — 전공 방향, 스토리 구축, 지원 대학 매칭.',
-    forEn: ['Korean high school students', 'Students preparing for 수능 or 학종', 'Undecided on major direction'],
-    forKo: ['국내 고등학교 재학생', '수능 또는 학종 준비 중인 학생', '전공 방향 미정인 학생'],
-    resultsEn: ['Major direction & narrative structure', 'University targeting strategy', 'Document & interview preparation plan', 'Monthly milestone timeline'],
-    resultsKo: ['전공 방향 및 스토리 구조 설계', '지원 대학 전략 매칭', '서류 및 면접 준비 계획', '월별 마일스톤 일정표'],
-    link: '/consultation',
-    tag: { en: 'GPA / 내신', ko: 'GPA / 내신' },
-    core: { en: 'Direction Design', ko: '방향 설계' },
-  },
-  {
     icon: 'swap_horiz',
     titleEn: 'Foreign Univ → Korean Transfer',
     titleKo: '해외대 → 한국대 편입',
@@ -48,6 +48,20 @@ const SERVICES_DATA = [
     link: '/domestic/transfer',
     tag: { en: 'University Student', ko: '대학 재학생' },
     core: { en: 'Feasibility Analysis', ko: '가능성 분석' },
+  },
+  {
+    icon: 'school',
+    titleEn: 'Korean Domestic Admissions',
+    titleKo: '국내 입시 전략',
+    descEn: '학생부종합 and 정시 strategy design — major direction, narrative building, and university targeting.',
+    descKo: '학생부종합 및 정시 전략 설계 — 전공 방향, 스토리 구축, 지원 대학 매칭.',
+    forEn: ['Korean high school students', 'Students preparing for 수능 or 학종', 'Undecided on major direction'],
+    forKo: ['국내 고등학교 재학생', '수능 또는 학종 준비 중인 학생', '전공 방향 미정인 학생'],
+    resultsEn: ['Major direction & narrative structure', 'University targeting strategy', 'Document & interview preparation plan', 'Monthly milestone timeline'],
+    resultsKo: ['전공 방향 및 스토리 구조 설계', '지원 대학 전략 매칭', '서류 및 면접 준비 계획', '월별 마일스톤 일정표'],
+    link: '/consultation',
+    tag: { en: 'GPA / 내신', ko: 'GPA / 내신' },
+    core: { en: 'Direction Design', ko: '방향 설계' },
   },
 ]
 

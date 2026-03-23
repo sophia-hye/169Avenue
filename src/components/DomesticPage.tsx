@@ -23,10 +23,15 @@ function DomesticContent() {
             <>Korean University<br /><span className="italic">Admissions Strategy</span></>
           )}
         </h1>
+        <p className="font-headline italic text-xl md:text-2xl text-primary/60 mb-6">
+          {ko
+            ? '해외 학력을 기반으로 한국 대학 입시 전략을 설계합니다'
+            : 'We design Korean university admissions strategy based on overseas education'}
+        </p>
         <p className="font-body text-on-surface-variant text-base md:text-lg leading-relaxed max-w-2xl mb-8">
           {ko
-            ? '해외고 출신의 한국대 진학, 국내 입시, 편입 — 각 상황에 맞는 전략을 설계합니다.'
-            : 'Overseas HS to Korean university, domestic admissions, transfer — we design strategy for each case.'}
+            ? '해외고 출신의 한국대 진학, 편입, 국내 입시 — 각 상황에 맞는 전략을 설계합니다.'
+            : 'Overseas HS to Korean university, transfer, domestic admissions — we design strategy for each case.'}
         </p>
         <Link to="/consultation" className="bg-primary text-on-primary px-8 py-4 font-label text-xs uppercase tracking-widest hover:bg-secondary transition-colors">
           {ko ? '무료 진단' : 'Free Diagnosis'}
