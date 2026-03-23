@@ -57,6 +57,53 @@ function PageContent() {
         </div>
       </section>
 
+      {/* MiniCTA */}
+      <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
+        <div className="bg-surface-container-lowest p-8 md:p-12 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="font-headline italic text-xl md:text-2xl text-primary leading-snug text-center md:text-left">
+            Not sure if you qualify for 재외국민 전형?
+          </p>
+          <Link to="/consultation" className="shrink-0 bg-primary text-on-primary px-8 py-4 text-sm tracking-widest uppercase hover:bg-secondary transition-all duration-300">
+            Free Diagnosis
+          </Link>
+        </div>
+      </div>
+
+      {/* Results */}
+      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
+        <div className="bg-surface-container-lowest p-8 md:p-16 shadow-sm">
+          <h3 className="font-headline text-2xl md:text-3xl text-primary mb-3">What You Get</h3>
+          <p className="font-headline italic text-lg text-secondary mb-8">After consultation</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: 'list_alt', title: 'Target University List', sub: 'Reach / Match / Safety' },
+              { icon: 'psychology', title: 'Major Fit Analysis', sub: 'Curriculum × Activities × Story' },
+              { icon: 'design_services', title: 'Acceptance Strategy', sub: 'Positioning & document plan' },
+              { icon: 'event_note', title: 'Execution Timeline', sub: 'Monthly milestones & deadlines' },
+            ].map((r) => (
+              <div key={r.icon} className="border border-outline-variant/15 p-6">
+                <span className="material-symbols-outlined text-secondary text-2xl mb-4 block">{r.icon}</span>
+                <h4 className="font-headline text-lg text-primary mb-2">{r.title}</h4>
+                <p className="font-body text-xs text-on-surface-variant">{r.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Target Audience */}
+      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
+        <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary font-bold mb-6">Recommended For</h3>
+        <ul className="space-y-4 max-w-2xl">
+          {['Students at overseas or international high schools', 'IB / AP curriculum students planning Korean university entry', 'Korean nationals educated abroad (재외국민)', 'Students unsure about 재외국민 vs 외국인 전형 eligibility'].map((item) => (
+            <li key={item} className="flex items-start gap-3 font-body text-base text-on-surface-variant leading-relaxed">
+              <span className="material-symbols-outlined text-secondary text-sm mt-0.5 shrink-0">person</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </section>
+
       {/* Admission Tracks */}
       <section className="bg-surface-container-low py-20 md:py-32 px-6 md:px-16">
         <div className="max-w-screen-2xl mx-auto">

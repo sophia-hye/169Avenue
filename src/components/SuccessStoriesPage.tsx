@@ -105,6 +105,14 @@ function MobileStories() {
             ))}
           </div>
 
+          {/* Mid-page CTA */}
+          <div className="mt-12 bg-surface-container-lowest p-8 shadow-sm text-center">
+            <p className="font-headline italic text-xl text-primary mb-6">Have a similar case?</p>
+            <Link to="/consultation" className="inline-block bg-primary text-on-primary px-8 py-4 font-label text-xs uppercase tracking-widest hover:bg-secondary transition-colors">
+              Get My Case Analyzed
+            </Link>
+          </div>
+
           {/* CTA */}
           <div className="mt-20 bg-primary p-10 text-center relative overflow-hidden">
             <div className="relative z-10">

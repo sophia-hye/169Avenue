@@ -34,9 +34,12 @@ function PageContent() {
         <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-primary tracking-tighter leading-none mb-6">
           Transfer <br /><span className="italic">Admission Strategy</span>
         </h1>
-        <p className="font-body text-on-surface-variant text-base md:text-lg leading-relaxed max-w-2xl">
+        <p className="font-body text-on-surface-variant text-base md:text-lg leading-relaxed max-w-2xl mb-4">
           For students currently enrolled at overseas universities who wish to transfer
           into Korea's top institutions while preserving their academic progress.
+        </p>
+        <p className="font-headline italic text-xl md:text-2xl text-primary/70 max-w-2xl">
+          Transfer is not about whether it's possible — it's about finding the right university for your credits.
         </p>
       </header>
 
@@ -58,6 +61,18 @@ function PageContent() {
         </div>
       </section>
 
+      {/* MiniCTA */}
+      <div className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
+        <div className="bg-surface-container-lowest p-8 md:p-12 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="font-headline italic text-xl md:text-2xl text-primary leading-snug text-center md:text-left">
+            Wondering how many of your credits will transfer?
+          </p>
+          <Link to="/consultation" className="shrink-0 bg-primary text-on-primary px-8 py-4 text-sm tracking-widest uppercase hover:bg-secondary transition-all duration-300">
+            Free Transfer Assessment
+          </Link>
+        </div>
+      </div>
+
       {/* Key Considerations */}
       <section className="bg-surface-container-low py-20 md:py-32 px-6 md:px-16">
         <div className="max-w-screen-2xl mx-auto">
@@ -71,6 +86,28 @@ function PageContent() {
                 </div>
                 <h4 className="font-headline text-lg text-primary">{item.title}</h4>
                 <p className="font-body text-sm text-on-surface-variant leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Results */}
+      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
+        <div className="bg-surface-container-lowest p-8 md:p-16 shadow-sm">
+          <h3 className="font-headline text-2xl md:text-3xl text-primary mb-3">What You Get</h3>
+          <p className="font-headline italic text-lg text-secondary mb-8">After transfer consultation</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              { icon: 'swap_horiz', title: 'Credit Transfer Mapping', sub: 'Which credits transfer and which don\'t' },
+              { icon: 'list_alt', title: 'Target University List', sub: 'Universities accepting your profile' },
+              { icon: 'warning', title: 'Risk Assessment', sub: 'Timeline risks and backup options' },
+              { icon: 'event_note', title: 'Transfer Action Plan', sub: 'Step-by-step execution roadmap' },
+            ].map((r) => (
+              <div key={r.icon} className="border border-outline-variant/15 p-6">
+                <span className="material-symbols-outlined text-secondary text-2xl mb-4 block">{r.icon}</span>
+                <h4 className="font-headline text-lg text-primary mb-2">{r.title}</h4>
+                <p className="font-body text-xs text-on-surface-variant">{r.sub}</p>
               </div>
             ))}
           </div>

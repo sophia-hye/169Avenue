@@ -103,9 +103,9 @@ export function StoryDetailPage() {
       <section className="px-6 md:px-12 py-20 md:py-32 text-center bg-primary text-on-primary">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-headline text-3xl md:text-5xl lg:text-6xl italic mb-8 md:mb-12 leading-tight">Write Your Own Story</h2>
-          <p className="font-body text-zinc-400 text-sm md:text-lg mb-10 md:mb-16 max-w-xl mx-auto">Every narrative begins with a single conversation.</p>
+          <p className="font-body text-zinc-400 text-sm md:text-lg mb-10 md:mb-16 max-w-xl mx-auto">Have a similar background? Get your case analyzed.</p>
           <Link to="/consultation" className="bg-surface text-primary px-10 md:px-16 py-4 md:py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500">
-            Book a Consultation
+            Get My Case Analyzed
           </Link>
         </div>
       </section>
