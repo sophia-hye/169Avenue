@@ -6,30 +6,30 @@ import { useLanguage } from '../context/LanguageContext'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { MidPageCTA } from './PageCTA'
 
-const SERVICES = [
-  { icon: 'flight_land',
-    titleEn: 'Overseas HS → Korean University', titleKo: '해외고 → 한국대 진학 전략',
-    descEn: 'IB, AP, GPA-based strategy for 학종 and international admission tracks', descKo: 'IB, AP, GPA 기반 학종 및 국제전형 대응 전략 설계' },
-  { icon: 'school',
-    titleEn: 'Korean Domestic Admissions', titleKo: '국내 입시 전략',
-    descEn: '학생부종합 and 정시 strategy, major direction and application design', descKo: '학생부종합 및 정시 기반 전공 방향 및 지원 전략 설계' },
-  { icon: 'swap_horiz',
-    titleEn: 'Foreign Univ → Korean Transfer', titleKo: '해외대 → 한국대 편입',
-    descEn: 'Credit and course-based feasibility analysis and target university strategy', descKo: '학점 및 이수 과목 기반 지원 가능 대학 및 리스크 분석' },
+const WHAT_WE_DO = [
+  { icon: 'architecture',
+    titleEn: 'Student Narrative Design', titleKo: '학생 서사 설계',
+    descEn: 'We don\'t just list activities. We architect a cohesive story — connecting GPA, IB/AP scores, extracurriculars, and personal experiences into a compelling admissions narrative.', descKo: '단순 활동 나열이 아닙니다. GPA, IB/AP 점수, 과외활동, 개인 경험을 하나의 설득력 있는 입시 서사로 설계합니다.' },
+  { icon: 'query_stats',
+    titleEn: 'Data-Driven University Matching', titleKo: '데이터 기반 대학 매칭',
+    descEn: 'Acceptance probability analysis based on IB scores, GPA, activities, and essay positioning. We match students to universities where their profile has the highest strategic advantage.', descKo: 'IB 점수, GPA, 활동, 에세이 포지셔닝을 기반으로 합격 확률을 분석합니다. 학생의 프로필이 가장 전략적 우위를 갖는 대학을 매칭합니다.' },
+  { icon: 'route',
+    titleEn: 'Long-term Growth Roadmap', titleKo: '장기 성장 로드맵',
+    descEn: 'From middle school through university admission — we design a multi-year strategy that builds the right experiences, skills, and portfolio at each stage.', descKo: '중학교부터 대학 입학까지 — 각 단계에서 필요한 경험, 역량, 포트폴리오를 쌓아가는 다년간의 전략을 설계합니다.' },
 ]
 
 const METHODS = [
-  { en: 'GPA context and difficulty analysis', ko: 'GPA의 맥락과 난이도 분석' },
-  { en: 'Curriculum interpretation (IB/AP/A-Level)', ko: '커리큘럼(IB/AP/A-Level) 해석' },
-  { en: 'Major fit structure design', ko: '전공 적합성 구조 설계' },
-  { en: 'Activities and story connection', ko: '활동과 스토리 연결' },
+  { en: 'IB / AP / GPA structure and difficulty analysis', ko: 'IB / AP / GPA 구조 및 난이도 분석' },
+  { en: 'Extracurricular activity portfolio strategy', ko: '과외활동 포트폴리오 전략 설계' },
+  { en: 'Admissions narrative and essay positioning', ko: '입시 서사 및 에세이 포지셔닝' },
+  { en: 'Acceptance probability modeling by university', ko: '대학별 합격 확률 모델링' },
 ]
 
 const RESULTS = [
-  { icon: 'list_alt', en: 'Target University List', ko: '지원 가능 대학 리스트', subEn: 'Reach / Match / Safety', subKo: '상향 / 적정 / 안정' },
-  { icon: 'psychology', en: 'Major Fit Analysis', ko: '전공 적합성 분석', subEn: 'Courses × Activities × Narrative', subKo: '과목 × 활동 × 스토리' },
-  { icon: 'design_services', en: 'Acceptance Strategy', ko: '합격 전략 방향', subEn: 'Positioning & document plan', subKo: '포지셔닝 & 서류 전략' },
-  { icon: 'event_note', en: 'Execution Timeline', ko: '지원 일정 및 실행 계획', subEn: 'Monthly milestones', subKo: '월별 마일스톤' },
+  { icon: 'analytics', en: 'Acceptance Probability Report', ko: '합격 확률 분석 리포트', subEn: 'Data-driven probability by school', subKo: '대학별 데이터 기반 확률 분석' },
+  { icon: 'auto_stories', en: 'Narrative Architecture', ko: '서사 설계 아키텍처', subEn: 'Story × Activities × Essay', subKo: '스토리 × 활동 × 에세이' },
+  { icon: 'list_alt', en: 'Strategic University List', ko: '전략적 대학 리스트', subEn: 'Reach / Match / Safety with rationale', subKo: '상향 / 적정 / 안정 + 근거' },
+  { icon: 'event_note', en: 'Multi-Year Execution Plan', ko: '다년간 실행 계획', subEn: 'Semester-by-semester milestones', subKo: '학기별 마일스톤' },
 ]
 
 function AboutContent() {
@@ -45,9 +45,9 @@ function AboutContent() {
         </span>
         <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-primary tracking-tighter leading-[1] mb-8">
           {ko ? (
-            <>입시 정보를 전달하지 않습니다.<br /><span className="italic">합격 전략을 설계합니다.</span></>
+            <>대학 지원을 도와주지 않습니다.<br /><span className="italic">학생의 인생을 설계합니다.</span></>
           ) : (
-            <>We don't provide information.<br /><span className="italic">We design acceptance strategies.</span></>
+            <>We don't help with applications.<br /><span className="italic">We architect student lives.</span></>
           )}
         </h1>
       </header>
@@ -57,8 +57,8 @@ function AboutContent() {
         <div className="bg-surface-container-low p-8 md:p-16">
           <p className="font-body text-on-surface-variant text-base md:text-lg leading-[1.9] max-w-3xl">
             {ko
-              ? '해외 입시와 국내 입시는 전혀 다른 기준으로 평가됩니다. IB, AP, GPA와 같은 해외 학력은 한국 입시 기준으로 그대로 해석되지 않으며, 반대로 국내 입시 역시 해외 대학 기준과는 다르게 작동합니다. 많은 학생들이 이 차이 속에서 자신의 위치를 정확히 알지 못한 채 전략 없이 지원을 진행하고 있습니다.'
-              : 'International and Korean admissions are evaluated on entirely different criteria. Overseas credentials like IB, AP, and GPA are not directly interpreted by Korean standards, and vice versa. Many students proceed without knowing exactly where they stand — applying without strategy.'
+              ? '대부분의 유학원은 대학 리스트를 만들어주고 서류를 대신 작성해줍니다. 하지만 합격하는 학생에게는 한 가지 공통점이 있습니다 — 자신만의 서사가 있다는 것입니다. 169 Avenue는 IB 점수, GPA, 활동 데이터를 분석하여 학생 고유의 서사를 설계하고, 그 서사가 가장 강력하게 작동하는 대학을 매칭합니다.'
+              : 'Most agencies make university lists and write documents. But students who get accepted share one thing — they have their own narrative. 169 Avenue analyzes IB scores, GPA, and activity data to architect each student\'s unique narrative, then matches them to universities where that narrative has the strongest strategic advantage.'
             }
           </p>
         </div>
@@ -69,14 +69,14 @@ function AboutContent() {
         <div className="max-w-screen-2xl mx-auto max-w-3xl">
           <p className="font-headline italic text-2xl md:text-4xl leading-snug mb-8">
             {ko
-              ? '우리는 이 두 시스템을 따로 보지 않습니다.'
-              : 'We don\'t treat these systems separately.'
+              ? '우리는 유학원이 아닙니다. 학생 인생의 설계자입니다.'
+              : 'We are not an agency. We are architects of student futures.'
             }
           </p>
           <p className="font-body text-on-primary/80 text-base md:text-lg leading-relaxed mb-8">
             {ko
-              ? '국내 입시와 해외 입시를 연결하여 하나의 전략으로 설계합니다. 단순히 가능 여부를 판단하는 것이 아니라, 어디를, 어떻게 합격할 수 있는지를 기준으로 현실적인 전략을 제시합니다.'
-              : 'We connect domestic and international admissions into one unified strategy. We don\'t just assess feasibility — we present realistic strategies based on where and how you can get accepted.'
+              ? '단순 대학 지원 대행이 아닌, 데이터 기반 합격 확률 분석과 서사 설계를 통해 학생이 가장 유리한 포지션에서 입시에 임할 수 있도록 전략을 수립합니다. 한국에서 미국을 중심으로, 캐나다, 호주, 동남아 등 글로벌 확장이 가능한 인생 설계 플랫폼입니다.'
+              : 'Not a simple application service — we build strategies through data-driven acceptance probability analysis and narrative design, positioning students for maximum advantage. Starting with Korea-to-US admissions, expandable to Canada, Australia, Southeast Asia, and beyond.'
             }
           </p>
           <div className="h-[2px] w-16 bg-secondary" />
@@ -86,10 +86,10 @@ function AboutContent() {
       {/* ④ What We Do */}
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
         <p className="font-body text-on-surface-variant text-sm md:text-base mb-10">
-          {ko ? '우리는 다음과 같은 영역을 중심으로 입시 전략을 설계합니다.' : 'We design admissions strategies across the following areas.'}
+          {ko ? '169 Avenue는 세 가지 축으로 입시 전략을 설계합니다.' : '169 Avenue designs admissions strategy across three pillars.'}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {SERVICES.map((s) => (
+          {WHAT_WE_DO.map((s) => (
             <div key={s.icon} className="bg-surface-container-low p-8 md:p-10">
               <span className="material-symbols-outlined text-secondary text-3xl mb-6 block">{s.icon}</span>
               <h3 className="font-headline text-xl text-primary mb-3">{ko ? s.titleKo : s.titleEn}</h3>
@@ -106,10 +106,10 @@ function AboutContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           <div className="lg:col-span-5">
             <h2 className="font-headline text-3xl md:text-4xl text-primary mb-4">
-              {ko ? '우리는 학생의 점수만 보지 않습니다.' : 'We don\'t just look at scores.'}
+              {ko ? '점수는 데이터일 뿐입니다.' : 'Scores are just data.'}
             </h2>
             <p className="font-headline italic text-xl md:text-2xl text-primary/60">
-              {ko ? '성적의 구조와 의미를 해석합니다.' : 'We interpret the structure and meaning behind them.'}
+              {ko ? '우리는 데이터를 전략으로 바꿉니다.' : 'We turn data into strategy.'}
             </p>
           </div>
           <div className="lg:col-span-7">
@@ -151,9 +151,9 @@ function AboutContent() {
         <div className="max-w-3xl mx-auto text-center">
           <p className="font-headline italic text-2xl md:text-3xl text-primary leading-snug">
             {ko ? (
-              <>우리는 입시를 "정보"로 보지 않습니다.<br /><br /><span className="text-secondary">각기 다른 평가 시스템을 연결해<br />하나의 전략으로 설계하는 것.</span><br /><br />그것이 우리가 하는 일입니다.</>
+              <>유학원은 대학을 보내줍니다.<br /><br /><span className="text-secondary">우리는 학생의 서사를 설계하고<br />데이터로 합격 확률을 분석하여<br />가장 유리한 전략을 만듭니다.</span><br /><br />그것이 169 Avenue입니다.</>
             ) : (
-              <>We don't see admissions as "information."<br /><br /><span className="text-secondary">Connecting different evaluation systems<br />into one unified strategy.</span><br /><br />That is what we do.</>
+              <>Agencies send students to universities.<br /><br /><span className="text-secondary">We architect student narratives,<br />analyze acceptance probability with data,<br />and build the strongest strategy.</span><br /><br />That is 169 Avenue.</>
             )}
           </p>
         </div>
@@ -163,61 +163,117 @@ function AboutContent() {
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
         <div className="mb-12">
           <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-bold mb-2 block">
-            {ko ? '우리 팀' : 'Our Team'}
+            {ko ? '전문가 네트워크' : 'Expert Network'}
           </span>
           <p className="font-body text-on-surface-variant text-base">
-            {ko ? '전략은 혼자서 완성되지 않습니다. 우리는 각 영역의 전문성을 기반으로 하나의 전략을 함께 설계합니다.' : 'Strategy is never completed alone. We combine expertise from each domain to design one cohesive plan.'}
+            {ko ? '입시 전략 총괄 디렉터를 중심으로, 각 분야 최고의 전문가 네트워크가 학생의 합격을 설계합니다.' : 'Led by the Director of Admissions Strategy, our network of top specialists designs each student\'s path to acceptance.'}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Card 1 */}
-          <div className="bg-surface-container-lowest p-8 md:p-10 shadow-sm border-l-4 border-secondary">
-            <h4 className="font-headline text-xl text-primary mb-1">Domestic Admissions Strategist</h4>
-            <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-6">
-              {ko ? '국내 입시 전략 총괄' : 'Korean University Strategy Lead'}
-            </p>
-            <ul className="space-y-3 mb-8">
-              {(ko
-                ? ['학생부종합 및 정시 전략 설계', '전공 방향 및 스토리 구조 설계', '지원 대학 및 전략 매칭']
-                : ['학생부종합 and 정시 strategy design', 'Major direction & story structure', 'University targeting & strategy matching']
-              ).map((b) => (
-                <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant leading-relaxed">
-                  <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
-                </li>
-              ))}
-            </ul>
-            <p className="font-headline italic text-base text-primary/80 border-t border-outline-variant/15 pt-6">
-              {ko ? '학생의 데이터를 기반으로 현실적인 합격 전략을 설계합니다.' : 'Designs realistic acceptance strategies based on student data.'}
-            </p>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-surface-container-lowest p-8 md:p-10 shadow-sm border-l-4 border-secondary">
-            <h4 className="font-headline text-xl text-primary mb-1">International Admissions Strategist</h4>
-            <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-6">
-              {ko ? '해외 입시 및 커리큘럼 분석' : 'International Strategy & Curriculum Analysis'}
-            </p>
-            <ul className="space-y-3 mb-8">
-              {(ko
-                ? ['IB / AP / GPA 구조 분석', '국제전형 및 편입 전략 설계', '해외 학력 기반 지원 가능성 분석']
-                : ['IB / AP / GPA structure analysis', 'International track & transfer strategy', 'Overseas credential feasibility analysis']
-              ).map((b) => (
-                <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant leading-relaxed">
-                  <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
-                </li>
-              ))}
-            </ul>
-            <p className="font-headline italic text-base text-primary/80 border-t border-outline-variant/15 pt-6">
-              {ko ? '서로 다른 교육 시스템을 해석하여 입시 전략으로 연결합니다.' : 'Interprets different education systems and connects them into admissions strategy.'}
-            </p>
+        {/* Director Card - Full Width */}
+        <div className="bg-primary text-on-primary p-8 md:p-12 shadow-sm mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-7">
+              <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-2">Director</p>
+              <h4 className="font-headline text-2xl md:text-3xl mb-2">
+                {ko ? '입시 전략 총괄 디렉터' : 'Director of Admissions Strategy'}
+              </h4>
+              <p className="font-body text-on-primary/70 text-base leading-relaxed mb-8">
+                {ko
+                  ? '학생의 IB 점수, GPA, 활동 데이터를 분석하여 서사를 설계하고, 전문가 네트워크를 조율하여 합격 전략을 총괄합니다. 데이터 기반 대학 매칭과 합격 확률 분석을 통해 학생이 가장 유리한 포지션에서 입시에 임할 수 있도록 전체 전략을 수립합니다.'
+                  : 'Analyzes student IB scores, GPA, and activity data to architect narratives, coordinates the expert network, and oversees the entire acceptance strategy. Builds data-driven university matching and acceptance probability analysis to position students for maximum advantage.'
+                }
+              </p>
+              <ul className="space-y-3">
+                {(ko
+                  ? ['전체 입시 전략 설계 및 총괄', '데이터 기반 합격 확률 분석 및 대학 매칭', '학생 서사 아키텍처 설계', '전문가 네트워크 조율 및 로드맵 관리']
+                  : ['Overall admissions strategy design & direction', 'Data-driven acceptance probability analysis & university matching', 'Student narrative architecture design', 'Expert network coordination & roadmap management']
+                ).map((b) => (
+                  <li key={b} className="flex items-start gap-2 text-sm font-body text-on-primary/80 leading-relaxed">
+                    <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="lg:col-span-5 flex items-center">
+              <div className="w-full bg-on-primary/5 border border-on-primary/10 p-8">
+                <p className="font-headline italic text-lg text-on-primary/90 leading-relaxed">
+                  {ko
+                    ? '"모든 학생에게는 고유한 서사가 있습니다. 우리의 역할은 그 서사를 발견하고, 데이터로 검증하고, 가장 강력한 전략으로 만드는 것입니다."'
+                    : '"Every student has a unique narrative. Our role is to discover it, validate it with data, and turn it into the strongest possible strategy."'
+                  }
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <p className="font-body text-on-surface-variant text-sm text-center mt-10 max-w-xl mx-auto leading-relaxed">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Specialist 1 */}
+          <div className="bg-surface-container-lowest p-8 shadow-sm border-l-4 border-secondary">
+            <h4 className="font-headline text-lg text-primary mb-1">
+              {ko ? '합격 전략 컨설턴트' : 'Acceptance Strategy Consultant'}
+            </h4>
+            <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">
+              {ko ? '입학사정관 출신' : 'Former Admissions Officer'}
+            </p>
+            <ul className="space-y-2">
+              {(ko
+                ? ['대학별 합격 전략 수립', '에세이 및 면접 코칭', '입학사정관 관점의 서류 검토']
+                : ['University-specific acceptance strategy', 'Essay & interview coaching', 'Document review from admissions officer perspective']
+              ).map((b) => (
+                <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant leading-relaxed">
+                  <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Specialist 2 */}
+          <div className="bg-surface-container-lowest p-8 shadow-sm border-l-4 border-secondary">
+            <h4 className="font-headline text-lg text-primary mb-1">
+              {ko ? '특기/스펙 전문가' : 'Athletics & Talent Specialist'}
+            </h4>
+            <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">
+              {ko ? '운동 네트워크 기반' : 'Sports Network Based'}
+            </p>
+            <ul className="space-y-2">
+              {(ko
+                ? ['운동 특기 기반 입시 전략', '체육 장학금 및 리크루팅 연결', '특기/스펙 포트폴리오 설계']
+                : ['Athletics-based admissions strategy', 'Sports scholarship & recruiting connections', 'Talent/spec portfolio design']
+              ).map((b) => (
+                <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant leading-relaxed">
+                  <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Specialist 3 */}
+          <div className="bg-surface-container-lowest p-8 shadow-sm border-l-4 border-secondary">
+            <h4 className="font-headline text-lg text-primary mb-1">
+              {ko ? '포트폴리오 컨설턴트' : 'Portfolio Consultant'}
+            </h4>
+            <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">
+              {ko ? '미술 전문' : 'Art & Design Specialist'}
+            </p>
+            <ul className="space-y-2">
+              {(ko
+                ? ['미술/디자인 포트폴리오 설계', '아트 스쿨 지원 전략', '크리에이티브 분야 서사 구축']
+                : ['Art & design portfolio architecture', 'Art school application strategy', 'Creative field narrative building']
+              ).map((b) => (
+                <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant leading-relaxed">
+                  <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <p className="font-body text-on-surface-variant text-sm text-center mt-10 max-w-2xl mx-auto leading-relaxed">
           {ko
-            ? '우리는 각자의 전문 영역을 기반으로 하나의 전략을 함께 완성합니다. 국내와 해외, 두 시스템을 연결하는 것이 우리의 가장 큰 강점입니다.'
-            : 'We complete one strategy together, each from our area of expertise. Connecting the domestic and international systems is our greatest strength.'
+            ? '디렉터가 전체 전략을 총괄하고, 각 분야 전문가가 학생에게 필요한 영역을 담당합니다. 미국을 시작으로 캐나다, 호주, 동남아 등 다양한 국가로 확장 가능한 글로벌 입시 설계 플랫폼입니다.'
+            : 'The Director oversees the entire strategy while each specialist covers their domain. Starting with the US, our platform is expandable to Canada, Australia, Southeast Asia, and beyond.'
           }
         </p>
       </section>
@@ -226,17 +282,17 @@ function AboutContent() {
       <section className="py-20 md:py-32 px-6 md:px-16 text-center bg-primary text-on-primary">
         <div className="max-w-3xl mx-auto">
           <p className="font-headline italic text-xl md:text-2xl text-on-primary/70 mb-4">
-            {ko ? '지금, 자신의 위치를 정확히 아는 것이 가장 중요한 시작입니다.' : 'Knowing exactly where you stand is the most important first step.'}
+            {ko ? '대학 리스트가 아니라, 합격 전략이 필요합니다.' : 'You don\'t need a university list. You need an acceptance strategy.'}
           </p>
           <p className="font-headline italic text-2xl md:text-4xl leading-snug mb-12">
             {ko
-              ? '"상담은 단순한 조언이 아니라, 가능성과 전략을 확인하는 과정입니다."'
-              : '"A consultation is not just advice — it\'s the process of confirming your potential and strategy."'
+              ? '"당신의 자녀에게 가장 강력한 서사를 설계해 드립니다."'
+              : '"We will architect the most compelling narrative for your child."'
             }
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link to="/consultation" className="bg-surface text-primary px-10 md:px-16 py-4 md:py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500">
-              {ko ? '무료 진단' : 'Free Diagnosis'}
+              {ko ? '무료 전략 진단' : 'Free Strategy Diagnosis'}
             </Link>
             <Link to="/consultation" className="border border-on-primary/30 text-on-primary px-10 md:px-16 py-4 md:py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-surface hover:text-primary transition-all duration-500">
               {ko ? '상담 예약' : 'Book Consultation'}
