@@ -1,25 +1,32 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SearchOverlay } from './SearchOverlay'
+import { AdminToggle } from './AdminToggle'
 import { useLanguage } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 
 interface MobileShellProps {
   children: ReactNode
-  activeTab?: 'about' | 'partners' | 'field' | 'destinations' | 'stories'
+  activeTab?: 'about' | 'partners' | 'field' | 'destinations' | 'stories' | 'report'
 }
 
 export function MobileShell({ children, activeTab }: MobileShellProps) {
   const navigate = useNavigate()
   const { language, setLanguage, t } = useLanguage()
+  const { isAdmin } = useAuth()
   const [searchOpen, setSearchOpen] = useState(false)
 
-  const TABS = [
+  const baseTabs = [
     { id: 'about',        label: t.bottom_about,        to: '/about',        icon: 'info' },
     { id: 'partners',     label: t.bottom_partners,     to: '/services',     icon: 'handshake' },
     { id: 'field',        label: t.bottom_field,        to: '/field',        icon: 'school' },
     { id: 'destinations', label: t.bottom_destinations, to: '/destinations', icon: 'public' },
     { id: 'stories',      label: t.bottom_stories,      to: '/stories',      icon: 'auto_stories' },
   ] as const
+
+  const TABS = isAdmin
+    ? [...baseTabs, { id: 'report' as const, label: 'Report', to: '/admin/report', icon: 'description' }]
+    : baseTabs
 
   return (
     <div className="md:hidden">
@@ -32,6 +39,7 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
           <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</Link>
         </div>
         <div className="flex items-center gap-2">
+          <AdminToggle />
           <button
             onClick={() => setSearchOpen(true)}
             className="text-primary/70 p-1"

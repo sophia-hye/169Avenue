@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SearchOverlay } from './SearchOverlay'
+import { AdminToggle } from './AdminToggle'
 import { useLanguage } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 
 function DropdownMenu({ label, items, isOpen, onToggle }: {
   label: string
@@ -42,6 +44,7 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [domesticOpen, setDomesticOpen] = useState(false)
   const { language, setLanguage, t } = useLanguage()
+  const { isAdmin } = useAuth()
 
   const DOMESTIC_ITEMS = [
     { label: 'Overview', to: '/domestic' },
@@ -64,21 +67,29 @@ export function Navbar() {
             <Link to="/services" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
               {t.nav_partners}
             </Link>
-            <DropdownMenu
-              label="Domestic"
-              items={DOMESTIC_ITEMS}
-              isOpen={domesticOpen}
-              onToggle={() => setDomesticOpen(!domesticOpen)}
-            />
-            <Link to="/destinations" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
-              International
-            </Link>
-            <Link to="/stories" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
-              {t.nav_stories}
-            </Link>
+            {isAdmin && (
+              <>
+                <DropdownMenu
+                  label="Domestic"
+                  items={DOMESTIC_ITEMS}
+                  isOpen={domesticOpen}
+                  onToggle={() => setDomesticOpen(!domesticOpen)}
+                />
+                <Link to="/destinations" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+                  International
+                </Link>
+                <Link to="/stories" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+                  {t.nav_stories}
+                </Link>
+                <Link to="/admin/report" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
+                  Student Report
+                </Link>
+              </>
+            )}
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <AdminToggle />
             <button
               onClick={() => setSearchOpen(true)}
               className="text-primary/70 hover:text-secondary transition-colors duration-300 p-2"

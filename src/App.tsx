@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { LanguageProvider } from './context/LanguageContext'
+import { AuthProvider } from './context/AuthContext'
 import { ScrollToTop } from './components/ScrollToTop'
+import { ProtectedRoute } from './components/ProtectedRoute'
 import { HomePage } from './components/HomePage'
 import { ConsultationPage } from './components/ConsultationPage'
 import { SuccessStoriesPage } from './components/SuccessStoriesPage'
@@ -20,10 +22,12 @@ import { DomesticTransferPage } from './components/DomesticTransferPage'
 import { UniversityDetailPage } from './components/UniversityDetailPage'
 import { TermsPage } from './components/TermsPage'
 import { PrivacyPage } from './components/PrivacyPage'
+import { StudentReportPage } from './components/admin/StudentReportPage'
 
 function App() {
   return (
     <LanguageProvider>
+    <AuthProvider>
     <BrowserRouter basename="/169Avenue">
       <ScrollToTop />
       <Routes>
@@ -46,8 +50,10 @@ function App() {
         <Route path="/stories/:id" element={<StoryDetailPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/admin/report" element={<ProtectedRoute><StudentReportPage /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
     </LanguageProvider>
   )
 }
