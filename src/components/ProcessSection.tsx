@@ -1,6 +1,6 @@
 import { useLanguage } from '../context/LanguageContext'
 
-const STEP_ICONS = ['stethoscope', 'target', 'design_services', 'task_alt', 'record_voice_over']
+const STEP_ICONS = ['stethoscope', 'camp', 'description', 'record_voice_over', 'route']
 
 export function ProcessSection() {
   const { t } = useLanguage()

@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
 const TARGET_META = [
-  { link: '/destinations', icon: 'public' },
-  { link: '/domestic/freshman', icon: 'flight_land' },
-  { link: '/domestic/transfer', icon: 'swap_horiz' },
+  { link: '/services', icon: 'child_care' },
+  { link: '/services', icon: 'rocket_launch' },
+  { link: '/services', icon: 'school' },
 ]
 
 export function TargetCards() {
