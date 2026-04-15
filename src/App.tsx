@@ -22,7 +22,10 @@ import { DomesticTransferPage } from './components/DomesticTransferPage'
 import { UniversityDetailPage } from './components/UniversityDetailPage'
 import { TermsPage } from './components/TermsPage'
 import { PrivacyPage } from './components/PrivacyPage'
+import { BlogPage } from './components/BlogPage'
+import { USExperiencePage } from './components/USExperiencePage'
 import { StudentReportPage } from './components/admin/StudentReportPage'
+import { DiagnosisPage } from './components/admin/diagnosis/DiagnosisPage'
 
 function App() {
   return (
@@ -50,7 +53,10 @@ function App() {
         <Route path="/stories/:id" element={<StoryDetailPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/services/us-experience" element={<USExperiencePage />} />
         <Route path="/admin/report" element={<ProtectedRoute><StudentReportPage /></ProtectedRoute>} />
+        <Route path="/admin/diagnosis" element={<ProtectedRoute><DiagnosisPage /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>

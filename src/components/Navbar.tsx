@@ -42,44 +42,64 @@ function DropdownMenu({ label, items, isOpen, onToggle }: {
 
 export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false)
-  const [domesticOpen, setDomesticOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
+  const [blogOpen, setBlogOpen] = useState(false)
+  const [admissionsOpen, setAdmissionsOpen] = useState(false)
   const { language, setLanguage, t } = useLanguage()
   const { isAdmin } = useAuth()
 
-  const DOMESTIC_ITEMS = [
-    { label: 'Overview', to: '/domestic' },
+  const SERVICES_ITEMS = [
+    { label: 'Future Path Camp', to: '/services' },
+    { label: language === 'ko' ? '미국 진로 체험 프로그램' : 'US Career Experience Program', to: '/services/us-experience' },
+  ]
+
+  const BLOG_ITEMS = [
+    { label: 'Blog', to: '/blog' },
+    { label: language === 'ko' ? '케이스 스터디' : 'Case Studies', to: '/stories' },
+  ]
+
+  const ADMISSIONS_ITEMS = [
+    { label: 'Domestic Overview', to: '/domestic' },
     { label: 'Foreign HS → Korean Uni', to: '/domestic/freshman' },
     { label: 'Foreign Uni → Korean Uni Transfer', to: '/domestic/transfer' },
+    { label: 'International', to: '/destinations' },
   ]
 
   return (
     <>
       <nav className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md">
         <div className="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
-          <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">
-            169 Avenue
+          <Link to="/" className="flex items-center gap-0">
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="169 Avenue" className="h-20 brightness-0 -my-4" />
+            <span className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-10">
             <Link to="/about" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
               {t.nav_about}
             </Link>
-            <Link to="/services" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
-              {t.nav_partners}
-            </Link>
+            <DropdownMenu
+              label={t.nav_partners}
+              items={SERVICES_ITEMS}
+              isOpen={servicesOpen}
+              onToggle={() => setServicesOpen(!servicesOpen)}
+            />
+            <DropdownMenu
+              label="Blog"
+              items={BLOG_ITEMS}
+              isOpen={blogOpen}
+              onToggle={() => setBlogOpen(!blogOpen)}
+            />
             {isAdmin && (
               <>
                 <DropdownMenu
-                  label="Domestic"
-                  items={DOMESTIC_ITEMS}
-                  isOpen={domesticOpen}
-                  onToggle={() => setDomesticOpen(!domesticOpen)}
+                  label="Admissions"
+                  items={ADMISSIONS_ITEMS}
+                  isOpen={admissionsOpen}
+                  onToggle={() => setAdmissionsOpen(!admissionsOpen)}
                 />
-                <Link to="/destinations" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
-                  International
-                </Link>
-                <Link to="/stories" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
-                  {t.nav_stories}
+                <Link to="/admin/diagnosis" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
+                  Diagnosis
                 </Link>
                 <Link to="/admin/report" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
                   Student Report
