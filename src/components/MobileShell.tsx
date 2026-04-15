@@ -36,7 +36,10 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
           <button onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}>
             <span className="material-symbols-outlined text-primary">arrow_back</span>
           </button>
-          <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</Link>
+          <Link to="/" className="flex items-center gap-0">
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="169 Avenue" className="h-14 brightness-0 -my-2" />
+            <span className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</span>
+          </Link>
         </div>
         <div className="flex items-center gap-2">
           <AdminToggle />

@@ -14,8 +14,9 @@ export function Footer() {
     <footer className="bg-surface-container-low w-full py-20 px-12">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-screen-2xl mx-auto">
         <div className="md:col-span-1">
-          <div className="font-headline text-xl italic text-primary mb-8">
-            169 Avenue
+          <div className="flex items-center gap-0 mb-8">
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="169 Avenue" className="h-16 brightness-0" />
+            <span className="font-headline text-xl italic text-primary">169 Avenue</span>
           </div>
           <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-60">
             {t.footer_tagline}
@@ -47,7 +48,6 @@ export function Footer() {
 
       <div className="mt-20 pt-12 border-t border-primary/5 max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center text-primary/60 font-body text-xs tracking-widest uppercase">
         <span>{t.footer_all_rights}</span>
-        <span className="mt-4 md:mt-0">{t.footer_crafted}</span>
       </div>
     </footer>
   )
