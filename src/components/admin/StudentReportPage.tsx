@@ -1,18 +1,10 @@
-import { useState, useRef, useCallback } from 'react'
-import html2canvas from 'html2canvas'
-import { jsPDF } from 'jspdf'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { Navbar } from '../Navbar'
 import { ReportPreview } from './ReportPreview'
+import { PdfExportModal } from './PdfExportModal'
 import { DEFAULT_REPORT, PERSONALITY_LABELS, type ReportData, type SkillEntry, type ExplorationEntry, type ProfileBar, type PersonalityType } from '../../data/report-template'
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="mb-8">
-      <h3 className="font-headline text-lg text-primary mb-4 pb-2 border-b border-outline-variant/20">{title}</h3>
-      {children}
-    </div>
-  )
-}
+/* ── Shared UI ── */
 
 function Input({ label, value, onChange, placeholder, multiline }: {
   label: string; value: string; onChange: (v: string) => void; placeholder?: string; multiline?: boolean
@@ -29,10 +21,44 @@ function Input({ label, value, onChange, placeholder, multiline }: {
   )
 }
 
+/** Renders one page from the full report, trimmed to fit */
+function PagePreview({ data, pageIndex }: { data: ReportData; pageIndex: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) return
+    // Remove wrapper padding
+    const wrapper = ref.current.firstElementChild as HTMLElement | null
+    if (wrapper) {
+      wrapper.style.padding = '0'
+      wrapper.style.background = 'transparent'
+    }
+    // Show only the target page section
+    const sections = ref.current.querySelectorAll<HTMLElement>('section')
+    sections.forEach((s, i) => {
+      if (i === pageIndex) {
+        s.style.display = ''
+        s.style.minHeight = 'auto'
+        s.style.pageBreakAfter = 'auto'
+        s.style.boxShadow = 'none'
+      } else {
+        s.style.display = 'none'
+      }
+    })
+  }, [pageIndex, data])
+
+  return (
+    <div ref={ref} className="pointer-events-none">
+      <ReportPreview data={data} />
+    </div>
+  )
+}
+
+/* ── Main Component ── */
+
 export function StudentReportPage() {
   const [data, setData] = useState<ReportData>({ ...DEFAULT_REPORT })
-  const [generating, setGenerating] = useState(false)
-  const previewRef = useRef<HTMLDivElement>(null)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   const update = useCallback(<K extends keyof ReportData>(key: K, value: ReportData[K]) => {
     setData((prev) => ({ ...prev, [key]: value }))
@@ -73,167 +99,198 @@ export function StudentReportPage() {
     setData((prev) => ({ ...prev, recommendedSteps: [...prev.recommendedSteps, ''] }))
   }, [])
 
-  const handleDownload = async () => {
-    if (!previewRef.current) return
-    setGenerating(true)
-    try {
-      const pages = previewRef.current.querySelectorAll<HTMLElement>('section')
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
-      for (let i = 0; i < pages.length; i++) {
-        const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true, backgroundColor: '#f9f7f3' })
-        if (i > 0) pdf.addPage()
-        pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297)
-      }
-      const filename = data.studentName ? `Growth_Report_${data.studentName.replace(/\s+/g, '_')}.pdf` : 'Student_Growth_Report.pdf'
-      pdf.save(filename)
-    } finally {
-      setGenerating(false)
-    }
-  }
+  /* ── Page Sections: each row = preview (left) + form (right) ── */
+
+  const pages = [
+    {
+      title: 'Cover',
+      pageIndex: 0,
+      form: (
+        <>
+          <Input label="Student Name" value={data.studentName} onChange={(v) => update('studentName', v)} placeholder="e.g. Sophia Kim" />
+          <Input label="Grade" value={data.grade} onChange={(v) => update('grade', v)} placeholder="e.g. Grade 4" />
+          <Input label="Program Name" value={data.programName} onChange={(v) => update('programName', v)} />
+          <Input label="Program Period" value={data.programPeriod} onChange={(v) => update('programPeriod', v)} placeholder="e.g. 2 weeks" />
+          <Input label="Date" value={data.date} onChange={(v) => update('date', v)} />
+          <Input label="Observer" value={data.observer} onChange={(v) => update('observer', v)} placeholder="e.g. Director Kim" />
+        </>
+      ),
+    },
+    {
+      title: 'Executive Summary',
+      pageIndex: 1,
+      form: (
+        <>
+          <Input label="Summary" value={data.summaryText} onChange={(v) => update('summaryText', v)} multiline placeholder="[Student] showed strong participation... recommended direction is..." />
+          <Input label="Strength" value={data.strength} onChange={(v) => update('strength', v)} placeholder="e.g. Communication / Active Participation" />
+          <Input label="Direction" value={data.direction} onChange={(v) => update('direction', v)} placeholder="e.g. Exploration + Expression" />
+          <Input label="Keywords" value={data.keywords} onChange={(v) => update('keywords', v)} placeholder="e.g. Presentation / Experience / Growth" />
+        </>
+      ),
+    },
+    {
+      title: 'Area Assessment',
+      pageIndex: 2,
+      form: (
+        <>
+          <p className="font-body text-xs text-on-surface-variant/50 mb-4">English / Communication & Learning Attitude</p>
+          {data.skills.map((skill, i) => (
+            <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <Input label="Skill Name" value={skill.name} onChange={(v) => updateSkill(i, 'name', v)} />
+                <div className="flex items-center gap-1 shrink-0 pt-4">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button key={n} type="button" onClick={() => updateSkill(i, 'stars', n)}
+                      className={`text-lg transition-colors ${n <= skill.stars ? 'text-[#6B4F4F]' : 'text-outline-variant/30 hover:text-[#6B4F4F]/50'}`}>
+                      {n <= skill.stars ? '\u2605' : '\u2606'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <Input label="Observation" value={skill.description} onChange={(v) => updateSkill(i, 'description', v)} placeholder="Specific observations..." />
+            </div>
+          ))}
+          <p className="font-body text-xs text-on-surface-variant/50 mb-4 mt-6">Exploration Areas</p>
+          {data.explorations.map((exp, i) => (
+            <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
+              <Input label="Area" value={exp.name} onChange={(v) => updateExploration(i, 'name', v)} />
+              <Input label="Observation" value={exp.description} onChange={(v) => updateExploration(i, 'description', v)} placeholder="e.g. High reaction speed, competitive focus..." />
+            </div>
+          ))}
+        </>
+      ),
+    },
+    {
+      title: 'Personality Analysis',
+      pageIndex: 3,
+      form: (
+        <>
+          {data.profileBars.map((bar, i) => {
+            const colorLabel = bar.color === 'blue' ? '#4A5F78' : bar.color === 'accent' ? '#6B4F4F' : '#7A7560'
+            return (
+              <div key={i} className="mb-3 flex items-center gap-4">
+                <div className="flex items-center gap-2 w-32 shrink-0">
+                  <div className="w-3 h-3 rounded-full shrink-0" style={{ background: colorLabel }} />
+                  <span className="font-body text-sm font-medium text-primary">{bar.label}</span>
+                </div>
+                <input type="range" min={0} max={100} value={bar.percent} onChange={(e) => updateBar(i, 'percent', Number(e.target.value))}
+                  className="flex-1 h-2 accent-[#6B4F4F]" />
+                <span className="font-body text-sm text-on-surface-variant/60 w-10 text-right">{bar.percent}%</span>
+              </div>
+            )
+          })}
+          <div className="mb-4">
+            <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-2 block">Primary Type(s)</span>
+            <div className="flex flex-col gap-2">
+              {(Object.keys(PERSONALITY_LABELS) as PersonalityType[]).map((type) => {
+                const info = PERSONALITY_LABELS[type]
+                const active = data.primaryType.includes(type)
+                return (
+                  <button key={type} type="button" onClick={() => toggleType(type)}
+                    className={`px-4 py-2.5 font-body text-sm border transition-colors text-left ${active ? 'border-secondary bg-secondary/10 text-secondary' : 'border-outline-variant/30 text-on-surface-variant/50 hover:border-secondary'}`}>
+                    {info.en} ({info.ko}) — {info.desc_en}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          <Input label="Comprehensive Diagnosis" value={data.analysisNote} onChange={(v) => update('analysisNote', v)} multiline placeholder='This student shows "Exploratory + Expressive" tendencies...' />
+        </>
+      ),
+    },
+    {
+      title: 'Growth Roadmap',
+      pageIndex: 4,
+      form: (
+        <>
+          {data.roadmap.map((entry, i) => (
+            <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
+              <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest block mb-2">{entry.period}</span>
+              {entry.items.map((item, j) => (
+                <input key={j} value={item} onChange={(e) => updateRoadmap(i, j, e.target.value)} placeholder={`Goal ${j + 1}`}
+                  className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface outline-none focus:border-secondary mb-2" />
+              ))}
+              <button onClick={() => addRoadmapItem(i)} className="text-xs text-secondary font-body hover:underline">+ Add item</button>
+            </div>
+          ))}
+        </>
+      ),
+    },
+    {
+      title: 'Recommended Path',
+      pageIndex: 5,
+      form: (
+        <>
+          {data.recommendedSteps.map((step, i) => (
+            <input key={i} value={step} onChange={(e) => updateStep(i, e.target.value)} placeholder={`Program ${i + 1}`}
+              className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary mb-2" />
+          ))}
+          <button onClick={addStep} className="text-xs text-secondary font-body hover:underline">+ Add program</button>
+        </>
+      ),
+    },
+    {
+      title: 'Closing',
+      pageIndex: 6,
+      form: (
+        <Input label="Closing Message" value={data.closingMessage} onChange={(v) => update('closingMessage', v)} multiline placeholder="With the right guidance and continued exploration..." />
+      ),
+    },
+  ]
 
   return (
     <>
       <Navbar />
-      <main className="pt-28 pb-20 max-w-screen-xl mx-auto px-6">
+      <main className="pt-28 pb-20 px-6" style={{ maxWidth: 1800, margin: '0 auto' }}>
+        {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div>
             <h1 className="font-headline text-3xl text-primary tracking-tight">Student Growth Report</h1>
-            <p className="font-body text-sm text-on-surface-variant/50 mt-1">Fill in the form, then download the PDF.</p>
+            <p className="font-body text-sm text-on-surface-variant/50 mt-1">Scroll down to fill each page. Preview updates live on the left.</p>
           </div>
-          <button onClick={handleDownload} disabled={generating} className="bg-primary text-on-primary px-8 py-3 font-body text-sm uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95 disabled:opacity-50 flex items-center gap-2">
+          <button onClick={() => setShowExportModal(true)} className="bg-primary text-on-primary px-8 py-3 font-body text-sm uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95 flex items-center gap-2">
             <span className="material-symbols-outlined text-lg">download</span>
-            {generating ? 'Generating...' : 'Download PDF'}
+            Download PDF
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* LEFT: Form */}
-          <div className="bg-surface border border-outline-variant/10 p-8">
-            <Section title="1. Basic Info">
-              <div className="grid grid-cols-2 gap-3">
-                <Input label="Student Name" value={data.studentName} onChange={(v) => update('studentName', v)} placeholder="e.g. Sophia Kim" />
-                <Input label="Grade" value={data.grade} onChange={(v) => update('grade', v)} placeholder="e.g. Grade 4" />
-              </div>
-              <Input label="Program Name" value={data.programName} onChange={(v) => update('programName', v)} />
-              <div className="grid grid-cols-2 gap-3">
-                <Input label="Program Period" value={data.programPeriod} onChange={(v) => update('programPeriod', v)} placeholder="e.g. 2 weeks" />
-                <Input label="Date" value={data.date} onChange={(v) => update('date', v)} />
-              </div>
-              <Input label="Observer" value={data.observer} onChange={(v) => update('observer', v)} placeholder="e.g. Director Kim" />
-            </Section>
-
-            <Section title="2. Executive Summary">
-              <Input label="Summary" value={data.summaryText} onChange={(v) => update('summaryText', v)} multiline placeholder="[Student] showed strong participation... recommended direction is..." />
-              <div className="grid grid-cols-3 gap-3">
-                <Input label="Strength" value={data.strength} onChange={(v) => update('strength', v)} placeholder="e.g. Communication" />
-                <Input label="Direction" value={data.direction} onChange={(v) => update('direction', v)} placeholder="e.g. Exploration + Expression" />
-                <Input label="Keywords" value={data.keywords} onChange={(v) => update('keywords', v)} placeholder="e.g. Presentation, Growth" />
-              </div>
-            </Section>
-
-            <Section title="3. English / Communication & Learning">
-              {data.skills.map((skill, i) => (
-                <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
-                  <div className="grid grid-cols-2 gap-3 mb-2">
-                    <Input label="Skill Name" value={skill.name} onChange={(v) => updateSkill(i, 'name', v)} />
-                    <label className="block mb-4">
-                      <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">Stars (1-5)</span>
-                      <input type="number" min={1} max={5} value={skill.stars} onChange={(e) => updateSkill(i, 'stars', Number(e.target.value))} className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface outline-none focus:border-secondary" />
-                    </label>
-                  </div>
-                  <Input label="Observation" value={skill.description} onChange={(v) => updateSkill(i, 'description', v)} placeholder="Specific observations..." />
-                </div>
-              ))}
-            </Section>
-
-            <Section title="3b. Exploration Areas">
-              {data.explorations.map((exp, i) => (
-                <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
-                  <Input label="Area" value={exp.name} onChange={(v) => updateExploration(i, 'name', v)} />
-                  <Input label="Observation" value={exp.description} onChange={(v) => updateExploration(i, 'description', v)} placeholder="e.g. High reaction speed, competitive focus..." />
-                </div>
-              ))}
-            </Section>
-
-            <Section title="4. Personality Type">
-              {data.profileBars.map((bar, i) => (
-                <div key={i} className="grid grid-cols-3 gap-3 mb-3 items-end">
-                  <Input label="Label" value={bar.label} onChange={(v) => updateBar(i, 'label', v)} />
-                  <label className="block mb-4">
-                    <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">Percent</span>
-                    <input type="number" min={0} max={100} value={bar.percent} onChange={(e) => updateBar(i, 'percent', Number(e.target.value))} className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface outline-none focus:border-secondary" />
-                  </label>
-                  <label className="block mb-4">
-                    <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">Color</span>
-                    <select value={bar.color} onChange={(e) => updateBar(i, 'color', e.target.value)} className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface outline-none focus:border-secondary">
-                      <option value="accent">Accent (Expressive)</option>
-                      <option value="gray">Gray (Focused)</option>
-                      <option value="blue">Blue (Exploratory)</option>
-                    </select>
-                  </label>
-                </div>
-              ))}
-
-              <div className="mb-4">
-                <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-2 block">Primary Type(s)</span>
-                <div className="flex gap-3 flex-wrap">
-                  {(Object.keys(PERSONALITY_LABELS) as PersonalityType[]).map((type) => {
-                    const info = PERSONALITY_LABELS[type]
-                    const active = data.primaryType.includes(type)
-                    return (
-                      <button key={type} type="button" onClick={() => toggleType(type)}
-                        className={`px-4 py-2 font-body text-sm border transition-colors ${active ? 'border-secondary bg-secondary/10 text-secondary' : 'border-outline-variant/30 text-on-surface-variant/50 hover:border-secondary'}`}>
-                        {info.icon} {info.en} ({info.ko})
-                      </button>
-                    )
-                  })}
-                </div>
+        {/* Page-by-page rows */}
+        <div className="space-y-16">
+          {pages.map((p, idx) => (
+            <div key={p.title}>
+              {/* Section label */}
+              <div className="flex items-center gap-3 mb-4">
+                <span className="font-headline text-sm text-on-surface-variant/30">{String(idx + 1).padStart(2, '0')}</span>
+                <span className="font-label text-xs uppercase tracking-widest text-secondary">{p.title}</span>
+                <div className="flex-1 h-px bg-outline-variant/15" />
               </div>
 
-              <Input label="Comprehensive Diagnosis" value={data.analysisNote} onChange={(v) => update('analysisNote', v)} multiline placeholder='This student shows "Exploratory + Expressive" tendencies...' />
-            </Section>
-
-            <Section title="5. Growth Roadmap">
-              {data.roadmap.map((entry, i) => (
-                <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
-                  <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest block mb-2">{entry.period}</span>
-                  {entry.items.map((item, j) => (
-                    <input key={j} value={item} onChange={(e) => updateRoadmap(i, j, e.target.value)} placeholder={`Goal ${j + 1}`}
-                      className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface outline-none focus:border-secondary mb-2" />
-                  ))}
-                  <button onClick={() => addRoadmapItem(i)} className="text-xs text-secondary font-body hover:underline">+ Add item</button>
+              {/* Preview (left) + Form (right) */}
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+                {/* Preview */}
+                <div className="lg:col-span-3 border border-outline-variant/10 overflow-hidden" style={{ background: '#FAFAF7' }}>
+                  <PagePreview data={data} pageIndex={p.pageIndex} />
                 </div>
-              ))}
-            </Section>
 
-            <Section title="6. Recommended Programs">
-              {data.recommendedSteps.map((step, i) => (
-                <input key={i} value={step} onChange={(e) => updateStep(i, e.target.value)} placeholder={`Program ${i + 1}`}
-                  className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary mb-2" />
-              ))}
-              <button onClick={addStep} className="text-xs text-secondary font-body hover:underline">+ Add program</button>
-            </Section>
-
-            <Section title="7. Closing">
-              <Input label="Closing Message" value={data.closingMessage} onChange={(v) => update('closingMessage', v)} multiline placeholder="With the right guidance and continued exploration..." />
-            </Section>
-          </div>
-
-          {/* RIGHT: Live Preview */}
-          <div className="hidden lg:block">
-            <div className="sticky top-28">
-              <h3 className="font-headline text-sm text-on-surface-variant/50 uppercase tracking-widest mb-4">Live Preview</h3>
-              <div className="overflow-y-auto border border-outline-variant/10" style={{ maxHeight: 'calc(100vh - 160px)', transform: 'scale(0.38)', transformOrigin: 'top left', width: '263%' }}>
-                <ReportPreview ref={previewRef} data={data} />
+                {/* Form */}
+                <div className="lg:col-span-2 bg-surface border border-outline-variant/10 p-6">
+                  {p.form}
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
 
-        {/* Hidden full-size preview for PDF (mobile) */}
-        <div className="lg:hidden" style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-          <ReportPreview ref={previewRef} data={data} />
+        {/* Download again at bottom */}
+        <div className="mt-16 text-center">
+          <button onClick={() => setShowExportModal(true)} className="bg-primary text-on-primary px-12 py-4 font-body text-sm uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95 inline-flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">download</span>
+            Download PDF
+          </button>
         </div>
+
+        {/* Export Modal */}
+        {showExportModal && <PdfExportModal data={data} onClose={() => setShowExportModal(false)} />}
       </main>
     </>
   )
