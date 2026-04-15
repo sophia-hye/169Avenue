@@ -11,35 +11,51 @@ const SECTIONS_EN = [
   },
   {
     title: '2. Description of Services',
-    body: '169 Avenue provides bespoke academic consulting services, including but not limited to university admissions strategy, personal statement development, interview preparation, and profile building. All services are rendered on a private, confidential basis.',
+    body: '169 Avenue provides education consulting services including the Future Path Camp (domestic/overseas programs), US Career Experience Program, Student Growth Report, admissions strategy consulting, and specialist network connections (sports, art, admissions). All services are designed for students from elementary through high school, with parent/guardian involvement throughout the process.',
   },
   {
     title: '3. Engagement & Fees',
-    body: 'All engagements are initiated through a formal consultation and governed by a separate service agreement. Fees are communicated prior to engagement and are non-refundable unless otherwise specified in the individual service agreement.',
+    body: 'All engagements are initiated through a consultation and governed by a separate service agreement. Fees are communicated prior to engagement. Specific fee details, payment schedules, and refund conditions are outlined in the individual service agreement signed before program commencement.',
   },
   {
-    title: '4. Confidentiality',
-    body: 'We treat all client information with the utmost discretion. Information shared during consultations and throughout the engagement will not be disclosed to third parties without your explicit consent, except as required by law.',
+    title: '4. Refund & Cancellation Policy',
+    body: 'Cancellation before program start: Full refund within 7 business days of request. Cancellation after program start: Refund is calculated proportionally based on the remaining program period, minus a cancellation fee not exceeding 10% of the total fee, in accordance with applicable consumer protection laws. Refund requests should be submitted in writing via email or our consultation form.',
   },
   {
-    title: '5. Intellectual Property',
-    body: 'All content on this website, including text, graphics, and design, is the exclusive property of 169 Avenue and is protected by applicable intellectual property laws. Unauthorized reproduction or distribution is strictly prohibited.',
+    title: '5. Right of Withdrawal',
+    body: 'In accordance with the Act on Consumer Protection in Electronic Commerce, you may withdraw from a contract within 7 days of signing or receiving service confirmation, provided the service has not yet commenced. If the service has already begun, withdrawal may be limited to the extent permitted by law.',
   },
   {
-    title: '6. Limitation of Liability',
-    body: '169 Avenue provides advisory services. We do not guarantee admission to any institution. The Company shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services or reliance on our advice.',
+    title: '6. Minors & Guardian Consent',
+    body: 'Our programs primarily serve minors (elementary, middle, and high school students). All service agreements for participants under the age of 19 must be signed by a parent or legal guardian. The Company communicates program results, reports, and strategy recommendations directly to the parent/guardian. During programs, the Company takes reasonable measures to ensure participant safety but is not a substitute for parental supervision.',
   },
   {
-    title: '7. Amendments',
-    body: 'We reserve the right to modify these Terms of Service at any time. Changes will be posted on this page with an updated effective date. Continued use of our services after changes constitutes acceptance of the revised terms.',
+    title: '7. Confidentiality',
+    body: 'We treat all client information with the utmost discretion. Information shared during consultations and throughout the engagement will not be disclosed to third parties without your explicit consent, except as required by law or as necessary to deliver the agreed-upon services (e.g., sharing relevant information with specialist partners with prior consent).',
   },
   {
-    title: '8. Governing Law',
-    body: 'These Terms of Service shall be governed by and construed in accordance with the laws of the jurisdiction in which 169 Avenue operates, without regard to conflict of law provisions.',
+    title: '8. Safety & Liability During Programs',
+    body: 'The Company takes reasonable precautions to ensure the safety of all participants during domestic and overseas programs. The Company maintains liability insurance for program activities. However, the Company is not liable for injuries or incidents arising from participant negligence or failure to follow program guidelines. For overseas programs, participants must have valid travel insurance. Specific safety protocols are provided to parents/guardians before each program.',
   },
   {
-    title: '9. Contact',
-    body: 'For any questions regarding these Terms of Service, please contact us through the consultation form or via our London office.',
+    title: '9. Intellectual Property',
+    body: 'All content on this website, including text, graphics, design, and Student Growth Report templates, is the exclusive property of 169 Avenue and is protected by applicable intellectual property laws. Student Growth Reports generated for individual clients are provided for private use only and may not be reproduced or distributed without written consent.',
+  },
+  {
+    title: '10. Limitation of Liability',
+    body: '169 Avenue provides consulting and educational program services. We do not guarantee admission to any institution. The Company shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services. This limitation does not apply to damages caused by the Company\'s willful misconduct or gross negligence.',
+  },
+  {
+    title: '11. Amendments',
+    body: 'We reserve the right to modify these Terms of Service at any time. Changes will be posted on this page with an updated effective date. We will notify existing clients of material changes via email. Continued use of our services after changes constitutes acceptance of the revised terms.',
+  },
+  {
+    title: '12. Governing Law & Jurisdiction',
+    body: 'These Terms of Service shall be governed by and construed in accordance with the laws of the Republic of Korea. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the Seoul Central District Court.',
+  },
+  {
+    title: '13. Contact',
+    body: 'For any questions regarding these Terms of Service, please contact us through the consultation form on our website or via email. Address: Seoul, Republic of Korea.',
   },
 ]
 
@@ -50,35 +66,51 @@ const SECTIONS_KO = [
   },
   {
     title: '2. 서비스 설명',
-    body: '169 Avenue는 대학 입학 전략, 자기소개서 개발, 인터뷰 준비, 프로필 구축 등을 포함한 맞춤형 학업 컨설팅 서비스를 제공합니다. 모든 서비스는 비공개 및 기밀 방식으로 제공됩니다.',
+    body: '169 Avenue는 Future Path Camp(국내/해외 프로그램), 미국 진로 체험 프로그램, Student Growth Report, 입시 전략 컨설팅, 전문가 네트워크 연결(스포츠, 미술, 입학사정관) 등의 교육 컨설팅 서비스를 제공합니다. 모든 서비스는 초등학생부터 고등학생까지를 대상으로 하며, 전 과정에서 학부모/보호자가 참여합니다.',
   },
   {
     title: '3. 계약 및 요금',
-    body: '모든 계약은 공식 상담을 통해 시작되며 별도의 서비스 계약에 의해 규율됩니다. 요금은 계약 전에 고지되며, 개별 서비스 계약에 달리 명시되지 않는 한 환불되지 않습니다.',
+    body: '모든 계약은 상담을 통해 시작되며 별도의 서비스 계약에 의해 규율됩니다. 요금은 계약 전에 고지됩니다. 구체적인 요금, 결제 일정, 환불 조건은 프로그램 시작 전 체결되는 개별 서비스 계약에 명시됩니다.',
   },
   {
-    title: '4. 기밀 유지',
-    body: '저희는 모든 고객 정보를 최고 수준의 신중함으로 처리합니다. 상담 및 계약 기간 중 공유된 정보는 법적으로 요구되는 경우를 제외하고 귀하의 명시적 동의 없이 제3자에게 공개되지 않습니다.',
+    title: '4. 환불 및 취소 정책',
+    body: '프로그램 시작 전 취소: 요청일로부터 7영업일 이내 전액 환불. 프로그램 시작 후 취소: 잔여 프로그램 기간에 비례하여 환불하며, 총 요금의 10%를 초과하지 않는 위약금을 공제합니다. 이는 관련 소비자보호법에 따릅니다. 환불 요청은 이메일 또는 상담 양식을 통해 서면으로 제출해야 합니다.',
   },
   {
-    title: '5. 지식재산권',
-    body: '본 웹사이트의 모든 콘텐츠(텍스트, 그래픽, 디자인 포함)는 169 Avenue의 독점 소유물이며 관련 지식재산권법의 보호를 받습니다. 무단 복제 또는 배포는 엄격히 금지됩니다.',
+    title: '5. 청약철회',
+    body: '전자상거래 등에서의 소비자보호에 관한 법률에 따라, 계약 체결일 또는 서비스 확인서 수령일로부터 7일 이내에 청약을 철회할 수 있습니다. 다만, 서비스가 이미 개시된 경우에는 법률이 허용하는 범위 내에서 철회가 제한될 수 있습니다.',
   },
   {
-    title: '6. 책임의 제한',
-    body: '169 Avenue는 자문 서비스를 제공합니다. 어떤 기관의 입학도 보장하지 않습니다. 회사는 서비스 이용 또는 자문 의존으로 인해 발생하는 간접적, 부수적 또는 결과적 손해에 대해 책임을 지지 않습니다.',
+    title: '6. 미성년자 및 보호자 동의',
+    body: '회사의 프로그램은 주로 미성년자(초등, 중등, 고등학생)를 대상으로 합니다. 만 19세 미만 참가자의 모든 서비스 계약은 부모 또는 법정대리인이 체결해야 합니다. 회사는 프로그램 결과, 리포트, 전략 추천 사항을 부모/보호자에게 직접 전달합니다. 프로그램 진행 중 회사는 참가자의 안전을 위해 합리적인 조치를 취하지만, 이는 부모의 감독을 대체하지 않습니다.',
   },
   {
-    title: '7. 약관 변경',
-    body: '저희는 언제든지 본 이용약관을 수정할 권리를 보유합니다. 변경 사항은 업데이트된 발효일과 함께 이 페이지에 게시됩니다. 변경 후 서비스를 계속 이용하는 것은 개정된 약관에 동의하는 것으로 간주됩니다.',
+    title: '7. 기밀 유지',
+    body: '저희는 모든 고객 정보를 최고 수준의 신중함으로 처리합니다. 상담 및 계약 기간 중 공유된 정보는 법적으로 요구되는 경우 또는 합의된 서비스 제공에 필요한 경우(예: 사전 동의 하에 전문가 파트너에게 관련 정보 공유)를 제외하고 제3자에게 공개되지 않습니다.',
   },
   {
-    title: '8. 준거법',
-    body: '본 이용약관은 법률 충돌 규정에 관계없이 169 Avenue가 운영되는 관할권의 법률에 따라 해석됩니다.',
+    title: '8. 프로그램 중 안전 및 책임',
+    body: '회사는 국내 및 해외 프로그램 진행 중 모든 참가자의 안전을 위해 합리적인 예방 조치를 취합니다. 회사는 프로그램 활동에 대한 배상책임보험에 가입되어 있습니다. 다만, 참가자의 과실 또는 프로그램 지침 미준수로 인해 발생하는 부상이나 사고에 대해서는 회사가 책임지지 않습니다. 해외 프로그램의 경우 참가자는 유효한 여행자보험에 가입해야 합니다. 구체적인 안전 수칙은 각 프로그램 시작 전 부모/보호자에게 제공됩니다.',
   },
   {
-    title: '9. 문의',
-    body: '이용약관에 관한 질문이 있으시면 상담 양식 또는 런던 오피스를 통해 문의해 주시기 바랍니다.',
+    title: '9. 지식재산권',
+    body: '본 웹사이트의 모든 콘텐츠(텍스트, 그래픽, 디자인, Student Growth Report 템플릿 포함)는 169 Avenue의 독점 소유물이며 관련 지식재산권법의 보호를 받습니다. 개별 고객을 위해 작성된 Student Growth Report는 개인 용도로만 제공되며, 서면 동의 없이 복제 또는 배포할 수 없습니다.',
+  },
+  {
+    title: '10. 책임의 제한',
+    body: '169 Avenue는 컨설팅 및 교육 프로그램 서비스를 제공합니다. 어떤 기관의 입학도 보장하지 않습니다. 회사는 서비스 이용으로 인해 발생하는 간접적, 부수적 또는 결과적 손해에 대해 책임을 지지 않습니다. 다만, 회사의 고의 또는 중대한 과실로 인한 손해에는 이 제한이 적용되지 않습니다.',
+  },
+  {
+    title: '11. 약관 변경',
+    body: '저희는 언제든지 본 이용약관을 수정할 권리를 보유합니다. 변경 사항은 업데이트된 발효일과 함께 이 페이지에 게시됩니다. 기존 고객에게는 이메일을 통해 중요 변경 사항을 통지합니다. 변경 후 서비스를 계속 이용하는 것은 개정된 약관에 동의하는 것으로 간주됩니다.',
+  },
+  {
+    title: '12. 준거법 및 관할',
+    body: '본 이용약관은 대한민국 법률에 따라 해석됩니다. 본 약관과 관련하여 발생하는 모든 분쟁은 서울중앙지방법원을 전속 관할 법원으로 합니다.',
+  },
+  {
+    title: '13. 문의',
+    body: '이용약관에 관한 질문이 있으시면 웹사이트의 상담 양식 또는 이메일을 통해 문의해 주시기 바랍니다. 주소: 서울특별시, 대한민국.',
   },
 ]
 
