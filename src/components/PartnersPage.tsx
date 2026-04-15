@@ -31,46 +31,43 @@ function ServicesContent() {
         </p>
       </header>
 
-      {/* === COMMON STRUCTURE: Every Program === */}
+      {/* === HOW IT WORKS === */}
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-16 md:mb-24">
-        <div className="bg-primary text-on-primary p-8 md:p-16">
-          <h2 className="font-headline text-2xl md:text-3xl mb-3 text-center">
-            {ko ? '모든 프로그램의 공통 구조' : 'Every Program Follows This Structure'}
+        <div className="mb-14">
+          <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">
+            {ko ? '프로세스' : 'Process'}
+          </span>
+          <h2 className="font-headline text-3xl md:text-4xl text-primary tracking-tight">
+            {ko ? '경험에서 끝나지 않습니다.' : 'It doesn\'t end with the experience.'}
           </h2>
-          <p className="font-body text-sm text-on-primary/50 text-center mb-10 max-w-lg mx-auto">
-            {ko ? '프로그램 → 리포트 → 상담 → 다음 단계. 부모님은 항상 "결과"를 받습니다.' : 'Program → Report → Consultation → Next step. Parents always receive "results."'}
+          <p className="font-body text-on-surface-variant text-base mt-3 max-w-xl">
+            {ko
+              ? '모든 프로그램은 같은 흐름으로 진행됩니다. 부모님은 항상 결과를 받습니다.'
+              : 'Every program follows the same flow. Parents always receive results.'}
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {(ko
-              ? [
-                  { step: '01', icon: 'stethoscope', title: '사전 상담', desc: '아이 상태 파악 — 학업, 성향, 경험, 부모님 목표', tag: '파악' },
-                  { step: '02', icon: 'camp', title: '프로그램 진행', desc: '영어 + 체험 + 탐색 활동 (스포츠, 아트, 프로젝트)', tag: '경험' },
-                  { step: '03', icon: 'description', title: '결과 리포트', desc: '성향 분석 + 추천 방향 + 향후 계획', tag: '진단' },
-                  { step: '04', icon: 'record_voice_over', title: '후속 상담', desc: '부모님께 전략 설명 — 다음 단계, 전문가 연결, 장기 계획', tag: '핵심' },
-                ]
-              : [
-                  { step: '01', icon: 'stethoscope', title: 'Pre-Consultation', desc: 'Assess the child — academics, aptitude, experience, parent goals', tag: 'Assess' },
-                  { step: '02', icon: 'camp', title: 'Program', desc: 'English + experience + exploration (sports, art, projects)', tag: 'Experience' },
-                  { step: '03', icon: 'description', title: 'Results Report', desc: 'Aptitude analysis + recommended direction + future plan', tag: 'Diagnose' },
-                  { step: '04', icon: 'record_voice_over', title: 'Follow-up', desc: 'Explain strategy to parents — next steps, specialists, long-term plan', tag: 'Key' },
-                ]
-            ).map((item, i) => (
-              <div key={item.step} className="relative">
-                {i < 3 && <div className="hidden md:block absolute top-8 -right-3 text-on-primary/20 text-2xl">{'>'}</div>}
-                <div className={`bg-on-primary/5 border border-on-primary/10 p-6 h-full ${i === 3 ? 'ring-1 ring-secondary' : ''}`}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="font-headline text-3xl text-on-primary/20">{item.step}</span>
-                    <span className="material-symbols-outlined text-secondary text-xl">{item.icon}</span>
-                  </div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <h3 className="font-headline text-lg text-on-primary">{item.title}</h3>
-                    {i === 3 && <span className="text-xs bg-secondary text-white px-2 py-0.5 font-label uppercase tracking-widest">core</span>}
-                  </div>
-                  <p className="font-body text-sm text-on-primary/60 leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {(ko
+            ? [
+                { step: '01', title: '사전 상담', desc: '아이의 학업, 성향, 경험을 파악하고\n부모님의 목표를 듣습니다.' },
+                { step: '02', title: '프로그램', desc: '영어 몰입, 스포츠, 아트, 프로젝트\n— 경험하고 관찰합니다.' },
+                { step: '03', title: '성장 리포트', desc: '성향 분석, 추천 방향, 향후 로드맵을\n문서로 정리합니다.' },
+                { step: '04', title: '후속 상담', desc: '부모님께 전략을 설명하고,\n전문가를 연결하고, 다음 단계를 제시합니다.' },
+              ]
+            : [
+                { step: '01', title: 'Consultation', desc: 'We learn about your child\'s academics,\naptitude, and your goals as parents.' },
+                { step: '02', title: 'Program', desc: 'English immersion, sports, art, projects\n— experience and observe.' },
+                { step: '03', title: 'Growth Report', desc: 'Aptitude analysis, recommended direction,\nand a future roadmap — documented.' },
+                { step: '04', title: 'Follow-up', desc: 'We explain the strategy, connect\nspecialists, and present the next step.' },
+              ]
+          ).map((item) => (
+            <div key={item.step} className="bg-surface-container-low p-8 md:p-10">
+              <span className="font-headline italic text-4xl text-secondary/40 block mb-6">{item.step}</span>
+              <h3 className="font-headline text-xl text-primary mb-3">{item.title}</h3>
+              <p className="font-body text-sm text-on-surface-variant leading-relaxed whitespace-pre-line">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
