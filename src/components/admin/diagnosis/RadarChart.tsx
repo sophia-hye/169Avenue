@@ -68,7 +68,7 @@ export function RadarChart({ data, size = 280 }: { data: DataPoint[]; size?: num
       ))}
 
       {/* Values */}
-      {labels.map((l, i) => {
+      {labels.map((_l, i) => {
         const vp = getPoint(i, data[i].value + 0.6)
         return (
           <text key={`v${i}`} x={vp.x} y={vp.y} textAnchor="middle" dominantBaseline="middle"

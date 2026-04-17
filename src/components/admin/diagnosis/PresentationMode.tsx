@@ -61,7 +61,7 @@ export function PresentationMode({ data, onClose }: Props) {
       const axes = Array.from({length:n},(_,i)=>{const e=pt(i,5);return `<line x1="${cx}" y1="${cy}" x2="${e.x}" y2="${e.y}" stroke="#E5E0D8" stroke-width="0.5"/>`}).join('')
       const dataPts = ds.map((d,i)=>pt(i,d.value))
       const dataPath = `<polygon points="${dataPts.map(p=>`${p.x},${p.y}`).join(' ')}" fill="#6B4F4F" fill-opacity="0.15" stroke="#6B4F4F" stroke-width="1.5"/>`
-      const dots = dataPts.map((p,i)=>`<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#6B4F4F"/>`).join('')
+      const dots = dataPts.map((p)=>`<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#6B4F4F"/>`).join('')
       const labels = ds.map((d,i)=>{const lp=pt(i,5.8);return `<text x="${lp.x}" y="${lp.y}" text-anchor="middle" dominant-baseline="middle" style="font-size:11px;fill:#5A5550;font-family:Pretendard,sans-serif">${d.axis}</text>`}).join('')
       const vals = ds.map((d,i)=>{const vp=pt(i,d.value+0.7);return `<text x="${vp.x}" y="${vp.y}" text-anchor="middle" dominant-baseline="middle" style="font-size:10px;fill:#6B4F4F;font-weight:600;font-family:Pretendard,sans-serif">${d.value.toFixed(1)}</text>`}).join('')
       return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">${grid}${axes}${dataPath}${dots}${labels}${vals}</svg>`
