@@ -68,7 +68,7 @@ export function HomePage() {
         <MiniCTA />
         <Destinations />
         <CaseStudies />
-        <MiniCTA text="Want to see how your case would be analyzed?" linkText="Request Case Analysis" />
+        <MiniCTA text={language === 'ko' ? '내 케이스는 어떻게 분석될까요?' : 'Want to see how your case would be analyzed?'} linkText={language === 'ko' ? '케이스 분석 요청' : 'Request Case Analysis'} />
         <FAQ />
         <TrustSection />
         <CallToAction />

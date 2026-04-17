@@ -46,23 +46,24 @@ export function Navbar() {
   const [blogOpen, setBlogOpen] = useState(false)
   const [admissionsOpen, setAdmissionsOpen] = useState(false)
   const { language, setLanguage, t } = useLanguage()
+  const ko = language === 'ko'
   const { isAdmin } = useAuth()
 
   const SERVICES_ITEMS = [
     { label: 'Future Path Camp', to: '/services' },
-    { label: language === 'ko' ? '미국 진로 체험 프로그램' : 'US Career Experience Program', to: '/services/us-experience' },
+    { label: ko ? '미국 진로 체험 프로그램' : 'US Career Experience Program', to: '/services/us-experience' },
   ]
 
   const BLOG_ITEMS = [
-    { label: 'Blog', to: '/blog' },
-    { label: language === 'ko' ? '케이스 스터디' : 'Case Studies', to: '/stories' },
+    { label: ko ? '블로그' : 'Blog', to: '/blog' },
+    { label: ko ? '케이스 스터디' : 'Case Studies', to: '/stories' },
   ]
 
   const ADMISSIONS_ITEMS = [
-    { label: 'Domestic Overview', to: '/domestic' },
-    { label: 'Foreign HS → Korean Uni', to: '/domestic/freshman' },
-    { label: 'Foreign Uni → Korean Uni Transfer', to: '/domestic/transfer' },
-    { label: 'International', to: '/destinations' },
+    { label: ko ? '국내 입시 개요' : 'Domestic Overview', to: '/domestic' },
+    { label: ko ? '해외고 → 한국대' : 'Foreign HS → Korean Uni', to: '/domestic/freshman' },
+    { label: ko ? '해외대 → 한국대 편입' : 'Foreign Uni → Korean Uni Transfer', to: '/domestic/transfer' },
+    { label: ko ? '해외 대학' : 'International', to: '/destinations' },
   ]
 
   return (
@@ -84,7 +85,7 @@ export function Navbar() {
               onToggle={() => setServicesOpen(!servicesOpen)}
             />
             <DropdownMenu
-              label="Blog"
+              label={ko ? '블로그' : 'Blog'}
               items={BLOG_ITEMS}
               isOpen={blogOpen}
               onToggle={() => setBlogOpen(!blogOpen)}
@@ -92,16 +93,16 @@ export function Navbar() {
             {isAdmin && (
               <>
                 <DropdownMenu
-                  label="Admissions"
+                  label={ko ? '입시 정보' : 'Admissions'}
                   items={ADMISSIONS_ITEMS}
                   isOpen={admissionsOpen}
                   onToggle={() => setAdmissionsOpen(!admissionsOpen)}
                 />
                 <Link to="/admin/diagnosis" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
-                  Diagnosis
+                  {ko ? '학생 진단' : 'Diagnosis'}
                 </Link>
                 <Link to="/admin/report" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
-                  Student Report
+                  {ko ? '성장 리포트' : 'Student Report'}
                 </Link>
               </>
             )}

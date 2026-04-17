@@ -173,6 +173,7 @@ function MobileConsultation() {
   const phonePlaceholder = COUNTRY_CODES.find(c => c.code === countryCode)?.placeholder ?? '000-0000'
   const navigate = useNavigate()
   const { language, setLanguage, t } = useLanguage()
+  const ko = language === 'ko'
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -277,7 +278,7 @@ function MobileConsultation() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">School Location <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '학교 소재지' : 'School Location'} <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                     <option value="" disabled>Select location</option>
@@ -287,7 +288,7 @@ function MobileConsultation() {
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Grade Level <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '학년' : 'Grade Level'} <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                     <option value="" disabled>Select grade</option>
@@ -297,7 +298,7 @@ function MobileConsultation() {
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Curriculum <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '커리큘럼' : 'Curriculum'} <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                     <option value="" disabled>Select curriculum</option>
@@ -307,23 +308,23 @@ function MobileConsultation() {
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">GPA / Expected Grade</label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? 'GPA / 예상 성적' : 'GPA / Expected Grade'}</label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. 3.8/4.0, A*AA, 42/45 IB" type="text" />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">IB / AP Score (if applicable)</label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? 'IB / AP 점수 (해당 시)' : 'IB / AP Score (if applicable)'}</label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. IB 42/45, AP 5 (Calc BC), AP 4 (Econ)" type="text" />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Intended Major <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '희망 전공' : 'Intended Major'} <span className="text-secondary">*</span></label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Computer Science, Economics" type="text" required />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Preferred Universities</label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '희망 대학' : 'Preferred Universities'}</label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. MIT, Stanford, Oxford" type="text" />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Admission Type <span className="text-secondary">*</span></label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '입시 유형' : 'Admission Type'} <span className="text-secondary">*</span></label>
                 <div className="relative">
                   <select className="appearance-none w-full bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                     <option value="" disabled>Select type</option>
@@ -360,14 +361,14 @@ function MobileConsultation() {
                 <UniversitySearchInput />
               </div>
 
-              {/* Extracurricular Activities */}
+              {/* {ko ? '비교과 활동' : 'Extracurricular Activities'} */}
               <div className="flex items-center space-x-3 border-b border-outline-variant/30 pb-3 mt-6">
                 <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
-                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">Extracurricular Activities</span>
+                <span className="font-label text-[10px] tracking-[0.2em] text-primary uppercase font-bold">{ko ? '비교과 활동' : 'Extracurricular Activities'}</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Activities & Achievements</label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '활동 및 성과' : 'Activities & Achievements'}</label>
                 <textarea className="bg-surface-container-low border-none p-6 font-body text-sm placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:outline-none transition-colors resize-none" placeholder="가장 오래 한 활동 또는 전공과 관련된 경험을 간단히 적어주세요 / Longest activity or major-related experience" rows={3} />
               </div>
 
@@ -378,15 +379,15 @@ function MobileConsultation() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Your strongest subject</label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '가장 자신 있는 과목' : 'Your strongest subject'}</label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Mathematics, Biology, Economics" type="text" />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Why this major?</label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '이 전공을 선택한 이유' : 'Why this major?'}</label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="Brief reason for your major choice" type="text" />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">Your biggest concern right now</label>
+                <label className="font-label uppercase tracking-widest text-[10px] text-secondary font-bold">{ko ? '현재 가장 큰 고민' : 'Your biggest concern right now'}</label>
                 <input className="bg-transparent border-t-0 border-x-0 border-b border-outline-variant py-3 px-0 font-body text-sm focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Not sure if my grades are competitive enough" type="text" />
               </div>
               <div className="flex flex-col gap-2">
@@ -630,44 +631,44 @@ export function ConsultationPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">School Location <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? '학교 소재지' : 'School Location'} <span className="text-secondary">*</span></label>
                       <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                         <option value="" disabled>Select location</option>
                         {SCHOOL_LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
                       </select>
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Grade Level <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? '학년' : 'Grade Level'} <span className="text-secondary">*</span></label>
                       <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                         <option value="" disabled>Select grade</option>
                         {GRADE_LEVELS.map((g) => <option key={g} value={g}>{g}</option>)}
                       </select>
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Curriculum <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? '커리큘럼' : 'Curriculum'} <span className="text-secondary">*</span></label>
                       <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                         <option value="" disabled>Select curriculum</option>
                         {CURRICULUMS.map((c) => <option key={c} value={c}>{c}</option>)}
                       </select>
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">GPA / Expected Grade</label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? 'GPA / 예상 성적' : 'GPA / Expected Grade'}</label>
                       <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. 3.8/4.0, A*AA, 42/45 IB" type="text" />
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">IB / AP Score (if applicable)</label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? 'IB / AP 점수 (해당 시)' : 'IB / AP Score (if applicable)'}</label>
                       <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. IB 42/45, AP 5 (Calc BC)" type="text" />
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Intended Major <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? '희망 전공' : 'Intended Major'} <span className="text-secondary">*</span></label>
                       <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. Computer Science, Economics" type="text" required />
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Preferred Universities</label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? '희망 대학' : 'Preferred Universities'}</label>
                       <input className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic placeholder:text-stone-300 focus:border-secondary focus:outline-none transition-colors" placeholder="e.g. MIT, Stanford, Oxford" type="text" />
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Admission Type <span className="text-secondary">*</span></label>
+                      <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? '입시 유형' : 'Admission Type'} <span className="text-secondary">*</span></label>
                       <select className="bg-transparent border-b border-outline-variant py-4 font-headline text-xl italic appearance-none cursor-pointer focus:border-secondary focus:outline-none transition-colors" required defaultValue="">
                         <option value="" disabled>Select type</option>
                         {ADMISSION_TYPES.map((a) => <option key={a} value={a}>{a}</option>)}
@@ -701,14 +702,14 @@ export function ConsultationPage() {
                     </div>
                   </div>
                 </div>
-                {/* Step 4 — Extracurricular Activities */}
+                {/* Step 4 — {ko ? '비교과 활동' : 'Extracurricular Activities'} */}
                 <div className="space-y-12">
                   <div className="flex items-center space-x-4 border-b border-outline-variant/30 pb-4">
                     <span className="font-label text-[10px] tracking-[0.2em] text-secondary uppercase">04</span>
-                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">Extracurricular Activities</h2>
+                    <h2 className="font-label text-xs tracking-[0.2em] text-primary uppercase font-bold">{ko ? '비교과 활동' : 'Extracurricular Activities'}</h2>
                   </div>
                   <div className="flex flex-col space-y-4">
-                    <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Activities & Achievements</label>
+                    <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{ko ? '활동 및 성과' : 'Activities & Achievements'}</label>
                     <textarea className="bg-surface-container-low border-none p-8 font-headline text-xl italic placeholder:text-stone-400 focus:bg-surface-container-lowest focus:outline-none transition-colors" placeholder="가장 오래 한 활동 또는 전공과 관련된 경험을 간단히 적어주세요 / Longest activity or major-related experience" rows={4} />
                   </div>
                 </div>

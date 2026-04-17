@@ -3,6 +3,7 @@ import { Navbar } from '../Navbar'
 import { ReportPreview } from './ReportPreview'
 import { PdfExportModal } from './PdfExportModal'
 import { DEFAULT_REPORT, PERSONALITY_LABELS, type ReportData, type SkillEntry, type ExplorationEntry, type ProfileBar, type PersonalityType } from '../../data/report-template'
+import { useLanguage } from '../../context/LanguageContext'
 
 /* ── Shared UI ── */
 
@@ -59,6 +60,8 @@ function PagePreview({ data, pageIndex }: { data: ReportData; pageIndex: number 
 export function StudentReportPage() {
   const [data, setData] = useState<ReportData>({ ...DEFAULT_REPORT })
   const [showExportModal, setShowExportModal] = useState(false)
+  const { language } = useLanguage()
+  const ko = language === 'ko'
 
   const update = useCallback(<K extends keyof ReportData>(key: K, value: ReportData[K]) => {
     setData((prev) => ({ ...prev, [key]: value }))
@@ -103,41 +106,41 @@ export function StudentReportPage() {
 
   const pages = [
     {
-      title: 'Cover',
+      title: ko ? '표지' : 'Cover',
       pageIndex: 0,
       form: (
         <>
-          <Input label="Student Name" value={data.studentName} onChange={(v) => update('studentName', v)} placeholder="e.g. Sophia Kim" />
-          <Input label="Grade" value={data.grade} onChange={(v) => update('grade', v)} placeholder="e.g. Grade 4" />
-          <Input label="Program Name" value={data.programName} onChange={(v) => update('programName', v)} />
-          <Input label="Program Period" value={data.programPeriod} onChange={(v) => update('programPeriod', v)} placeholder="e.g. 2 weeks" />
-          <Input label="Date" value={data.date} onChange={(v) => update('date', v)} />
-          <Input label="Observer" value={data.observer} onChange={(v) => update('observer', v)} placeholder="e.g. Director Kim" />
+          <Input label={ko ? '학생 이름' : 'Student Name'} value={data.studentName} onChange={(v) => update('studentName', v)} placeholder={ko ? '예: 김소피아' : 'e.g. Sophia Kim'} />
+          <Input label={ko ? '학년' : 'Grade'} value={data.grade} onChange={(v) => update('grade', v)} placeholder={ko ? '예: 초등 4학년' : 'e.g. Grade 4'} />
+          <Input label={ko ? '프로그램명' : 'Program Name'} value={data.programName} onChange={(v) => update('programName', v)} />
+          <Input label={ko ? '프로그램 기간' : 'Program Period'} value={data.programPeriod} onChange={(v) => update('programPeriod', v)} placeholder={ko ? '예: 2주' : 'e.g. 2 weeks'} />
+          <Input label={ko ? '날짜' : 'Date'} value={data.date} onChange={(v) => update('date', v)} />
+          <Input label={ko ? '관찰 담당자' : 'Observer'} value={data.observer} onChange={(v) => update('observer', v)} placeholder={ko ? '예: 김 디렉터' : 'e.g. Director Kim'} />
         </>
       ),
     },
     {
-      title: 'Executive Summary',
+      title: ko ? '핵심 요약' : 'Executive Summary',
       pageIndex: 1,
       form: (
         <>
-          <Input label="Summary" value={data.summaryText} onChange={(v) => update('summaryText', v)} multiline placeholder="[Student] showed strong participation... recommended direction is..." />
-          <Input label="Strength" value={data.strength} onChange={(v) => update('strength', v)} placeholder="e.g. Communication / Active Participation" />
-          <Input label="Direction" value={data.direction} onChange={(v) => update('direction', v)} placeholder="e.g. Exploration + Expression" />
-          <Input label="Keywords" value={data.keywords} onChange={(v) => update('keywords', v)} placeholder="e.g. Presentation / Experience / Growth" />
+          <Input label={ko ? '요약' : 'Summary'} value={data.summaryText} onChange={(v) => update('summaryText', v)} multiline placeholder={ko ? '[학생 이름]은 높은 참여도를 보였으며... 추천 방향은...' : '[Student] showed strong participation... recommended direction is...'} />
+          <Input label={ko ? '강점' : 'Strength'} value={data.strength} onChange={(v) => update('strength', v)} placeholder={ko ? '예: 커뮤니케이션 / 적극적 참여' : 'e.g. Communication / Active Participation'} />
+          <Input label={ko ? '추천 방향' : 'Direction'} value={data.direction} onChange={(v) => update('direction', v)} placeholder={ko ? '예: 탐색 + 표현' : 'e.g. Exploration + Expression'} />
+          <Input label={ko ? '핵심 키워드' : 'Keywords'} value={data.keywords} onChange={(v) => update('keywords', v)} placeholder={ko ? '예: 발표 / 경험 / 성장' : 'e.g. Presentation / Experience / Growth'} />
         </>
       ),
     },
     {
-      title: 'Area Assessment',
+      title: ko ? '영역별 평가' : 'Area Assessment',
       pageIndex: 2,
       form: (
         <>
-          <p className="font-body text-xs text-on-surface-variant/50 mb-4">English / Communication & Learning Attitude</p>
+          <p className="font-body text-xs text-on-surface-variant/50 mb-4">{ko ? '영어 / 커뮤니케이션 & 학습 태도' : 'English / Communication & Learning Attitude'}</p>
           {data.skills.map((skill, i) => (
             <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
               <div className="flex items-center justify-between gap-3 mb-3">
-                <Input label="Skill Name" value={skill.name} onChange={(v) => updateSkill(i, 'name', v)} />
+                <Input label={ko ? '항목명' : 'Skill Name'} value={skill.name} onChange={(v) => updateSkill(i, 'name', v)} />
                 <div className="flex items-center gap-1 shrink-0 pt-4">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <button key={n} type="button" onClick={() => updateSkill(i, 'stars', n)}
@@ -147,21 +150,21 @@ export function StudentReportPage() {
                   ))}
                 </div>
               </div>
-              <Input label="Observation" value={skill.description} onChange={(v) => updateSkill(i, 'description', v)} placeholder="Specific observations..." />
+              <Input label={ko ? '관찰 내용' : 'Observation'} value={skill.description} onChange={(v) => updateSkill(i, 'description', v)} placeholder={ko ? '구체적인 관찰 내용...' : 'Specific observations...'} />
             </div>
           ))}
-          <p className="font-body text-xs text-on-surface-variant/50 mb-4 mt-6">Exploration Areas</p>
+          <p className="font-body text-xs text-on-surface-variant/50 mb-4 mt-6">{ko ? '탐색 영역' : 'Exploration Areas'}</p>
           {data.explorations.map((exp, i) => (
             <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
-              <Input label="Area" value={exp.name} onChange={(v) => updateExploration(i, 'name', v)} />
-              <Input label="Observation" value={exp.description} onChange={(v) => updateExploration(i, 'description', v)} placeholder="e.g. High reaction speed, competitive focus..." />
+              <Input label={ko ? '영역' : 'Area'} value={exp.name} onChange={(v) => updateExploration(i, 'name', v)} />
+              <Input label={ko ? '관찰 내용' : 'Observation'} value={exp.description} onChange={(v) => updateExploration(i, 'description', v)} placeholder={ko ? '예: 반응 속도 빠름, 경쟁 상황 집중력 상승...' : 'e.g. High reaction speed, competitive focus...'} />
             </div>
           ))}
         </>
       ),
     },
     {
-      title: 'Personality Analysis',
+      title: ko ? '성향 분석' : 'Personality Analysis',
       pageIndex: 3,
       form: (
         <>
@@ -180,7 +183,7 @@ export function StudentReportPage() {
             )
           })}
           <div className="mb-4">
-            <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-2 block">Primary Type(s)</span>
+            <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-2 block">{ko ? '성향 유형' : 'Primary Type(s)'}</span>
             <div className="flex flex-col gap-2">
               {(Object.keys(PERSONALITY_LABELS) as PersonalityType[]).map((type) => {
                 const info = PERSONALITY_LABELS[type]
@@ -188,18 +191,18 @@ export function StudentReportPage() {
                 return (
                   <button key={type} type="button" onClick={() => toggleType(type)}
                     className={`px-4 py-2.5 font-body text-sm border transition-colors text-left ${active ? 'border-secondary bg-secondary/10 text-secondary' : 'border-outline-variant/30 text-on-surface-variant/50 hover:border-secondary'}`}>
-                    {info.en} ({info.ko}) — {info.desc_en}
+                    {info.en} ({info.ko}) — {ko ? info.desc_ko : info.desc_en}
                   </button>
                 )
               })}
             </div>
           </div>
-          <Input label="Comprehensive Diagnosis" value={data.analysisNote} onChange={(v) => update('analysisNote', v)} multiline placeholder='This student shows "Exploratory + Expressive" tendencies...' />
+          <Input label={ko ? '종합 진단' : 'Comprehensive Diagnosis'} value={data.analysisNote} onChange={(v) => update('analysisNote', v)} multiline placeholder={ko ? '이 학생은 "탐색형 + 표현형" 성향을 보이며...' : 'This student shows "Exploratory + Expressive" tendencies...'} />
         </>
       ),
     },
     {
-      title: 'Growth Roadmap',
+      title: ko ? '성장 로드맵' : 'Growth Roadmap',
       pageIndex: 4,
       form: (
         <>
@@ -207,33 +210,33 @@ export function StudentReportPage() {
             <div key={i} className="mb-4 p-4 border border-outline-variant/10 bg-surface-container-low">
               <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest block mb-2">{entry.period}</span>
               {entry.items.map((item, j) => (
-                <input key={j} value={item} onChange={(e) => updateRoadmap(i, j, e.target.value)} placeholder={`Goal ${j + 1}`}
+                <input key={j} value={item} onChange={(e) => updateRoadmap(i, j, e.target.value)} placeholder={ko ? `목표 ${j + 1}` : `Goal ${j + 1}`}
                   className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface outline-none focus:border-secondary mb-2" />
               ))}
-              <button onClick={() => addRoadmapItem(i)} className="text-xs text-secondary font-body hover:underline">+ Add item</button>
+              <button onClick={() => addRoadmapItem(i)} className="text-xs text-secondary font-body hover:underline">{ko ? '+ 항목 추가' : '+ Add item'}</button>
             </div>
           ))}
         </>
       ),
     },
     {
-      title: 'Recommended Path',
+      title: ko ? '추천 프로그램' : 'Recommended Path',
       pageIndex: 5,
       form: (
         <>
           {data.recommendedSteps.map((step, i) => (
-            <input key={i} value={step} onChange={(e) => updateStep(i, e.target.value)} placeholder={`Program ${i + 1}`}
+            <input key={i} value={step} onChange={(e) => updateStep(i, e.target.value)} placeholder={ko ? `프로그램 ${i + 1}` : `Program ${i + 1}`}
               className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary mb-2" />
           ))}
-          <button onClick={addStep} className="text-xs text-secondary font-body hover:underline">+ Add program</button>
+          <button onClick={addStep} className="text-xs text-secondary font-body hover:underline">{ko ? '+ 프로그램 추가' : '+ Add program'}</button>
         </>
       ),
     },
     {
-      title: 'Closing',
+      title: ko ? '마무리' : 'Closing',
       pageIndex: 6,
       form: (
-        <Input label="Closing Message" value={data.closingMessage} onChange={(v) => update('closingMessage', v)} multiline placeholder="With the right guidance and continued exploration..." />
+        <Input label={ko ? '마무리 메시지' : 'Closing Message'} value={data.closingMessage} onChange={(v) => update('closingMessage', v)} multiline placeholder={ko ? '올바른 방향과 지속적인 탐색으로 의미 있는 성장이 기대됩니다...' : 'With the right guidance and continued exploration...'} />
       ),
     },
   ]
@@ -245,12 +248,12 @@ export function StudentReportPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div>
-            <h1 className="font-headline text-3xl text-primary tracking-tight">Student Growth Report</h1>
-            <p className="font-body text-sm text-on-surface-variant/50 mt-1">Scroll down to fill each page. Preview updates live on the left.</p>
+            <h1 className="font-headline text-3xl text-primary tracking-tight">{ko ? '학생 성장 리포트' : 'Student Growth Report'}</h1>
+            <p className="font-body text-sm text-on-surface-variant/50 mt-1">{ko ? '아래로 스크롤하면서 각 페이지를 작성하세요. 왼쪽에서 미리보기가 실시간 업데이트됩니다.' : 'Scroll down to fill each page. Preview updates live on the left.'}</p>
           </div>
           <button onClick={() => setShowExportModal(true)} className="bg-primary text-on-primary px-8 py-3 font-body text-sm uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95 flex items-center gap-2">
             <span className="material-symbols-outlined text-lg">download</span>
-            Download PDF
+            {ko ? 'PDF 다운로드' : 'Download PDF'}
           </button>
         </div>
 
@@ -285,7 +288,7 @@ export function StudentReportPage() {
         <div className="mt-16 text-center">
           <button onClick={() => setShowExportModal(true)} className="bg-primary text-on-primary px-12 py-4 font-body text-sm uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95 inline-flex items-center gap-2">
             <span className="material-symbols-outlined text-lg">download</span>
-            Download PDF
+            {ko ? 'PDF 다운로드' : 'Download PDF'}
           </button>
         </div>
 

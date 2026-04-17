@@ -25,7 +25,7 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
   ] as const
 
   const TABS = isAdmin
-    ? [...baseTabs, { id: 'report' as const, label: 'Report', to: '/admin/report', icon: 'description' }]
+    ? [...baseTabs, { id: 'report' as const, label: language === 'ko' ? '리포트' : 'Report', to: '/admin/report', icon: 'description' }]
     : baseTabs
 
   return (
