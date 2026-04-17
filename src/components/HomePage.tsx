@@ -26,9 +26,8 @@ export function HomePage() {
     <div className="bg-surface selection:bg-secondary/30">
       {/* Mobile Top Bar */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md flex justify-between items-center w-full px-4 py-3">
-        <Link to="/" className="flex items-center gap-0">
-          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="169 Avenue" className="h-14 brightness-0 -my-2" />
-          <span className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</span>
+        <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">
+          169 Avenue
         </Link>
         <div className="flex items-center gap-2">
           <button onClick={() => setSearchOpen(true)} className="text-primary/70 p-1" aria-label="Search">

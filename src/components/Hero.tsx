@@ -8,13 +8,17 @@ export function Hero() {
     <section className="relative min-h-[90vh] flex items-center px-8 md:px-16 lg:px-24 mb-32">
       <div className="grid grid-cols-12 w-full max-w-screen-2xl mx-auto gap-8 items-center">
         <div className="col-span-12 lg:col-span-7 z-10">
-          <span className="font-label text-xs tracking-[0.3em] uppercase text-secondary mb-6 block">
-            {t.hero_tag2}
-          </span>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-headline leading-[1] tracking-tighter text-primary mb-8 -ml-1 md:-ml-2">
-            {t.hero_h1_1} <br />
-            <span className="italic font-normal">{t.hero_h1_2}</span>
-          </h1>
+          <div className="flex items-center gap-5 mb-10">
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="h-24 md:h-32 brightness-0 opacity-80" />
+            <div>
+              <h1 className="font-headline text-3xl md:text-5xl tracking-tighter text-secondary leading-[1.1]">
+                Future Path Camp
+              </h1>
+              <p className="font-headline text-xl md:text-2xl text-primary/70 mt-3 tracking-tight">
+                {t.hero_h1_1} <span className="italic">{t.hero_h1_2}</span>
+              </p>
+            </div>
+          </div>
           <p className="max-w-lg font-body text-on-surface-variant text-lg leading-relaxed mb-4">
             {t.hero_sub}
           </p>

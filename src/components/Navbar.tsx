@@ -69,9 +69,8 @@ export function Navbar() {
     <>
       <nav className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md">
         <div className="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
-          <Link to="/" className="flex items-center gap-0">
-            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="169 Avenue" className="h-20 brightness-0 -my-4" />
-            <span className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</span>
+          <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">
+            169 Avenue
           </Link>
 
           <div className="hidden md:flex items-center space-x-10">
