@@ -7,12 +7,14 @@ import { MidPageCTA } from './PageCTA'
 import { FEATURED_STORY, STORIES } from '../data/stories'
 import { useLanguage } from '../context/LanguageContext'
 import { MobileBottomNav } from './MobileBottomNav'
+import { MobileMenuOverlay } from './MobileMenuOverlay'
 import { usePageTitle } from '../hooks/usePageTitle'
 
 function MobileStories() {
   const navigate = useNavigate()
   const { language, setLanguage, t } = useLanguage()
   const [searchOpen, setSearchOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   return (
     <div className="md:hidden">
       {/* Mobile Top Bar */}
@@ -44,9 +46,13 @@ function MobileStories() {
           >
             {t.nav_consult}
           </Link>
+          <button onClick={() => setMenuOpen(true)} className="text-primary/70 p-1" aria-label="Menu">
+            <span className="material-symbols-outlined text-xl">menu</span>
+          </button>
         </div>
       </header>
       {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
+      {menuOpen && <MobileMenuOverlay onClose={() => setMenuOpen(false)} />}
 
       <main className="min-h-screen pt-16 pb-20">
         {/* Header */}

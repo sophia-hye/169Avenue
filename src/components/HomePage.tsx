@@ -14,12 +14,14 @@ import { CallToAction } from './CallToAction'
 import { Footer } from './Footer'
 import { MobileHome } from './MobileHome'
 import { SearchOverlay } from './SearchOverlay'
+import { MobileMenuOverlay } from './MobileMenuOverlay'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageTitle } from '../hooks/usePageTitle'
 
 export function HomePage() {
   const { language, setLanguage, t } = useLanguage()
   const [searchOpen, setSearchOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   usePageTitle()
 
   return (
@@ -50,9 +52,13 @@ export function HomePage() {
           >
             {t.nav_consult}
           </Link>
+          <button onClick={() => setMenuOpen(true)} className="text-primary/70 p-1" aria-label="Menu">
+            <span className="material-symbols-outlined text-xl">menu</span>
+          </button>
         </div>
       </header>
       {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
+      {menuOpen && <MobileMenuOverlay onClose={() => setMenuOpen(false)} />}
 
       {/* Desktop Navbar */}
       <div className="hidden md:block">

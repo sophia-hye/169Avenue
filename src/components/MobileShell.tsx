@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { SearchOverlay } from './SearchOverlay'
 import { AdminToggle } from './AdminToggle'
 import { MobileBottomNav, type MobileTabId } from './MobileBottomNav'
+import { MobileMenuOverlay } from './MobileMenuOverlay'
 import { useLanguage } from '../context/LanguageContext'
 
 interface MobileShellProps {
@@ -14,6 +15,7 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
   const navigate = useNavigate()
   const { language, setLanguage, t } = useLanguage()
   const [searchOpen, setSearchOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <div className="md:hidden">
@@ -61,6 +63,13 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
           >
             {t.nav_consult}
           </Link>
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="text-primary/70 p-1"
+            aria-label="Menu"
+          >
+            <span className="material-symbols-outlined text-xl">menu</span>
+          </button>
         </div>
       </header>
 
@@ -70,6 +79,7 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
       </main>
 
       {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
+      {menuOpen && <MobileMenuOverlay onClose={() => setMenuOpen(false)} />}
 
       <MobileBottomNav activeTab={activeTab} />
     </div>
