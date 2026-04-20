@@ -5,7 +5,7 @@ import { useLanguage } from '../context/LanguageContext'
 export function Hero() {
   const { t } = useLanguage()
   return (
-    <section className="relative min-h-[90vh] flex items-center px-8 md:px-16 lg:px-24 mb-32">
+    <section className="relative min-h-[70vh] md:min-h-[90vh] flex items-center px-6 md:px-16 lg:px-24 mb-16 md:mb-32 pt-20 md:pt-0">
       <div className="grid grid-cols-12 w-full max-w-screen-2xl mx-auto gap-8 items-center">
         <div className="col-span-12 lg:col-span-7 z-10">
           <div className="flex items-center gap-5 mb-10">

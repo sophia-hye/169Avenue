@@ -27,19 +27,19 @@ export function Destinations() {
             <Link
               key={item.title}
               to="/destinations"
-              className={`${layout.colSpan} group relative overflow-hidden ${layout.bgClass} cursor-pointer`}
+              className={`${layout.colSpan} h-48 md:h-auto group relative overflow-hidden ${layout.bgClass} cursor-pointer`}
             >
               <img
                 alt={item.title}
                 className={`w-full h-full object-cover ${layout.imgOpacity} group-hover:scale-105 group-hover:grayscale transition-all duration-700`}
                 src={layout.image}
               />
-              <div className="absolute inset-0 p-10 flex flex-col justify-between z-10">
+              <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-between z-10">
                 <span className={`font-label text-xs tracking-widest ${layout.textClass} uppercase`}>
                   {item.tag}
                 </span>
                 <div>
-                  <h3 className={`text-4xl ${layout.textClass} font-headline mb-2`}>{item.title}</h3>
+                  <h3 className={`text-2xl md:text-4xl ${layout.textClass} font-headline mb-2`}>{item.title}</h3>
                   <p className={`${layout.descClass} font-body text-sm max-w-xs`}>{item.description}</p>
                 </div>
               </div>

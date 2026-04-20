@@ -30,13 +30,7 @@ export const homeTranslations = {
       { title: 'Asia-Pacific', tag: 'Emerging Frontiers', description: 'The new standard for global innovation hubs in Singapore & Seoul.' },
     ],
 
-    // MobileHome
-    mobile_our_philosophy: 'Our Philosophy',
-    mobile_curated_services: 'Curated Services',
-    mobile_cta_body: 'Experience the bespoke approach to global academic placement. Secure your private consultation.',
-    mobile_success_stories: 'Success Stories',
-
-    // New Hero / TargetCards / Problem / Process / CaseStudies / FAQ / Trust / CTA / MiniCTA
+    // Hero / TargetCards / Problem / Process / CaseStudies / FAQ / Trust / CTA / MiniCTA
     hero_h1_1: 'Not an English Camp.',
     hero_h1_2: 'The Start of Admissions.',
     hero_sub: 'We assess your child\'s situation, design their direction, connect them with the right specialists, and explain the whole plan to you.',
@@ -132,10 +126,6 @@ export const homeTranslations = {
     mini_cta_case: 'Want to see how your case would be analyzed?',
     mini_cta_case_btn: 'Request Case Analysis',
     mini_cta_region: 'Need a strategy for universities in this region?',
-
-    mobile_hero_h1: 'From Overseas to Opportunity',
-    mobile_hero_sub: 'We diagnose your competitiveness for Korean and overseas university admissions.',
-    mobile_hero_cta: 'Free Diagnosis',
   },
 
   ko: {
@@ -164,11 +154,6 @@ export const homeTranslations = {
       { title: '유럽', tag: '현대적 클래식', description: '파리와 베를린의 비즈니스·예술·디자인 리더십.' },
       { title: '아시아-태평양', tag: '신흥 허브', description: '싱가포르와 서울의 글로벌 혁신 허브 신기준.' },
     ],
-
-    mobile_our_philosophy: '우리의 철학',
-    mobile_curated_services: '큐레이티드 서비스',
-    mobile_cta_body: '글로벌 학업 배치에 대한 맞춤형 접근 방식을 경험하세요. 비공개 상담을 예약하세요.',
-    mobile_success_stories: '성공 사례',
 
     hero_h1_1: '단순한 영어 캠프가 아닙니다.',
     hero_h1_2: '진로의 시작입니다.',
@@ -265,9 +250,5 @@ export const homeTranslations = {
     mini_cta_case: '내 케이스는 어떻게 분석될까요?',
     mini_cta_case_btn: '케이스 분석 요청',
     mini_cta_region: '이 지역 대학 지원 전략이 필요하신가요?',
-
-    mobile_hero_h1: '해외 학력을 전략으로 연결합니다',
-    mobile_hero_sub: '한국 대학 및 해외 대학 입시 경쟁력을 진단합니다.',
-    mobile_hero_cta: '무료 진단',
   },
 } as const

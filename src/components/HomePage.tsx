@@ -12,7 +12,8 @@ import { TrustSection } from './TrustSection'
 import { MiniCTA } from './MiniCTA'
 import { CallToAction } from './CallToAction'
 import { Footer } from './Footer'
-import { MobileHome } from './MobileHome'
+import { MobileFooter } from './MobileShell'
+import { MobileBottomNav } from './MobileBottomNav'
 import { SearchOverlay } from './SearchOverlay'
 import { MobileMenuOverlay } from './MobileMenuOverlay'
 import { AdminToggle } from './AdminToggle'
@@ -67,8 +68,8 @@ export function HomePage() {
         <Navbar />
       </div>
 
-      {/* Desktop Content */}
-      <main className="hidden md:block pt-24 overflow-x-hidden">
+      {/* Shared content (responsive) */}
+      <main className="md:pt-24 pb-24 md:pb-0 overflow-x-hidden">
         <Hero />
         <TargetCards />
         <ProblemSection />
@@ -81,14 +82,15 @@ export function HomePage() {
         <TrustSection />
         <CallToAction />
       </main>
+
+      {/* Footer */}
       <div className="hidden md:block">
         <Footer />
       </div>
+      <MobileFooter />
 
-      {/* Mobile Content */}
-      <div className="pt-16">
-        <MobileHome />
-      </div>
+      {/* Mobile bottom nav */}
+      <MobileBottomNav />
     </div>
   )
 }
