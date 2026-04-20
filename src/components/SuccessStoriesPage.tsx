@@ -8,6 +8,7 @@ import { FEATURED_STORY, STORIES } from '../data/stories'
 import { useLanguage } from '../context/LanguageContext'
 import { MobileBottomNav } from './MobileBottomNav'
 import { MobileMenuOverlay } from './MobileMenuOverlay'
+import { AdminToggle } from './AdminToggle'
 import { usePageTitle } from '../hooks/usePageTitle'
 
 function MobileStories() {
@@ -26,6 +27,7 @@ function MobileStories() {
           <Link to="/" className="font-headline text-2xl font-bold tracking-tighter text-primary">169 Avenue</Link>
         </div>
         <div className="flex items-center gap-2">
+          <AdminToggle />
           <button onClick={() => setSearchOpen(true)} className="text-primary/70 p-1" aria-label="Search">
             <span className="material-symbols-outlined text-xl">search</span>
           </button>

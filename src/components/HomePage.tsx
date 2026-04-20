@@ -15,6 +15,7 @@ import { Footer } from './Footer'
 import { MobileHome } from './MobileHome'
 import { SearchOverlay } from './SearchOverlay'
 import { MobileMenuOverlay } from './MobileMenuOverlay'
+import { AdminToggle } from './AdminToggle'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageTitle } from '../hooks/usePageTitle'
 
@@ -32,6 +33,7 @@ export function HomePage() {
           169 Avenue
         </Link>
         <div className="flex items-center gap-2">
+          <AdminToggle />
           <button onClick={() => setSearchOpen(true)} className="text-primary/70 p-1" aria-label="Search">
             <span className="material-symbols-outlined text-xl">search</span>
           </button>
