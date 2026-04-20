@@ -4,6 +4,7 @@ import { FEATURED_STORY } from '../data/stories'
 import { ProcessSection } from './ProcessSection'
 import { CaseStudies } from './CaseStudies'
 import { FAQ } from './FAQ'
+import { MobileBottomNav } from './MobileBottomNav'
 import { useLanguage } from '../context/LanguageContext'
 
 export function MobileHome() {
@@ -189,29 +190,7 @@ export function MobileHome() {
         </div>
       </footer>
 
-      {/* Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl flex justify-around items-center px-2 py-3 z-50 border-t border-outline-variant/10">
-        <Link to="/about" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">info</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_about}</span>
-        </Link>
-        <Link to="/services" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">handshake</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_partners}</span>
-        </Link>
-        <Link to="/field" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">school</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_field}</span>
-        </Link>
-        <Link to="/destinations" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">public</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_destinations}</span>
-        </Link>
-        <Link to="/stories" className="flex flex-col items-center gap-1 text-on-surface-variant/40">
-          <span className="material-symbols-outlined text-lg">auto_stories</span>
-          <span className="text-[8px] font-label uppercase tracking-widest">{t.bottom_stories}</span>
-        </Link>
-      </nav>
+      <MobileBottomNav />
     </div>
   )
 }

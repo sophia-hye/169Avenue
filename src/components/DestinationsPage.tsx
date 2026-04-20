@@ -155,7 +155,7 @@ export function DestinationsPage() {
         <main className="pt-32"><DestinationsContent /></main>
         <Footer />
       </div>
-      <MobileShell activeTab="destinations"><DestinationsContent /></MobileShell>
+      <MobileShell><DestinationsContent /></MobileShell>
       <MobileFooter />
     </div>
   )

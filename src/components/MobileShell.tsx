@@ -2,31 +2,18 @@ import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SearchOverlay } from './SearchOverlay'
 import { AdminToggle } from './AdminToggle'
+import { MobileBottomNav, type MobileTabId } from './MobileBottomNav'
 import { useLanguage } from '../context/LanguageContext'
-import { useAuth } from '../context/AuthContext'
 
 interface MobileShellProps {
   children: ReactNode
-  activeTab?: 'about' | 'partners' | 'field' | 'destinations' | 'stories' | 'report'
+  activeTab?: MobileTabId
 }
 
 export function MobileShell({ children, activeTab }: MobileShellProps) {
   const navigate = useNavigate()
   const { language, setLanguage, t } = useLanguage()
-  const { isAdmin } = useAuth()
   const [searchOpen, setSearchOpen] = useState(false)
-
-  const baseTabs = [
-    { id: 'about',        label: t.bottom_about,        to: '/about',        icon: 'info' },
-    { id: 'partners',     label: t.bottom_partners,     to: '/services',     icon: 'handshake' },
-    { id: 'field',        label: t.bottom_field,        to: '/field',        icon: 'school' },
-    { id: 'destinations', label: t.bottom_destinations, to: '/destinations', icon: 'public' },
-    { id: 'stories',      label: t.bottom_stories,      to: '/stories',      icon: 'auto_stories' },
-  ] as const
-
-  const TABS = isAdmin
-    ? [...baseTabs, { id: 'report' as const, label: language === 'ko' ? '리포트' : 'Report', to: '/admin/report', icon: 'description' }]
-    : baseTabs
 
   return (
     <div className="md:hidden">
@@ -84,27 +71,7 @@ export function MobileShell({ children, activeTab }: MobileShellProps) {
 
       {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
 
-      {/* Bottom Nav - matching desktop menu */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl flex justify-around items-center px-2 py-3 z-50 border-t border-outline-variant/10">
-        {TABS.map((tab) => {
-          const isActive = activeTab === tab.id
-          return (
-            <Link
-              key={tab.id}
-              to={tab.to}
-              className={`flex flex-col items-center gap-1 ${isActive ? 'text-secondary font-bold' : 'text-on-surface-variant/40'}`}
-            >
-              <span
-                className="material-symbols-outlined text-lg"
-                style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
-              >
-                {tab.icon}
-              </span>
-              <span className="text-[8px] font-label uppercase tracking-widest">{tab.label}</span>
-            </Link>
-          )
-        })}
-      </nav>
+      <MobileBottomNav activeTab={activeTab} />
     </div>
   )
 }

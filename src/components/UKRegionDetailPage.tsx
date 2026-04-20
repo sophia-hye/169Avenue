@@ -280,7 +280,7 @@ export function UKRegionDetailPage() {
         <main className="pt-32">{pageContent}</main>
         <Footer />
       </div>
-      <MobileShell activeTab="destinations">{pageContent}</MobileShell>
+      <MobileShell>{pageContent}</MobileShell>
       <MobileFooter />
     </div>
   )
