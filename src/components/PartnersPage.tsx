@@ -13,7 +13,7 @@ function ServicesContent() {
       {/* Header */}
       <header className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-16 md:mb-24">
         <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">
-          Future Path Camp | {t.partners_hero_label}
+          Future Pathway Program | {t.partners_hero_label}
         </span>
         <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-primary tracking-tighter leading-[1] mb-6">
           {t.partners_hero_title_line1}<br /><span className="italic">{t.partners_hero_title_line2}</span>

@@ -32,7 +32,7 @@ export function MobileMenuOverlay({ onClose }: Props) {
     {
       title: t.nav_partners,
       items: [
-        { label: 'Future Path Camp', to: '/services' },
+        { label: 'Future Pathway Program', to: '/services' },
         { label: t.nav_us_experience, to: '/services/us-experience' },
       ],
     },

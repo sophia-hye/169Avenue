@@ -12,7 +12,7 @@ export function Hero() {
             <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="h-24 md:h-32 brightness-0 opacity-80" />
             <div>
               <h1 className="font-headline text-3xl md:text-5xl tracking-tighter text-secondary leading-[1.1]">
-                Future Path Camp
+                Future Pathway Program
               </h1>
               <p className="font-headline text-xl md:text-2xl text-primary/70 mt-3 tracking-tight">
                 {t.hero_h1_1} <span className="italic">{t.hero_h1_2}</span>

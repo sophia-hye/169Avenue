@@ -49,7 +49,7 @@ export function Navbar() {
   const { isAdmin } = useAuth()
 
   const SERVICES_ITEMS = [
-    { label: 'Future Path Camp', to: '/services' },
+    { label: 'Future Pathway Program', to: '/services' },
     { label: t.nav_us_experience, to: '/services/us-experience' },
   ]
 

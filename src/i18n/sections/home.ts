@@ -31,8 +31,8 @@ export const homeTranslations = {
     ],
 
     // Hero / TargetCards / Problem / Process / CaseStudies / FAQ / Trust / CTA / MiniCTA
-    hero_h1_1: 'Not an English Camp.',
-    hero_h1_2: 'The Start of Admissions.',
+    hero_h1_1: 'We don\'t run camps.',
+    hero_h1_2: 'We build pathways.',
     hero_sub: 'We assess your child\'s situation, design their direction, connect them with the right specialists, and explain the whole plan to you.',
     hero_bullet1: 'English + Experience: immersion classes and hands-on activities',
     hero_bullet2: 'Exploration: sports, art classes, projects that become real specs',
@@ -70,7 +70,7 @@ export const homeTranslations = {
     process_tag: 'How It Works',
     process_title: 'The 169 Avenue Process',
     process_steps: [
-      { title: 'Assess', desc: 'We observe your child through the Future Path Camp — English adaptability, interests, aptitude, and social dynamics in an immersive setting.' },
+      { title: 'Assess', desc: 'We observe your child through the Future Pathway Program — English adaptability, interests, aptitude, and social dynamics in an immersive setting.' },
       { title: 'Design Direction', desc: 'Based on camp observations and data, we design a personalized direction: academic path, activity focus, and recommended timeline.' },
       { title: 'Connect Specialists', desc: 'We match your child with the right experts — admissions consultants, sports coaches, art portfolio mentors — based on their unique profile.' },
       { title: 'Build the Roadmap', desc: 'Activities that become specs, not just experiences. We design a multi-year plan where each step builds toward admissions advantage.' },
@@ -155,8 +155,8 @@ export const homeTranslations = {
       { title: '아시아-태평양', tag: '신흥 허브', description: '싱가포르와 서울의 글로벌 혁신 허브 신기준.' },
     ],
 
-    hero_h1_1: '단순한 영어 캠프가 아닙니다.',
-    hero_h1_2: '진로의 시작입니다.',
+    hero_h1_1: '단순 경험이 아니라,',
+    hero_h1_2: '미래로 이어지는 경로를 만듭니다.',
     hero_sub: '아이의 성향을 파악하고, 그에 맞는 방향을 설계하여 전문가와 연결해 드리는 프로그램 입니다.',
     hero_bullet1: '영어 + 경험: 몰입 수업과 체험형 액티비티',
     hero_bullet2: '탐색 프로그램: 스포츠, 뮤직, 아트, 프로젝트 — 스펙이 되는 경험',
@@ -194,7 +194,7 @@ export const homeTranslations = {
     process_tag: '169 Avenue 프로세스',
     process_title: '이렇게 진행됩니다',
     process_steps: [
-      { title: '성향 파악', desc: 'Future Path Camp를 통해 아이를 관찰합니다 — 영어 적응력, 관심사, 적성, 사회성을 몰입 환경에서 파악합니다.' },
+      { title: '성향 파악', desc: 'Future Pathway Program를 통해 아이를 관찰합니다 — 영어 적응력, 관심사, 적성, 사회성을 몰입 환경에서 파악합니다.' },
       { title: '방향 설계', desc: '캠프 관찰 데이터를 기반으로 맞춤 방향을 설계합니다: 학업 경로, 활동 포커스, 추천 타임라인.' },
       { title: '전문가 연결', desc: '아이의 프로필에 맞는 전문가를 매칭합니다 — 입학사정관 출신 컨설턴트, 스포츠 코치, 미술 포트폴리오 멘토.' },
       { title: '활동 설계', desc: '그냥 경험이 아니라 스펙이 되는 활동을 설계합니다. 각 단계가 입시 우위로 이어지는 다년간 계획을 수립합니다.' },

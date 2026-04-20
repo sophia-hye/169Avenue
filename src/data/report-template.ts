@@ -67,7 +67,7 @@ export const PERSONALITY_LABELS: Record<PersonalityType, { en: string; ko: strin
 export const DEFAULT_REPORT: ReportData = {
   studentName: '',
   grade: '',
-  programName: 'Future Path Camp',
+  programName: 'Future Pathway Program',
   programPeriod: '',
   observer: '',
   date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),

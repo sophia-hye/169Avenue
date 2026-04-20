@@ -1,6 +1,6 @@
 export const partnersTranslations = {
   en: {
-    partners_page_title: 'Future Path Camp - 미국 입시 시작 프로그램',
+    partners_page_title: 'Future Pathway Program - 미국 입시 시작 프로그램',
     partners_hero_label: 'US Admissions Prep Starter',
     partners_hero_title_line1: 'From trial to conviction,',
     partners_hero_title_line2: 'from conviction to commitment.',
@@ -117,7 +117,7 @@ export const partnersTranslations = {
   },
 
   ko: {
-    partners_page_title: 'Future Path Camp - 미국 입시 시작 프로그램',
+    partners_page_title: 'Future Pathway Program - 미국 입시 시작 프로그램',
     partners_hero_label: '미국 입시 시작 프로그램',
     partners_hero_title_line1: '체험에서 확신으로,',
     partners_hero_title_line2: '확신에서 투자로.',
