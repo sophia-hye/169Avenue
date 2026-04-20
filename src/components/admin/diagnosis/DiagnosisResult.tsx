@@ -8,22 +8,21 @@ interface Props {
   onChange: (d: DiagnosisData) => void
 }
 
-const AXIS_KO: Record<string, string> = {
-  'English': '영어', 'Attitude': '태도', 'Interest': '관심', 'Personality': '성향', 'Overseas': '해외',
-}
+interface Grades { excellent: string; good: string; average: string; developing: string }
 
-function ScoreGrade(score: number): { label: string; labelKo: string; color: string } {
-  if (score >= 4.5) return { label: 'Excellent', labelKo: '우수', color: '#2D6A4F' }
-  if (score >= 3.5) return { label: 'Good', labelKo: '양호', color: '#6B4F4F' }
-  if (score >= 2.5) return { label: 'Average', labelKo: '보통', color: '#7A7560' }
-  return { label: 'Developing', labelKo: '발전 필요', color: '#9B958D' }
+function ScoreGrade(score: number, grades: Grades): { label: string; color: string } {
+  if (score >= 4.5) return { label: grades.excellent, color: '#2D6A4F' }
+  if (score >= 3.5) return { label: grades.good, color: '#6B4F4F' }
+  if (score >= 2.5) return { label: grades.average, color: '#7A7560' }
+  return { label: grades.developing, color: '#9B958D' }
 }
 
 export function DiagnosisResult({ data, onChange }: Props) {
-  const { language } = useLanguage()
+  const { t, language } = useLanguage()
   const ko = language === 'ko'
   const scores = calcRadarScores(data.observer)
-  const displayScores = ko ? scores.map((s) => ({ ...s, axis: AXIS_KO[s.axis] || s.axis })) : scores
+  const axisMap = t.diag_res_axis as Record<string, string>
+  const displayScores = scores.map((s) => ({ ...s, axis: axisMap[s.axis] || s.axis }))
   const s = data.summary
   const overall = scores.reduce((sum, sc) => sum + sc.value, 0) / scores.length
 
@@ -31,8 +30,8 @@ export function DiagnosisResult({ data, onChange }: Props) {
     onChange({ ...data, summary: { ...s, [field]: value } })
   }
 
-  const toggleType = (t: PersonalityType) => {
-    const next = s.type.includes(t) ? s.type.filter((x) => x !== t) : [...s.type, t]
+  const toggleType = (type: PersonalityType) => {
+    const next = s.type.includes(type) ? s.type.filter((x) => x !== type) : [...s.type, type]
     set('type', next)
   }
 
@@ -42,7 +41,7 @@ export function DiagnosisResult({ data, onChange }: Props) {
   if (personalityScores[1]?.score >= 4) autoTypes.push('focused')
   if (personalityScores[2]?.score >= 4) autoTypes.push('expressive')
 
-  const overallGrade = ScoreGrade(overall)
+  const overallGrade = ScoreGrade(overall, t.diag_res_grades)
 
   return (
     <div>
@@ -51,15 +50,15 @@ export function DiagnosisResult({ data, onChange }: Props) {
         <div className="text-center px-6 border-r border-outline-variant/15">
           <div className="font-headline text-4xl text-primary">{overall.toFixed(1)}</div>
           <div className="font-body text-xs mt-1" style={{ color: overallGrade.color }}>
-            {ko ? overallGrade.labelKo : overallGrade.label}
+            {overallGrade.label}
           </div>
           <div className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant/40 mt-1">
-            {ko ? '종합 점수' : 'Overall'}
+            {t.diag_res_overall}
           </div>
         </div>
         <div className="flex-1 grid grid-cols-5 gap-4">
           {displayScores.map((sc) => {
-            const g = ScoreGrade(sc.value)
+            const g = ScoreGrade(sc.value, t.diag_res_grades)
             return (
               <div key={sc.axis} className="text-center">
                 <div className="font-headline text-xl text-primary">{sc.value.toFixed(1)}</div>
@@ -76,30 +75,30 @@ export function DiagnosisResult({ data, onChange }: Props) {
       {/* Radar Chart + Key Findings */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
         <div className="flex flex-col items-center justify-center bg-surface-container-low p-6">
-          <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{ko ? '5축 프로필' : '5-Axis Profile'}</h4>
+          <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.diag_res_radar_title}</h4>
           <RadarChart data={displayScores} size={280} />
         </div>
 
         <div className="bg-surface-container-low p-6">
-          <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{ko ? '영역별 분석' : 'Key Findings'}</h4>
+          <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.diag_res_findings_title}</h4>
           <div className="space-y-4">
             {scores.map((sc, i) => {
               const entries = data.observer[(['english', 'attitude', 'interest', 'personality', 'overseas'] as const)[i]]
               const topEntry = [...entries].sort((a, b) => b.score - a.score)[0]
               const lowEntry = [...entries].sort((a, b) => a.score - b.score)[0]
-              const g = ScoreGrade(sc.value)
+              const g = ScoreGrade(sc.value, t.diag_res_grades)
               return (
                 <div key={sc.axis} className="border-b border-outline-variant/10 pb-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-body text-sm font-medium text-primary">{displayScores[i].axis}</span>
                     <span className="font-body text-xs px-2 py-0.5" style={{ color: g.color, background: `${g.color}10` }}>
-                      {ko ? g.labelKo : g.label}
+                      {g.label}
                     </span>
                   </div>
                   <div className="flex gap-4 text-xs text-on-surface-variant/60">
-                    <span>{ko ? '강점' : 'Strength'}: <span className="text-primary">{topEntry?.label}</span> ({topEntry?.score}/5)</span>
+                    <span>{t.diag_res_strength}: <span className="text-primary">{topEntry?.label}</span> ({topEntry?.score}/5)</span>
                     {lowEntry?.label !== topEntry?.label && (
-                      <span>{ko ? '개선' : 'Improve'}: <span className="text-primary">{lowEntry?.label}</span> ({lowEntry?.score}/5)</span>
+                      <span>{t.diag_res_improve}: <span className="text-primary">{lowEntry?.label}</span> ({lowEntry?.score}/5)</span>
                     )}
                   </div>
                 </div>
@@ -112,10 +111,10 @@ export function DiagnosisResult({ data, onChange }: Props) {
       {/* Personality Type */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary">{ko ? '성향 유형' : 'Personality Type'}</h4>
+          <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary">{t.diag_res_personality_title}</h4>
           {autoTypes.length > 0 && (
             <span className="font-body text-xs text-on-surface-variant/40">
-              {ko ? '자동 감지' : 'Auto-detected'}: {autoTypes.map((t) => ko ? PERSONALITY_LABELS[t].ko : PERSONALITY_LABELS[t].en).join(', ')}
+              {t.diag_res_auto_detected}: {autoTypes.map((type) => ko ? PERSONALITY_LABELS[type].ko : PERSONALITY_LABELS[type].en).join(', ')}
             </span>
           )}
         </div>
@@ -142,7 +141,7 @@ export function DiagnosisResult({ data, onChange }: Props) {
 
       {/* Observation Highlights */}
       <div className="mb-8 bg-surface-container-low p-6">
-        <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{ko ? '관찰 주요 메모' : 'Observation Highlights'}</h4>
+        <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.diag_res_observation_title}</h4>
         <div className="space-y-2">
           {Object.values(data.observer).flat().filter((e) => e.note).map((e, i) => (
             <div key={i} className="flex items-start gap-3 py-2 border-b border-outline-variant/5">
@@ -152,7 +151,7 @@ export function DiagnosisResult({ data, onChange }: Props) {
             </div>
           ))}
           {Object.values(data.observer).flat().filter((e) => e.note).length === 0 && (
-            <p className="font-body text-xs text-on-surface-variant/30">{ko ? '관찰 메모가 없습니다. Observer 탭에서 메모를 추가하세요.' : 'No observation notes yet. Add notes in the Observer tab.'}</p>
+            <p className="font-body text-xs text-on-surface-variant/30">{t.diag_res_no_observations}</p>
           )}
         </div>
       </div>
@@ -160,21 +159,21 @@ export function DiagnosisResult({ data, onChange }: Props) {
       {/* Summary Fields */}
       <div className="space-y-5">
         <label className="block">
-          <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">{ko ? '종합 진단' : 'Overall Assessment'}</span>
+          <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">{t.diag_res_overall_assessment}</span>
           <textarea value={s.overallNote} onChange={(e) => set('overallNote', e.target.value)} rows={4}
-            placeholder={ko ? '이 학생은... 5개 영역의 관찰 내용을 종합하면...' : 'This student shows... combining observations from all five areas...'}
+            placeholder={t.diag_res_overall_assessment_ph}
             className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary" />
         </label>
         <label className="block">
-          <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">{ko ? '추천 방향' : 'Recommended Direction'}</span>
+          <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">{t.diag_res_recommended_direction}</span>
           <textarea value={s.recommendedDirection} onChange={(e) => set('recommendedDirection', e.target.value)} rows={3}
-            placeholder={ko ? '진단 결과를 바탕으로... 에 집중하는 것을 추천합니다.' : 'Based on the assessment, we recommend focusing on...'}
+            placeholder={t.diag_res_recommended_direction_ph}
             className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary" />
         </label>
         <label className="block">
-          <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">{ko ? '추천 다음 단계' : 'Recommended Next Steps'}</span>
+          <span className="font-body text-xs text-on-surface-variant/60 uppercase tracking-widest mb-1 block">{t.diag_res_next_steps}</span>
           <textarea value={s.nextSteps} onChange={(e) => set('nextSteps', e.target.value)} rows={3}
-            placeholder={ko ? '1. 주말 캠프 등록  2. 스포츠 트레이닝  3. ...' : '1. Weekend camp enrollment  2. Sports training track  3. ...'}
+            placeholder={t.diag_res_next_steps_ph}
             className="w-full border border-outline-variant/30 px-4 py-2.5 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary" />
         </label>
       </div>

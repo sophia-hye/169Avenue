@@ -486,7 +486,7 @@ function APDetailSection({ region }: { region: RegionData }) {
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const { language } = useLanguage()
+  const { t } = useLanguage()
   const region = id ? REGION_DATA[id] : undefined
 
   if (!region) {
@@ -568,7 +568,7 @@ export function RegionDetailPage() {
           </div>
         </section>
 
-        <MidPageCTA text={language === 'ko' ? '이 지역 대학 지원 전략이 필요하신가요?' : 'Need a strategy for universities in this region?'} />
+        <MidPageCTA text={t.mini_cta_region} />
 
         {/* CTA */}
         <section className="px-8 md:px-16 py-32 text-center bg-primary text-on-primary">
@@ -594,7 +594,7 @@ export function RegionDetailPage() {
         <main className="pt-32">{pageContent}</main>
         <Footer />
       </div>
-      <MobileShell activeTab="destinations">{pageContent}</MobileShell>
+      <MobileShell>{pageContent}</MobileShell>
       <MobileFooter />
     </div>
   )

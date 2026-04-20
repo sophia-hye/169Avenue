@@ -1,0 +1,91 @@
+export const commonTranslations = {
+  en: {
+    // Nav
+    nav_about: 'About',
+    nav_partners: 'Services',
+    nav_consult: 'Consult',
+    nav_blog: 'Blog',
+    nav_admissions: 'Admissions',
+    nav_diagnosis: 'Diagnosis',
+    nav_student_report: 'Student Report',
+    nav_us_experience: 'US Career Experience Program',
+    nav_case_studies: 'Case Studies',
+    nav_domestic_overview: 'Domestic Overview',
+    nav_foreign_to_korean: 'Foreign HS → Korean Uni',
+    nav_foreign_uni_transfer: 'Foreign Uni → Korean Uni Transfer',
+    nav_international: 'International',
+
+    // Common
+    read_narrative: 'Read Narrative',
+    begin_consultation: 'Begin Consultation',
+    book_consultation: 'Book a Private Consultation',
+    return_home: 'Return Home',
+    home: 'Home',
+    copyright: '© 2025 169 Avenue. The Digital Curator.',
+    copyright_short: '© 2025 169 Avenue.',
+
+    // Footer
+    footer_tagline: 'A global consultancy dedicated to academic excellence and architectural career building.',
+    footer_all_rights: '© 2025 169 Avenue. All Rights Reserved.',
+    footer_directory: 'Directory',
+    footer_offices: 'Offices',
+    footer_connect: 'Connect',
+    footer_links_directory: [{ label: 'About Our House', to: '/about' }, 'Consultancy Fees', 'Destinations', { label: 'Announcements', to: '/about' }],
+    footer_links_offices: ['Seoul'],
+    footer_links_connect: [
+      { label: 'Terms of Service', to: '/terms' },
+      { label: 'Privacy Policy', to: '/privacy' },
+    ],
+
+    // MobileShell bottom nav
+    bottom_about: 'About',
+    bottom_partners: 'Services',
+    bottom_blog: 'Blog',
+    bottom_stories: 'Stories',
+    bottom_diagnosis: 'Diagnosis',
+    bottom_report: 'Report',
+  },
+
+  ko: {
+    nav_about: '소개',
+    nav_partners: '서비스',
+    nav_consult: '상담',
+    nav_blog: '블로그',
+    nav_admissions: '입시 정보',
+    nav_diagnosis: '학생 진단',
+    nav_student_report: '성장 리포트',
+    nav_us_experience: '미국 진로 체험 프로그램',
+    nav_case_studies: '케이스 스터디',
+    nav_domestic_overview: '국내 입시 개요',
+    nav_foreign_to_korean: '해외고 → 한국대',
+    nav_foreign_uni_transfer: '해외대 → 한국대 편입',
+    nav_international: '해외 대학',
+
+    read_narrative: '스토리 읽기',
+    begin_consultation: '상담 시작하기',
+    book_consultation: '비공개 상담 예약',
+    return_home: '홈으로 돌아가기',
+    home: '홈',
+    copyright: '© 2025 169 Avenue.',
+    copyright_short: '© 2025 169 Avenue.',
+
+    footer_tagline: '학문적 탁월함과 커리어 설계에 전념하는 컨설팅 회사입니다.',
+    footer_all_rights: '© 2025 169 Avenue. All Rights Reserved.',
+    footer_directory: '안내',
+    footer_offices: '오피스',
+    footer_connect: '연락',
+    footer_links_directory: [{ label: '회사 소개', to: '/about' }, '컨설팅 비용', '유학지', { label: '공지사항', to: '/about' }],
+    footer_links_offices: ['Seoul'],
+    footer_links_connect: [
+      { label: '이용약관', to: '/terms' },
+      { label: '개인정보처리방침', to: '/privacy' },
+    ],
+
+    bottom_about: '소개',
+    bottom_partners: '서비스',
+    bottom_blog: '블로그',
+    bottom_stories: '사례',
+    bottom_diagnosis: '학생 진단',
+    bottom_report: '리포트',
+  },
+} as const
