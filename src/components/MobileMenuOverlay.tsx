@@ -106,13 +106,6 @@ export function MobileMenuOverlay({ onClose }: Props) {
               >
                 {t.nav_diagnosis}
               </Link>
-              <Link
-                to="/admin/report"
-                onClick={handleClick}
-                className="block font-headline text-xl text-secondary tracking-tight"
-              >
-                {t.nav_student_report}
-              </Link>
             </div>
           </>
         )}

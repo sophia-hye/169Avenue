@@ -47,6 +47,12 @@ export interface Report {
   nextProgram?: string
   /** Optional bulleted next-steps body. */
   nextSteps?: string
+  /** Growth roadmap items (one per line, free text). */
+  roadmapShort?: string  // 6 months
+  roadmapMid?: string    // 1-2 years
+  roadmapLong?: string   // High School / long-term
+  /** Narrative closing reflection — appears at the very end of the PDF. */
+  closingMessage?: string
   /** Set when the PDF has been generated. */
   generatedAt?: string
   version: number
@@ -304,6 +310,10 @@ export function upsertDraftReport(c: StudentCase, patch: Partial<Report>): Stude
     recommendation: patch.recommendation,
     nextProgram: patch.nextProgram,
     nextSteps: patch.nextSteps,
+    roadmapShort: patch.roadmapShort,
+    roadmapMid: patch.roadmapMid,
+    roadmapLong: patch.roadmapLong,
+    closingMessage: patch.closingMessage,
     version,
   }
   return saveCase({ ...c, reports: [...c.reports, rep] })

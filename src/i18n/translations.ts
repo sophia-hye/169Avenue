@@ -17,7 +17,6 @@ import { termsTranslations } from './sections/terms'
 import { privacyTranslations } from './sections/privacy'
 import { pageCtaTranslations } from './sections/pageCta'
 import { adminDiagnosisTranslations } from './sections/adminDiagnosis'
-import { adminReportTranslations } from './sections/adminReport'
 import { adminPresentationTranslations } from './sections/adminPresentation'
 
 export const translations = {
@@ -41,7 +40,6 @@ export const translations = {
     ...privacyTranslations.en,
     ...pageCtaTranslations.en,
     ...adminDiagnosisTranslations.en,
-    ...adminReportTranslations.en,
     ...adminPresentationTranslations.en,
   },
   ko: {
@@ -64,7 +62,6 @@ export const translations = {
     ...privacyTranslations.ko,
     ...pageCtaTranslations.ko,
     ...adminDiagnosisTranslations.ko,
-    ...adminReportTranslations.ko,
     ...adminPresentationTranslations.ko,
   },
 } as const satisfies Record<string, Record<string, unknown>>

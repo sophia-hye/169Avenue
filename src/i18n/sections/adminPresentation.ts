@@ -272,6 +272,18 @@ export const adminPresentationTranslations = {
       academic:  'If the student needs more personality work before academic intensity, pair with Direction Track for 8 weeks first.',
       elite:     'If overall readiness is mixed, begin with Academic Track for 3 months before moving to Elite-level design.',
     },
+
+    /* Growth Roadmap (folded from former Growth Report page) */
+    pdf_roadmap_title: 'Growth Roadmap',
+    pdf_roadmap_sub: 'Where this student should be at 6 months, 1–2 years, and the high-school horizon.',
+    pdf_roadmap_short: 'Short-term · 6 months',
+    pdf_roadmap_mid: 'Mid-term · 1–2 years',
+    pdf_roadmap_long: 'Long-term · High School',
+    pdf_roadmap_short_default: 'Establish baseline performance in the Best-Fit track and confirm the student\'s response pattern.',
+    pdf_roadmap_mid_default: 'Lock in the chosen specialization, build a portfolio of evidence, and sharpen the student\'s identity around it.',
+    pdf_roadmap_long_default: 'Convert sustained performance into admissions-ready outcomes — competitions, recognized work, and target-school positioning.',
+    pdf_closing_label: 'Closing Reflection',
+    pdf_closing_default: 'Every student\'s direction reveals itself at a different pace. This report is the standard against which the next 6 months should be measured.',
   },
 
   ko: {
@@ -544,5 +556,17 @@ export const adminPresentationTranslations = {
       academic:  '학업 강도 이전에 성향 작업이 더 필요하면, 8주간 Direction Track과 병행.',
       elite:     '전반적 준비도가 혼합된 상태라면, 3개월간 Academic Track으로 시작한 뒤 Elite 설계로 이행.',
     },
+
+    /* Growth Roadmap (성장 리포트 통합) */
+    pdf_roadmap_title: 'Growth Roadmap',
+    pdf_roadmap_sub: '6개월 / 1~2년 / 고등학교 시점에서 학생이 도달해야 할 지점.',
+    pdf_roadmap_short: '단기 · 6개월',
+    pdf_roadmap_mid: '중기 · 1~2년',
+    pdf_roadmap_long: '장기 · 고등학교',
+    pdf_roadmap_short_default: 'Best Fit 트랙에서 기준 성과를 확립하고, 학생의 반응 패턴을 검증합니다.',
+    pdf_roadmap_mid_default: '선택한 전문 영역을 고정하고, 근거가 되는 포트폴리오를 축적하며, 학생의 정체성을 그 위에 다듬습니다.',
+    pdf_roadmap_long_default: '지속된 성과를 입시 결과물로 전환합니다 — 대회·공인된 작업·목표 학교 포지셔닝.',
+    pdf_closing_label: '마무리',
+    pdf_closing_default: '학생마다 방향이 드러나는 속도는 다릅니다. 이 리포트는 다음 6개월을 측정할 기준입니다.',
   },
 } as const

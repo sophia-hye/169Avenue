@@ -1,5 +1,4 @@
-import { calcRadarScores, OBSERVER_DOMAIN_KEYS, type DiagnosisData } from '../../../data/diagnosis-template'
-import { PERSONALITY_LABELS, type PersonalityType } from '../../../data/report-template'
+import { calcRadarScores, OBSERVER_DOMAIN_KEYS, PERSONALITY_LABELS, type DiagnosisData, type PersonalityType } from '../../../data/diagnosis-template'
 import {
   computeDomainAverages,
   computeTrackFits,

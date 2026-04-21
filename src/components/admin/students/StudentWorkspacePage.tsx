@@ -423,6 +423,10 @@ function caseToDiagnosisData(c: StudentCase, observer?: ObserverMap): DiagnosisD
       overallNote: c.observations.map((o) => o.overallNote).filter(Boolean).join('\n'),
       recommendedDirection: lastReport?.recommendation || '',
       nextSteps: lastReport?.nextSteps || '',
+      roadmapShort: lastReport?.roadmapShort,
+      roadmapMid: lastReport?.roadmapMid,
+      roadmapLong: lastReport?.roadmapLong,
+      closingMessage: lastReport?.closingMessage,
     },
   }
 }
@@ -646,11 +650,19 @@ function RecommendationTab({ c, save }: { c: StudentCase; save: (c: StudentCase)
   const [recText, setRecText] = useState<string>(last?.recommendation || '')
   const [nextStepsText, setNextStepsText] = useState<string>(last?.nextSteps || '')
   const [nextProgramKey, setNextProgramKey] = useState<string>(last?.nextProgram || '')
+  const [roadmapShort, setRoadmapShort] = useState<string>(last?.roadmapShort || '')
+  const [roadmapMid, setRoadmapMid] = useState<string>(last?.roadmapMid || '')
+  const [roadmapLong, setRoadmapLong] = useState<string>(last?.roadmapLong || '')
+  const [closing, setClosing] = useState<string>(last?.closingMessage || '')
 
   useEffect(() => {
     setRecText(last?.recommendation || '')
     setNextStepsText(last?.nextSteps || '')
     setNextProgramKey(last?.nextProgram || '')
+    setRoadmapShort(last?.roadmapShort || '')
+    setRoadmapMid(last?.roadmapMid || '')
+    setRoadmapLong(last?.roadmapLong || '')
+    setClosing(last?.closingMessage || '')
   }, [last])
 
   const best = fits.length ? pickRecommendedTrack(fits, overall).track : null
@@ -660,6 +672,10 @@ function RecommendationTab({ c, save }: { c: StudentCase; save: (c: StudentCase)
       recommendation: recText,
       nextProgram: nextProgramKey || best?.key,
       nextSteps: nextStepsText,
+      roadmapShort,
+      roadmapMid,
+      roadmapLong,
+      closingMessage: closing,
     }))
   }
 
@@ -715,6 +731,37 @@ function RecommendationTab({ c, save }: { c: StudentCase; save: (c: StudentCase)
               <span className="font-label text-[10px] uppercase tracking-widest text-secondary mb-1 block">{t.diag_res_next_steps as string}</span>
               <textarea value={nextStepsText} onChange={(e) => setNextStepsText(e.target.value)} rows={3}
                 placeholder={t.diag_res_next_steps_ph as string}
+                className="w-full border border-outline-variant/25 px-4 py-3 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary resize-none" />
+            </label>
+          </div>
+
+          {/* Growth Roadmap (folded from former Growth Report) */}
+          <div className="mb-6 pt-6 border-t border-outline-variant/15">
+            <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.reports_roadmap_label as string}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <label className="block">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50 mb-1 block">{t.reports_roadmap_short as string}</span>
+                <textarea value={roadmapShort} onChange={(e) => setRoadmapShort(e.target.value)} rows={3}
+                  className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary resize-none" />
+              </label>
+              <label className="block">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50 mb-1 block">{t.reports_roadmap_mid as string}</span>
+                <textarea value={roadmapMid} onChange={(e) => setRoadmapMid(e.target.value)} rows={3}
+                  className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary resize-none" />
+              </label>
+              <label className="block">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50 mb-1 block">{t.reports_roadmap_long as string}</span>
+                <textarea value={roadmapLong} onChange={(e) => setRoadmapLong(e.target.value)} rows={3}
+                  className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary resize-none" />
+              </label>
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="block">
+              <span className="font-label text-[10px] uppercase tracking-widest text-secondary mb-1 block">{t.reports_closing_label as string}</span>
+              <textarea value={closing} onChange={(e) => setClosing(e.target.value)} rows={3}
+                placeholder={t.reports_closing_ph as string}
                 className="w-full border border-outline-variant/25 px-4 py-3 font-body text-sm text-primary bg-surface-container-low outline-none focus:border-secondary resize-none" />
             </label>
           </div>

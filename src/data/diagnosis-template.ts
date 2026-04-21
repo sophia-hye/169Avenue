@@ -47,6 +47,15 @@ export interface StudentSurvey {
   interestArea: string
 }
 
+/** Personality type labels used on the Result tab + PDF page 6. */
+export type PersonalityType = 'exploratory' | 'focused' | 'expressive'
+
+export const PERSONALITY_LABELS: Record<PersonalityType, { en: string; ko: string; color: string; icon: string; desc_en: string; desc_ko: string }> = {
+  exploratory: { en: 'Exploratory', ko: '탐색형', color: '#43586b', icon: '🔵', desc_en: 'Needs diverse experiences',            desc_ko: '다양한 경험 필요' },
+  focused:     { en: 'Focused',     ko: '집중형', color: '#8b8469', icon: '🟢', desc_en: 'Needs specific area strengthening',    desc_ko: '특정 분야 강화 필요' },
+  expressive:  { en: 'Expressive',  ko: '표현형', color: '#6b4f4f', icon: '🟡', desc_en: 'Needs presentation/leadership growth', desc_ko: '발표/리더십 강화' },
+}
+
 /** Observer v2 — structured evaluation engine for The 169 Method */
 export const OBSERVER_DOMAIN_KEYS = [
   'focus', 'exploration', 'expression', 'coachability', 'confidence', 'adaptability',
@@ -80,6 +89,12 @@ export interface DiagnosisData {
     overallNote: string
     recommendedDirection: string
     nextSteps: string
+    /** Growth-roadmap horizons (optional; folded from former Growth Report). */
+    roadmapShort?: string
+    roadmapMid?: string
+    roadmapLong?: string
+    /** Narrative reflection rendered at the end of the PDF. */
+    closingMessage?: string
   }
 }
 

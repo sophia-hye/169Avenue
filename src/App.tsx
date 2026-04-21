@@ -30,7 +30,6 @@ import { DirectionTrackPage } from './components/DirectionTrackPage'
 import { AcademicTrackPage } from './components/AcademicTrackPage'
 import { EliteTrackPage } from './components/EliteTrackPage'
 import { HowItWorksPage } from './components/HowItWorksPage'
-import { StudentReportPage } from './components/admin/StudentReportPage'
 import { StudentWorkspacePage } from './components/admin/students/StudentWorkspacePage'
 
 function App() {
@@ -67,10 +66,10 @@ function App() {
         <Route path="/programs/academic" element={<AcademicTrackPage />} />
         <Route path="/programs/elite" element={<EliteTrackPage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
-        <Route path="/admin/report" element={<ProtectedRoute><StudentReportPage /></ProtectedRoute>} />
         <Route path="/admin/students" element={<ProtectedRoute><StudentWorkspacePage /></ProtectedRoute>} />
         <Route path="/admin/students/:studentId" element={<ProtectedRoute><StudentWorkspacePage /></ProtectedRoute>} />
         <Route path="/admin/diagnosis" element={<Navigate to="/admin/students" replace />} />
+        <Route path="/admin/report" element={<Navigate to="/admin/students" replace />} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>

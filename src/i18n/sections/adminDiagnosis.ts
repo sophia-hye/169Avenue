@@ -163,6 +163,12 @@ export const adminDiagnosisTranslations = {
     reports_exported_on: 'Exported {date}',
     reports_recommendation: 'Recommendation',
     reports_next_program: 'Next Program',
+    reports_roadmap_label: 'Growth Roadmap',
+    reports_roadmap_short: 'Short-term · 6 months',
+    reports_roadmap_mid: 'Mid-term · 1–2 years',
+    reports_roadmap_long: 'Long-term · High School',
+    reports_closing_label: 'Closing Reflection',
+    reports_closing_ph: 'A short narrative paragraph that closes the report with intent.',
 
     // Step Form (replaces flat parent survey UI)
     diag_step_progress: 'Step {current} of {total}',
@@ -555,6 +561,12 @@ export const adminDiagnosisTranslations = {
     reports_exported_on: '{date} 생성',
     reports_recommendation: '추천 내용',
     reports_next_program: '다음 프로그램',
+    reports_roadmap_label: '성장 로드맵',
+    reports_roadmap_short: '단기 · 6개월',
+    reports_roadmap_mid: '중기 · 1~2년',
+    reports_roadmap_long: '장기 · 고등학교',
+    reports_closing_label: '마무리 메시지',
+    reports_closing_ph: '리포트를 의도 있게 마무리하는 짧은 단락.',
 
     // Step Form
     diag_step_progress: '{current} / {total} 단계',

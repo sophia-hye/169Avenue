@@ -3,6 +3,7 @@ import {
   calcRadarScores,
   flattenObserver,
   OBSERVER_DOMAIN_KEYS,
+  PERSONALITY_LABELS,
   type DiagnosisData,
   type ObserverDomainKey,
 } from '../../../data/diagnosis-template'
@@ -11,7 +12,6 @@ import {
   computeTrackFits,
   scoreLevel,
 } from '../../../data/observer-interpretation'
-import { PERSONALITY_LABELS } from '../../../data/report-template'
 import { RadarChart } from './RadarChart'
 import { useLanguage } from '../../../context/LanguageContext'
 
@@ -633,10 +633,45 @@ ${compareAreas.map(r => {
 </div>
 </div></div>`
 
-    // PAGE 11 — Appendix / Scoring Guide
+    // PAGE 11 — Growth Roadmap (folded from former Growth Report)
+    const roadmapShortText = (data.summary.roadmapShort || '').trim() || (t.pdf_roadmap_short_default as string)
+    const roadmapMidText = (data.summary.roadmapMid || '').trim() || (t.pdf_roadmap_mid_default as string)
+    const roadmapLongText = (data.summary.roadmapLong || '').trim() || (t.pdf_roadmap_long_default as string)
+    const closingText = (data.summary.closingMessage || '').trim() || (t.pdf_closing_default as string)
+    const renderRoadmapItems = (text: string) => {
+      const lines = text.split('\n').map((l) => l.trim()).filter(Boolean)
+      if (lines.length <= 1) return `<div style="font-size:12px;line-height:1.7;color:#2C2C2C">${text}</div>`
+      return `<ul style="padding-left:18px;font-size:12px;line-height:1.7;color:#2C2C2C">${lines.map((l) => `<li style="margin-bottom:4px">${l}</li>`).join('')}</ul>`
+    }
+    const page11 = `<div style="${S}"><div style="${I}">
+<div style="${TAG}">${t.pdf_roadmap_title}</div>
+<div style="${SUB}">${t.pdf_roadmap_sub}</div>${svgLine()}
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px">
+  <div style="padding:18px;background:#F5F1EB;border-top:3px solid #6B4F4F">
+    <div style="${TAG};margin-bottom:10px">${t.pdf_roadmap_short}</div>
+    ${renderRoadmapItems(roadmapShortText)}
+  </div>
+  <div style="padding:18px;background:#F5F1EB;border-top:3px solid #7A5A20">
+    <div style="${TAG};margin-bottom:10px">${t.pdf_roadmap_mid}</div>
+    ${renderRoadmapItems(roadmapMidText)}
+  </div>
+  <div style="padding:18px;background:#F5F1EB;border-top:3px solid #2D6A4F">
+    <div style="${TAG};margin-bottom:10px">${t.pdf_roadmap_long}</div>
+    ${renderRoadmapItems(roadmapLongText)}
+  </div>
+</div>
+
+<div style="background:#2C2C2C;color:#fff;padding:22px 26px">
+  <div style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#C9B99A;font-weight:600;margin-bottom:10px">${t.pdf_closing_label}</div>
+  <p style="font-size:14px;line-height:1.8;font-style:italic;font-family:Georgia,'Noto Serif KR',serif">${closingText}</p>
+</div>
+</div></div>`
+
+    // PAGE 12 — Appendix / Scoring Guide
     const scaleRows = t.pdf_scale_rows as readonly { score: string; label: string; desc: string }[]
     const criteriaItems = t.pdf_criteria_items as readonly { label: string; desc: string }[]
-    const page11 = `<div style="${SL}"><div style="${I}">
+    const page12 = `<div style="${SL}"><div style="${I}">
 <div style="${TAG}">${t.pdf_appendix_title}</div>
 <div style="${SUB}">${t.pdf_appendix_sub}</div>${svgLine()}
 
@@ -682,7 +717,7 @@ h1,h2{font-family:Georgia,'Noto Serif KR',serif}
 table{border-spacing:0}
 ol{font-family:'Pretendard','Noto Sans KR',sans-serif}
 </style></head><body>
-${page1}${page2}${page3}${page4}${page5}${page6}${page7}${page8}${page9}${page10}${page11}
+${page1}${page2}${page3}${page4}${page5}${page6}${page7}${page8}${page9}${page10}${page11}${page12}
 </body></html>`
 
     w.document.write(html)
