@@ -1,139 +1,128 @@
 export const aboutTranslations = {
   en: {
-    about_page_title: 'About - 합격 전략을 설계합니다',
-    about_tag: 'About 169 Avenue',
-    about_title_line1: 'We don\'t help with applications.',
-    about_title_line2: 'We architect student lives.',
-    about_problem: 'Most agencies make university lists and write documents. But students who get accepted share one thing — they have their own narrative. 169 Avenue analyzes IB scores, GPA, and activity data to architect each student\'s unique narrative, then matches them to universities where that narrative has the strongest strategic advantage.',
-    about_solution_quote: 'We are not an agency. We are architects of student futures.',
-    about_solution_body: 'Not a simple application service — we build strategies through data-driven acceptance probability analysis and narrative design, positioning students for maximum advantage. Starting with Korea-to-US admissions, expandable to Canada, Australia, Southeast Asia, and beyond.',
-    about_what_we_do_intro: '169 Avenue designs admissions strategy across three pillars.',
-    about_what_we_do: [
-      { icon: 'architecture', title: 'Student Narrative Design', description: 'We don\'t just list activities. We architect a cohesive story — connecting GPA, IB/AP scores, extracurriculars, and personal experiences into a compelling admissions narrative.' },
-      { icon: 'query_stats', title: 'Data-Driven University Matching', description: 'Acceptance probability analysis based on IB scores, GPA, activities, and essay positioning. We match students to universities where their profile has the highest strategic advantage.' },
-      { icon: 'route', title: 'Long-term Growth Roadmap', description: 'From middle school through university admission — we design a multi-year strategy that builds the right experiences, skills, and portfolio at each stage.' },
+    about_page_title: 'About - 169 Avenue',
+
+    // 1. Hero
+    about_hero_eyebrow: 'About 169 Avenue',
+    about_hero_headline_1: 'We don\'t send students abroad.',
+    about_hero_headline_2: 'We design their path.',
+    about_hero_sub: '169Avenue is not a study-abroad agency, nor a test-prep consultancy. We are a premium pathway-design service that analyzes each student\'s potential and, through experience, shapes a direction.',
+
+    // 2. Why We Exist
+    about_why_tag: 'Why We Exist',
+    about_why_title: 'Lots of experience. No decision.',
+    about_why_body_1: 'Many students already have plenty of experience — sports, art, academies.',
+    about_why_body_2: 'But in most cases, what comes next — what to continue, where to focus — is never really decided.',
+    about_why_questions: [
+      '"Should we keep letting them do this?"',
+      '"Is my child actually on the right path?"',
+      '"If we don\'t set a direction now, will it be too late?"',
     ],
-    about_approach_title: 'Scores are just data.',
-    about_approach_subtitle: 'We turn data into strategy.',
-    about_methods: [
-      'IB / AP / GPA structure and difficulty analysis',
-      'Extracurricular activity portfolio strategy',
-      'Admissions narrative and essay positioning',
-      'Acceptance probability modeling by university',
+    about_why_conclusion: '169Avenue exists to answer those questions.',
+
+    // 3. What Makes Us Different
+    about_diff_tag: 'What Makes Us Different',
+    about_diff_lead: 'Most education services either offer experience — or promise an outcome.',
+    about_diff_title: 'We decide direction through experience, and connect that direction to the next step.',
+    about_diff_pillars: [
+      { name: 'Experience', description: 'Not another activity — experience with an evaluator\'s standard.',       icon: 'bolt' },
+      { name: 'Strategy',   description: 'Direction designed specifically for the student.',                       icon: 'insights' },
+      { name: 'Outcomes',   description: 'Connected to a report and a concrete next step.',                        icon: 'flag' },
     ],
-    about_results_title: 'A consultation is not just advice —',
-    about_results_subtitle: 'it\'s a process that produces results',
-    about_results: [
-      { icon: 'analytics', title: 'Acceptance Probability Report', sub: 'Data-driven probability by school' },
-      { icon: 'auto_stories', title: 'Narrative Architecture', sub: 'Story × Activities × Essay' },
-      { icon: 'list_alt', title: 'Strategic University List', sub: 'Reach / Match / Safety with rationale' },
-      { icon: 'event_note', title: 'Multi-Year Execution Plan', sub: 'Semester-by-semester milestones' },
+
+    // 4. The 169 Method (preview)
+    about_method_tag: 'The 169 Method',
+    about_method_title: 'Every program is a designed structure — not a loose class.',
+    about_method_steps: [
+      { step: '01', label: 'Pre Session',      title: 'Pre Session',      description: 'We analyze the student\'s current state and potential.', icon: 'edit_note' },
+      { step: '02', label: 'Core Session',     title: 'Core Session',     description: 'The student works through a real experience while a mentor observes.', icon: 'bolt' },
+      { step: '03', label: 'Post Report',      title: 'Post Report',      description: 'We deliver an analysis report summarizing strengths and direction.',     icon: 'insights' },
+      { step: '04', label: 'Strategy Session', title: 'Strategy Session', description: 'We design the direction that leads to the next step.',                  icon: 'route' },
     ],
-    about_diff_intro: 'Agencies send students to universities.',
-    about_diff_highlight: 'We architect student narratives,\nanalyze acceptance probability with data,\nand build the strongest strategy.',
-    about_diff_outro: 'That is 169 Avenue.',
-    about_team_tag: 'Expert Network',
-    about_team_intro: 'Led by the Director of Admissions Strategy, our network of top specialists designs each student\'s path to acceptance.',
-    about_director_role: 'Director',
-    about_director_title: 'Director of Admissions Strategy',
-    about_director_body: 'Analyzes student IB scores, GPA, and activity data to architect narratives, coordinates the expert network, and oversees the entire acceptance strategy. Builds data-driven university matching and acceptance probability analysis to position students for maximum advantage.',
-    about_director_bullets: [
-      'Overall admissions strategy design & direction',
-      'Data-driven acceptance probability analysis & university matching',
-      'Student narrative architecture design',
-      'Expert network coordination & roadmap management',
+    about_method_closing: 'This isn\'t just an experience. It\'s a designed experience built to produce a decision.',
+    about_method_cta: 'See The 169 Method in detail',
+
+    // 5. Who We Serve
+    about_audience_tag: 'Who We Serve',
+    about_audience_lead: '169Avenue is not for every student. We exist for:',
+    about_audience_items: [
+      { label: 'Lower Elementary', description: 'The moment to start exploring what their talent actually is.',     icon: 'child_care' },
+      { label: 'Middle School',    description: 'The moment to decide on admissions and career direction.',          icon: 'school' },
+      { label: 'Parents',          description: 'The moment you need certainty about whether to continue a path.',  icon: 'family_restroom' },
     ],
-    about_director_quote: '"Every student has a unique narrative. Our role is to discover it, validate it with data, and turn it into the strongest possible strategy."',
-    about_specialists: [
-      {
-        title: 'Acceptance Strategy Consultant',
-        sub: 'Former Admissions Officer',
-        bullets: ['University-specific acceptance strategy', 'Essay & interview coaching', 'Document review from admissions officer perspective'],
-      },
-      {
-        title: 'Athletics & Talent Specialist',
-        sub: 'Sports Network Based',
-        bullets: ['Athletics-based admissions strategy', 'Sports scholarship & recruiting connections', 'Talent/spec portfolio design'],
-      },
-      {
-        title: 'Portfolio Consultant',
-        sub: 'Art & Design Specialist',
-        bullets: ['Art & design portfolio architecture', 'Art school application strategy', 'Creative field narrative building'],
-      },
+
+    // 6. Our Philosophy
+    about_philosophy_tag: 'Our Philosophy',
+    about_philosophy_title: 'What we believe.',
+    about_philosophy_beliefs: [
+      'Experience is only the beginning; growth requires direction.',
+      'Talent is not found — it reveals itself in the right environment and under the right judgment.',
+      'The most important question is not "what else should we do?" — it\'s "what do we choose?"',
     ],
-    about_team_footer: 'The Director oversees the entire strategy while each specialist covers their domain. Starting with the US, our platform is expandable to Canada, Australia, Southeast Asia, and beyond.',
-    about_cta_pre: 'You don\'t need a university list. You need an acceptance strategy.',
-    about_cta_quote: '"We will architect the most compelling narrative for your child."',
-    about_cta_diagnose: 'Free Strategy Diagnosis',
-    about_cta_book: 'Book Consultation',
+
+    // 7. Closing + CTA
+    about_cta_title: 'What your child needs now is not more experiences — it\'s a more precise direction.',
+    about_cta_primary: 'Request Pre-Diagnosis',
+    about_cta_secondary: 'Book Consultation',
   },
 
   ko: {
-    about_page_title: 'About - 합격 전략을 설계합니다',
-    about_tag: '169 Avenue 소개',
-    about_title_line1: '대학 지원을 도와주지 않습니다.',
-    about_title_line2: '학생의 인생을 설계합니다.',
-    about_problem: '대부분의 유학원은 대학 리스트를 만들어주고 서류를 대신 작성해줍니다. 하지만 합격하는 학생에게는 한 가지 공통점이 있습니다 — 자신만의 서사가 있다는 것입니다. 169 Avenue는 IB 점수, GPA, 활동 데이터를 분석하여 학생 고유의 서사를 설계하고, 그 서사가 가장 강력하게 작동하는 대학을 매칭합니다.',
-    about_solution_quote: '우리는 유학원이 아닙니다. 학생 인생의 설계자입니다.',
-    about_solution_body: '단순 대학 지원 대행이 아닌, 데이터 기반 합격 확률 분석과 서사 설계를 통해 학생이 가장 유리한 포지션에서 입시에 임할 수 있도록 전략을 수립합니다. 한국에서 미국을 중심으로, 캐나다, 호주, 동남아 등 글로벌 확장이 가능한 인생 설계 플랫폼입니다.',
-    about_what_we_do_intro: '169 Avenue는 세 가지 축으로 입시 전략을 설계합니다.',
-    about_what_we_do: [
-      { icon: 'architecture', title: '학생 서사 설계', description: '단순 활동 나열이 아닙니다. GPA, IB/AP 점수, 과외활동, 개인 경험을 하나의 설득력 있는 입시 서사로 설계합니다.' },
-      { icon: 'query_stats', title: '데이터 기반 대학 매칭', description: 'IB 점수, GPA, 활동, 에세이 포지셔닝을 기반으로 합격 확률을 분석합니다. 학생의 프로필이 가장 전략적 우위를 갖는 대학을 매칭합니다.' },
-      { icon: 'route', title: '장기 성장 로드맵', description: '중학교부터 대학 입학까지 — 각 단계에서 필요한 경험, 역량, 포트폴리오를 쌓아가는 다년간의 전략을 설계합니다.' },
+    about_page_title: 'About - 169 Avenue',
+
+    about_hero_eyebrow: 'About 169 Avenue',
+    about_hero_headline_1: 'We don\'t send students abroad.',
+    about_hero_headline_2: 'We design their path.',
+    about_hero_sub: '169Avenue는 단순한 유학원이나 입시 컨설팅이 아닙니다. 학생의 가능성을 분석하고, 경험을 통해 방향을 설계하는 프리미엄 진로 설계 서비스입니다.',
+
+    about_why_tag: 'Why We Exist',
+    about_why_title: '경험은 많지만, 결정은 없습니다',
+    about_why_body_1: '많은 학생들이 다양한 경험을 합니다. 운동도 하고, 미술도 하고, 학원도 다닙니다.',
+    about_why_body_2: '하지만 대부분의 경우, "그래서 무엇을 계속해야 하는지"는 정해지지 않습니다.',
+    about_why_questions: [
+      '"이걸 계속 시켜도 될까?"',
+      '"우리 아이가 맞는 길을 가고 있는 걸까?"',
+      '"지금 방향을 잡지 않으면 늦지 않을까?"',
     ],
-    about_approach_title: '점수는 데이터일 뿐입니다.',
-    about_approach_subtitle: '우리는 데이터를 전략으로 바꿉니다.',
-    about_methods: [
-      'IB / AP / GPA 구조 및 난이도 분석',
-      '과외활동 포트폴리오 전략 설계',
-      '입시 서사 및 에세이 포지셔닝',
-      '대학별 합격 확률 모델링',
+    about_why_conclusion: '169Avenue는 이 질문에 답하기 위해 만들어졌습니다.',
+
+    about_diff_tag: 'What Makes Us Different',
+    about_diff_lead: '대부분의 교육 서비스는 경험을 제공하거나, 결과를 약속합니다.',
+    about_diff_title: '우리는 경험을 통해 방향을 결정하고, 그 방향을 다음 단계로 연결합니다',
+    about_diff_pillars: [
+      { name: 'Experience', description: '단순 체험이 아닌, 평가 기준을 가진 경험.',    icon: 'bolt' },
+      { name: 'Strategy',   description: '학생에게 맞는 방향 설계.',                    icon: 'insights' },
+      { name: 'Outcomes',   description: '리포트와 다음 단계로 연결되는 결과.',         icon: 'flag' },
     ],
-    about_results_title: '상담은 단순한 조언이 아니라',
-    about_results_subtitle: '결과를 만드는 과정입니다',
-    about_results: [
-      { icon: 'analytics', title: '합격 확률 분석 리포트', sub: '대학별 데이터 기반 확률 분석' },
-      { icon: 'auto_stories', title: '서사 설계 아키텍처', sub: '스토리 × 활동 × 에세이' },
-      { icon: 'list_alt', title: '전략적 대학 리스트', sub: '상향 / 적정 / 안정 + 근거' },
-      { icon: 'event_note', title: '다년간 실행 계획', sub: '학기별 마일스톤' },
+
+    about_method_tag: 'The 169 Method',
+    about_method_title: '169Avenue의 모든 프로그램은 단순한 수업이 아니라 하나의 구조로 설계됩니다',
+    about_method_steps: [
+      { step: '01', label: 'Pre Session',      title: 'Pre Session',      description: '학생의 현재 상태와 가능성을 분석합니다.',         icon: 'edit_note' },
+      { step: '02', label: 'Core Session',     title: 'Core Session',     description: '멘토와 함께 실제 경험을 진행하며 관찰합니다.',   icon: 'bolt' },
+      { step: '03', label: 'Post Report',      title: 'Post Report',      description: '강점과 방향을 정리한 분석 리포트를 제공합니다.', icon: 'insights' },
+      { step: '04', label: 'Strategy Session', title: 'Strategy Session', description: '다음 단계로 이어지는 방향을 설계합니다.',         icon: 'route' },
     ],
-    about_diff_intro: '유학원은 대학을 보내줍니다.',
-    about_diff_highlight: '우리는 학생의 서사를 설계하고\n데이터로 합격 확률을 분석하여\n가장 유리한 전략을 만듭니다.',
-    about_diff_outro: '그것이 169 Avenue입니다.',
-    about_team_tag: '전문가 네트워크',
-    about_team_intro: '입시 전략 총괄 디렉터를 중심으로, 각 분야 최고의 전문가 네트워크가 학생의 합격을 설계합니다.',
-    about_director_role: 'Director',
-    about_director_title: '입시 전략 총괄 디렉터',
-    about_director_body: '학생의 IB 점수, GPA, 활동 데이터를 분석하여 서사를 설계하고, 전문가 네트워크를 조율하여 합격 전략을 총괄합니다. 데이터 기반 대학 매칭과 합격 확률 분석을 통해 학생이 가장 유리한 포지션에서 입시에 임할 수 있도록 전체 전략을 수립합니다.',
-    about_director_bullets: [
-      '전체 입시 전략 설계 및 총괄',
-      '데이터 기반 합격 확률 분석 및 대학 매칭',
-      '학생 서사 아키텍처 설계',
-      '전문가 네트워크 조율 및 로드맵 관리',
+    about_method_closing: '이 과정은 단순한 체험이 아니라, 하나의 방향을 결정하기 위한 설계된 경험입니다.',
+    about_method_cta: 'The 169 Method 자세히 보기',
+
+    about_audience_tag: 'Who We Serve',
+    about_audience_lead: '169Avenue는 모든 학생을 위한 서비스가 아닙니다. 우리는 이런 학생과 부모를 위해 존재합니다.',
+    about_audience_items: [
+      { label: '초등 저학년', description: '처음 시작하며 재능을 탐색해야 하는 시점.',  icon: 'child_care' },
+      { label: '중학생',      description: '진로와 입시 방향을 결정해야 하는 시점.',    icon: 'school' },
+      { label: '부모',        description: '"이걸 계속 해야 하는지" 확신이 필요한 경우.', icon: 'family_restroom' },
     ],
-    about_director_quote: '"모든 학생에게는 고유한 서사가 있습니다. 우리의 역할은 그 서사를 발견하고, 데이터로 검증하고, 가장 강력한 전략으로 만드는 것입니다."',
-    about_specialists: [
-      {
-        title: '합격 전략 컨설턴트',
-        sub: '입학사정관 출신',
-        bullets: ['대학별 합격 전략 수립', '에세이 및 면접 코칭', '입학사정관 관점의 서류 검토'],
-      },
-      {
-        title: '특기/스펙 전문가',
-        sub: '운동 네트워크 기반',
-        bullets: ['운동 특기 기반 입시 전략', '체육 장학금 및 리크루팅 연결', '특기/스펙 포트폴리오 설계'],
-      },
-      {
-        title: '포트폴리오 컨설턴트',
-        sub: '미술 전문',
-        bullets: ['미술/디자인 포트폴리오 설계', '아트 스쿨 지원 전략', '크리에이티브 분야 서사 구축'],
-      },
+
+    about_philosophy_tag: 'Our Philosophy',
+    about_philosophy_title: '우리는 믿습니다',
+    about_philosophy_beliefs: [
+      '경험은 시작일 뿐이며, 방향이 있어야 성장할 수 있습니다.',
+      '재능은 발견하는 것이 아니라, 올바른 환경과 판단 속에서 드러납니다.',
+      '가장 중요한 것은 "무엇을 더 할 것인가"가 아니라, "무엇을 선택할 것인가"입니다.',
     ],
-    about_team_footer: '디렉터가 전체 전략을 총괄하고, 각 분야 전문가가 학생에게 필요한 영역을 담당합니다. 미국을 시작으로 캐나다, 호주, 동남아 등 다양한 국가로 확장 가능한 글로벌 입시 설계 플랫폼입니다.',
-    about_cta_pre: '대학 리스트가 아니라, 합격 전략이 필요합니다.',
-    about_cta_quote: '"당신의 자녀에게 가장 강력한 서사를 설계해 드립니다."',
-    about_cta_diagnose: '무료 전략 진단',
-    about_cta_book: '상담 예약',
+
+    about_cta_title: '지금 우리 아이에게 필요한 것은 더 많은 경험이 아니라, 더 정확한 방향입니다',
+    about_cta_primary: '사전 진단 신청하기',
+    about_cta_secondary: '상담 예약하기',
   },
 } as const

@@ -4,206 +4,204 @@ import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { MidPageCTA } from './PageCTA'
 
 function AboutContent() {
   const { t } = useLanguage()
 
   return (
     <>
-      {/* ① Hero */}
-      <header className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
-        <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">
-          {t.about_tag}
+      {/* 1. Hero — Brand definition */}
+      <section className="px-6 md:px-16 lg:px-24 mb-24 md:mb-40 max-w-screen-2xl mx-auto pt-12 md:pt-16">
+        <span className="font-label text-[11px] uppercase tracking-[0.3em] text-secondary font-semibold block mb-8">
+          {t.about_hero_eyebrow}
         </span>
-        <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-primary tracking-tighter leading-[1] mb-8">
-          {t.about_title_line1}<br /><span className="italic">{t.about_title_line2}</span>
+        <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-primary tracking-tighter leading-[1.05] mb-10 max-w-4xl">
+          {t.about_hero_headline_1}<br />
+          <span className="italic text-secondary">{t.about_hero_headline_2}</span>
         </h1>
-      </header>
-
-      {/* ② Problem Definition */}
-      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
-        <div className="bg-surface-container-low p-8 md:p-16">
-          <p className="font-body text-on-surface-variant text-base md:text-lg leading-[1.9] max-w-3xl">
-            {t.about_problem}
-          </p>
-        </div>
-      </section>
-
-      {/* ③ Solution */}
-      <section className="bg-primary text-on-primary py-20 md:py-32 px-6 md:px-16 mb-20 md:mb-32">
-        <div className="max-w-screen-2xl mx-auto max-w-3xl">
-          <p className="font-headline italic text-2xl md:text-4xl leading-snug mb-8">
-            {t.about_solution_quote}
-          </p>
-          <p className="font-body text-on-primary/80 text-base md:text-lg leading-relaxed mb-8">
-            {t.about_solution_body}
-          </p>
-          <div className="h-[2px] w-16 bg-secondary" />
-        </div>
-      </section>
-
-      {/* ④ What We Do */}
-      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
-        <p className="font-body text-on-surface-variant text-sm md:text-base mb-10">
-          {t.about_what_we_do_intro}
+        <p className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed max-w-3xl">
+          {t.about_hero_sub}
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {t.about_what_we_do.map((s) => (
-            <div key={s.icon} className="bg-surface-container-low p-8 md:p-10">
-              <span className="material-symbols-outlined text-secondary text-3xl mb-6 block">{s.icon}</span>
-              <h3 className="font-headline text-xl text-primary mb-3">{s.title}</h3>
-              <p className="font-body text-sm text-on-surface-variant leading-relaxed">{s.description}</p>
+      </section>
+
+      {/* 2. Why We Exist — Problem */}
+      <section className="bg-surface-container-low py-24 md:py-36 px-6 md:px-16 lg:px-24 mb-24 md:mb-40">
+        <div className="max-w-4xl mx-auto">
+          <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-semibold mb-4 block">
+            {t.about_why_tag}
+          </span>
+          <h2 className="font-headline text-3xl md:text-5xl text-primary tracking-tight leading-tight mb-10 md:mb-12 max-w-3xl">
+            {t.about_why_title}
+          </h2>
+          <p className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed mb-4 max-w-3xl">
+            {t.about_why_body_1}
+          </p>
+          <p className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed mb-12 md:mb-14 max-w-3xl">
+            {t.about_why_body_2}
+          </p>
+          <ul className="space-y-6 mb-12 md:mb-14">
+            {t.about_why_questions.map((q) => (
+              <li
+                key={q}
+                className="font-headline italic text-xl md:text-2xl text-primary/80 leading-snug"
+              >
+                {q}
+              </li>
+            ))}
+          </ul>
+          <div className="w-12 h-px bg-secondary mb-6" />
+          <p className="font-headline text-xl md:text-3xl text-primary tracking-tight leading-snug">
+            {t.about_why_conclusion}
+          </p>
+        </div>
+      </section>
+
+      {/* 3. What Makes Us Different */}
+      <section className="px-6 md:px-16 lg:px-24 mb-24 md:mb-40 max-w-screen-2xl mx-auto">
+        <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-semibold mb-4 block">
+          {t.about_diff_tag}
+        </span>
+        <p className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed mb-6 max-w-3xl">
+          {t.about_diff_lead}
+        </p>
+        <h2 className="font-headline text-3xl md:text-5xl text-primary tracking-tight leading-tight mb-14 md:mb-16 max-w-4xl">
+          {t.about_diff_title}
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {t.about_diff_pillars.map((p) => (
+            <div
+              key={p.name}
+              className="bg-surface-container-lowest p-8 md:p-10"
+            >
+              <span className="material-symbols-outlined text-secondary text-3xl mb-6 block">
+                {p.icon}
+              </span>
+              <h3 className="font-headline text-xl md:text-2xl text-primary tracking-tight mb-3">
+                {p.name}
+              </h3>
+              <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed">
+                {p.description}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
-      <MidPageCTA />
-
-      {/* ⑤ Our Approach */}
-      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          <div className="lg:col-span-5">
-            <h2 className="font-headline text-3xl md:text-4xl text-primary mb-4">
-              {t.about_approach_title}
-            </h2>
-            <p className="font-headline italic text-xl md:text-2xl text-primary/60">
-              {t.about_approach_subtitle}
-            </p>
-          </div>
-          <div className="lg:col-span-7">
-            <ul className="space-y-0">
-              {t.about_methods.map((m, i) => (
-                <li key={i} className="flex items-center gap-4 py-5 border-b border-outline-variant/20">
-                  <span className="material-symbols-outlined text-secondary text-sm">check</span>
-                  <span className="font-body text-base text-on-surface-variant">{m}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* ⑥ Results */}
-      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
-        <div className="bg-surface-container-lowest p-8 md:p-16 shadow-sm">
-          <h2 className="font-headline text-2xl md:text-3xl text-primary mb-3">
-            {t.about_results_title}
+      {/* 4. The 169 Method — preview */}
+      <section className="bg-primary text-on-primary py-24 md:py-36 px-6 md:px-16 lg:px-24 mb-24 md:mb-40">
+        <div className="max-w-5xl mx-auto">
+          <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-semibold mb-4 block">
+            {t.about_method_tag}
+          </span>
+          <h2 className="font-headline text-3xl md:text-5xl tracking-tight leading-tight mb-12 md:mb-16 max-w-3xl">
+            {t.about_method_title}
           </h2>
-          <p className="font-headline italic text-xl md:text-2xl text-secondary mb-10">
-            {t.about_results_subtitle}
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.about_results.map((r) => (
-              <div key={r.icon} className="border border-outline-variant/15 p-6">
-                <span className="material-symbols-outlined text-secondary text-2xl mb-4 block">{r.icon}</span>
-                <h4 className="font-headline text-lg text-primary mb-2">{r.title}</h4>
-                <p className="font-body text-xs text-on-surface-variant">{r.sub}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-12 md:mb-16">
+            {t.about_method_steps.map((step) => (
+              <div
+                key={step.step}
+                className="bg-on-primary/5 border border-on-primary/10 p-6 md:p-8 h-full"
+              >
+                <span className="font-headline italic text-3xl text-secondary/70 block mb-4">
+                  {step.step}
+                </span>
+                <span className="material-symbols-outlined text-secondary text-2xl mb-4 block">
+                  {step.icon}
+                </span>
+                <div className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary font-semibold mb-2">
+                  {step.label}
+                </div>
+                <p className="font-body text-sm md:text-base text-on-primary/80 leading-relaxed">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ⑦ Differentiator */}
-      <section className="bg-surface-container-low py-16 md:py-24 px-6 md:px-16 mb-20 md:mb-32">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="font-headline italic text-2xl md:text-3xl text-primary leading-snug">
-            {t.about_diff_intro}<br /><br />
-            <span className="text-secondary">
-              {t.about_diff_highlight.split('\n').map((line, i, arr) => (
-                <span key={i}>
-                  {line}
-                  {i < arr.length - 1 && <br />}
-                </span>
-              ))}
-            </span>
-            <br /><br />{t.about_diff_outro}
-          </p>
-        </div>
-      </section>
-
-      {/* ⑧ Team */}
-      <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-32">
-        <div className="mb-12">
-          <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-bold mb-2 block">
-            {t.about_team_tag}
-          </span>
-          <p className="font-body text-on-surface-variant text-base">
-            {t.about_team_intro}
-          </p>
-        </div>
-
-        {/* Director Card - Full Width */}
-        <div className="bg-primary text-on-primary p-8 md:p-12 shadow-sm mb-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-7">
-              <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-2">{t.about_director_role}</p>
-              <h4 className="font-headline text-2xl md:text-3xl mb-2">
-                {t.about_director_title}
-              </h4>
-              <p className="font-body text-on-primary/70 text-base leading-relaxed mb-8">
-                {t.about_director_body}
-              </p>
-              <ul className="space-y-3">
-                {t.about_director_bullets.map((b) => (
-                  <li key={b} className="flex items-start gap-2 text-sm font-body text-on-primary/80 leading-relaxed">
-                    <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="lg:col-span-5 flex items-center">
-              <div className="w-full bg-on-primary/5 border border-on-primary/10 p-8">
-                <p className="font-headline italic text-lg text-on-primary/90 leading-relaxed">
-                  {t.about_director_quote}
-                </p>
-              </div>
-            </div>
+          <div className="border-l-2 border-secondary pl-5 mb-10 md:mb-12 max-w-3xl">
+            <p className="font-headline italic text-lg md:text-2xl text-on-primary/90 leading-snug">
+              {t.about_method_closing}
+            </p>
           </div>
+          <Link
+            to="/how-it-works"
+            className="inline-flex items-center gap-2 font-label text-xs uppercase tracking-[0.2em] border border-on-primary/40 text-on-primary px-6 py-3 hover:bg-surface hover:text-primary transition-colors"
+          >
+            {t.about_method_cta}
+            <span className="material-symbols-outlined text-sm">arrow_forward</span>
+          </Link>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {t.about_specialists.map((sp) => (
-            <div key={sp.title} className="bg-surface-container-lowest p-8 shadow-sm border-l-4 border-secondary">
-              <h4 className="font-headline text-lg text-primary mb-1">
-                {sp.title}
-              </h4>
-              <p className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">
-                {sp.sub}
+      {/* 5. Who We Serve */}
+      <section className="px-6 md:px-16 lg:px-24 mb-24 md:mb-40 max-w-screen-2xl mx-auto">
+        <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-semibold mb-4 block">
+          {t.about_audience_tag}
+        </span>
+        <p className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed mb-14 md:mb-16 max-w-3xl">
+          {t.about_audience_lead}
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {t.about_audience_items.map((item) => (
+            <div
+              key={item.label}
+              className="bg-surface-container-lowest p-8 md:p-10 border-l-2 border-secondary/60"
+            >
+              <span className="material-symbols-outlined text-secondary text-3xl mb-6 block">
+                {item.icon}
+              </span>
+              <h3 className="font-headline text-xl md:text-2xl text-primary tracking-tight mb-3">
+                {item.label}
+              </h3>
+              <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed">
+                {item.description}
               </p>
-              <ul className="space-y-2">
-                {sp.bullets.map((b) => (
-                  <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant leading-relaxed">
-                    <span className="material-symbols-outlined text-secondary text-xs mt-0.5 shrink-0">check</span>{b}
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
-
-        <p className="font-body text-on-surface-variant text-sm text-center mt-10 max-w-2xl mx-auto leading-relaxed">
-          {t.about_team_footer}
-        </p>
       </section>
 
-      {/* ⑨ CTA */}
-      <section className="py-20 md:py-32 px-6 md:px-16 text-center bg-primary text-on-primary">
-        <div className="max-w-3xl mx-auto">
-          <p className="font-headline italic text-xl md:text-2xl text-on-primary/70 mb-4">
-            {t.about_cta_pre}
-          </p>
-          <p className="font-headline italic text-2xl md:text-4xl leading-snug mb-12">
-            {t.about_cta_quote}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/consultation" className="bg-surface text-primary px-10 md:px-16 py-4 md:py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500">
-              {t.about_cta_diagnose}
+      {/* 6. Our Philosophy */}
+      <section className="bg-surface-container-low py-24 md:py-36 px-6 md:px-16 lg:px-24 mb-24 md:mb-40">
+        <div className="max-w-4xl mx-auto">
+          <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary font-semibold mb-4 block">
+            {t.about_philosophy_tag}
+          </span>
+          <h2 className="font-headline italic text-3xl md:text-5xl text-primary tracking-tight leading-tight mb-14 md:mb-20">
+            {t.about_philosophy_title}
+          </h2>
+          <ul className="space-y-10 md:space-y-12">
+            {t.about_philosophy_beliefs.map((belief, i) => (
+              <li key={belief} className="flex items-start gap-6 md:gap-10">
+                <span className="font-headline italic text-3xl md:text-4xl text-secondary/50 shrink-0 w-14 md:w-20">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <p className="font-headline text-lg md:text-2xl text-primary tracking-tight leading-snug flex-1">
+                  {belief}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 7. Closing + CTA */}
+      <section className="mb-24 md:mb-36 px-6 md:px-16 lg:px-24">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-headline text-3xl md:text-5xl text-primary tracking-tight leading-tight mb-12 md:mb-16">
+            {t.about_cta_title}
+          </h2>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
+            <Link
+              to="/consultation"
+              className="w-full sm:w-auto bg-primary text-on-primary px-12 py-5 text-sm tracking-[0.2em] uppercase hover:bg-secondary transition-colors"
+            >
+              {t.about_cta_primary}
             </Link>
-            <Link to="/consultation" className="border border-on-primary/30 text-on-primary px-10 md:px-16 py-4 md:py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-surface hover:text-primary transition-all duration-500">
-              {t.about_cta_book}
+            <Link
+              to="/consultation"
+              className="w-full sm:w-auto border border-primary text-primary px-12 py-5 text-sm tracking-[0.2em] uppercase hover:bg-primary hover:text-on-primary transition-colors"
+            >
+              {t.about_cta_secondary}
             </Link>
           </div>
         </div>
