@@ -24,6 +24,12 @@ import { TermsPage } from './components/TermsPage'
 import { PrivacyPage } from './components/PrivacyPage'
 import { BlogPage } from './components/BlogPage'
 import { USExperiencePage } from './components/USExperiencePage'
+import { DecisionProgramPage } from './components/DecisionProgramPage'
+import { DiscoveryProgramPage } from './components/DiscoveryProgramPage'
+import { DirectionTrackPage } from './components/DirectionTrackPage'
+import { AcademicTrackPage } from './components/AcademicTrackPage'
+import { EliteTrackPage } from './components/EliteTrackPage'
+import { HowItWorksPage } from './components/HowItWorksPage'
 import { StudentReportPage } from './components/admin/StudentReportPage'
 import { DiagnosisPage } from './components/admin/diagnosis/DiagnosisPage'
 
@@ -55,6 +61,12 @@ function App() {
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/services/us-experience" element={<USExperiencePage />} />
+        <Route path="/programs/decision" element={<DecisionProgramPage />} />
+        <Route path="/programs/discovery" element={<DiscoveryProgramPage />} />
+        <Route path="/programs/direction" element={<DirectionTrackPage />} />
+        <Route path="/programs/academic" element={<AcademicTrackPage />} />
+        <Route path="/programs/elite" element={<EliteTrackPage />} />
+        <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route path="/admin/report" element={<ProtectedRoute><StudentReportPage /></ProtectedRoute>} />
         <Route path="/admin/diagnosis" element={<ProtectedRoute><DiagnosisPage /></ProtectedRoute>} />
       </Routes>

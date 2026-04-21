@@ -4,6 +4,12 @@ import { aboutTranslations } from './sections/about'
 import { partnersTranslations } from './sections/partners'
 import { usexpTranslations } from './sections/usexp'
 import { consultTranslations } from './sections/consult'
+import { decisionTranslations } from './sections/decision'
+import { academicTranslations } from './sections/academic'
+import { directionTranslations } from './sections/direction'
+import { eliteTranslations } from './sections/elite'
+import { howitworksTranslations } from './sections/howitworks'
+import { discoveryTranslations } from './sections/discovery'
 import { domesticTranslations } from './sections/domestic'
 import { storiesTranslations } from './sections/stories'
 import { blogTranslations } from './sections/blog'
@@ -22,6 +28,12 @@ export const translations = {
     ...partnersTranslations.en,
     ...usexpTranslations.en,
     ...consultTranslations.en,
+    ...decisionTranslations.en,
+    ...academicTranslations.en,
+    ...directionTranslations.en,
+    ...eliteTranslations.en,
+    ...howitworksTranslations.en,
+    ...discoveryTranslations.en,
     ...domesticTranslations.en,
     ...storiesTranslations.en,
     ...blogTranslations.en,
@@ -39,6 +51,12 @@ export const translations = {
     ...partnersTranslations.ko,
     ...usexpTranslations.ko,
     ...consultTranslations.ko,
+    ...decisionTranslations.ko,
+    ...academicTranslations.ko,
+    ...directionTranslations.ko,
+    ...eliteTranslations.ko,
+    ...howitworksTranslations.ko,
+    ...discoveryTranslations.ko,
     ...domesticTranslations.ko,
     ...storiesTranslations.ko,
     ...blogTranslations.ko,
