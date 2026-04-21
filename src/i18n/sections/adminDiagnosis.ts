@@ -76,10 +76,10 @@ export const adminDiagnosisTranslations = {
     // Student detail page tabs
     detail_back: 'All Students',
     detail_tab_overview: 'Overview',
-    detail_tab_survey: 'Survey',
-    detail_tab_observation: 'Observation',
-    detail_tab_recommendation: 'Recommendation',
-    detail_tab_preview: 'Report Preview',
+    detail_tab_survey: 'Pre-Assessment',
+    detail_tab_observation: 'Mentor Evaluation',
+    detail_tab_recommendation: 'Insights',
+    detail_tab_preview: 'Final Report',
     detail_tab_export: 'Export',
     detail_not_found: 'Student not found.',
 
@@ -478,11 +478,11 @@ export const adminDiagnosisTranslations = {
     // Detail tabs
     detail_back: '학생 목록',
     detail_tab_overview: '개요',
-    detail_tab_survey: '설문',
-    detail_tab_observation: '관찰',
-    detail_tab_recommendation: '추천',
-    detail_tab_preview: '리포트 미리보기',
-    detail_tab_export: 'PDF 생성',
+    detail_tab_survey: 'Pre-Assessment',
+    detail_tab_observation: 'Mentor Evaluation',
+    detail_tab_recommendation: 'Insights',
+    detail_tab_preview: 'Final Report',
+    detail_tab_export: 'Export',
     detail_not_found: '학생을 찾을 수 없습니다.',
 
     // Overview
