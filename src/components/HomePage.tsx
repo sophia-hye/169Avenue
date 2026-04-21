@@ -4,12 +4,10 @@ import { Navbar } from './Navbar'
 import { Hero } from './Hero'
 import { TargetCards } from './TargetCards'
 import { ProblemSection } from './ProblemSection'
-import { ProcessSection } from './ProcessSection'
-import { Destinations } from './Destinations'
-import { CaseStudies } from './CaseStudies'
-import { FAQ } from './FAQ'
-import { TrustSection } from './TrustSection'
-import { MiniCTA } from './MiniCTA'
+import { SolutionSection } from './SolutionSection'
+import { ProgramsSection } from './ProgramsSection'
+import { DualTrackSection } from './DualTrackSection'
+import { OutcomesSection } from './OutcomesSection'
 import { CallToAction } from './CallToAction'
 import { Footer } from './Footer'
 import { MobileFooter } from './MobileShell'
@@ -73,13 +71,10 @@ export function HomePage() {
         <Hero />
         <TargetCards />
         <ProblemSection />
-        <ProcessSection />
-        <MiniCTA />
-        <Destinations />
-        <CaseStudies />
-        <MiniCTA text={t.mini_cta_case} linkText={t.mini_cta_case_btn} />
-        <FAQ />
-        <TrustSection />
+        <SolutionSection />
+        <ProgramsSection />
+        <DualTrackSection />
+        <OutcomesSection />
         <CallToAction />
       </main>
 

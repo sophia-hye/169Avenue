@@ -189,7 +189,7 @@ export function USExperiencePage() {
         <main className="pt-32"><USExperienceContent /></main>
         <Footer />
       </div>
-      <MobileShell activeTab="partners"><USExperienceContent /></MobileShell>
+      <MobileShell activeTab="programs"><USExperienceContent /></MobileShell>
       <MobileFooter />
     </div>
   )

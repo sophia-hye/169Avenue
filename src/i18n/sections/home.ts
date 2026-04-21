@@ -1,10 +1,9 @@
 export const homeTranslations = {
   en: {
-    // Hero (legacy / shared)
+    // ─── Legacy / shared keys (kept for non-home components) ───
     hero_body: 'Curating academic journeys for the next generation of global leaders. We transform aspirations into heritage through bespoke admissions strategy.',
     hero_quote: '"Education is the most powerful weapon which you can use to change the world."',
 
-    // Expertise
     expertise_title: 'Refined\u00A0Methodology',
     expertise_body: 'Our approach is not a process; it is a curation. We look beyond the transcript to find the narrative that resonates with admissions committees.',
     expertise_download: 'Download Prospectus',
@@ -15,11 +14,9 @@ export const homeTranslations = {
       { title: 'Visa & Global Compliance', description: 'Seamless handling of complex international regulations for a stress-free transition.' },
     ],
 
-    // SuccessStory
     success_story_link: 'Success Stories',
     success_story_view_all: 'View All Stories',
 
-    // Destinations section
     destinations_section_tag: 'The Global Reach',
     destinations_section_title: 'Curated Destinations',
     destinations_section_body: 'From the ivy-clad walls of New England to the historic cloisters of Oxford, we provide exclusive access to the world\'s most elite institutions.',
@@ -30,53 +27,180 @@ export const homeTranslations = {
       { title: 'Asia-Pacific', tag: 'Emerging Frontiers', description: 'The new standard for global innovation hubs in Singapore & Seoul.' },
     ],
 
-    // Hero / TargetCards / Problem / Process / CaseStudies / FAQ / Trust / CTA / MiniCTA
+    // ─── Homepage sections (editorial) ───
+
+    // 1. Hero
+    hero_eyebrow: 'Premium Pathway Design for Students',
     hero_h1_1: 'We don\'t run camps.',
     hero_h1_2: 'We build pathways.',
-    hero_sub: 'We assess your child\'s situation, design their direction, connect them with the right specialists, and explain the whole plan to you.',
-    hero_bullet1: 'English + Experience: immersion classes and hands-on activities',
-    hero_bullet2: 'Exploration: sports, art classes, projects that become real specs',
-    hero_bullet3: 'Growth Report: aptitude analysis + recommended path + roadmap',
-    hero_cta1: 'Free Consultation',
+    hero_subheadline: '169Avenue is not another study-abroad agency or experience camp.',
+    hero_description: 'We analyze each student\'s potential and design a direction that connects to real growth and admissions — a premium pathway service.',
+    hero_cta1: 'Request Pre-Diagnosis',
     hero_cta2: 'View Programs',
-    hero_quote2: '"We don\'t teach English. We design the first chapter of your child\'s admissions story."',
 
-    target_title: 'Programs by age — not just experience, but specs that matter',
-    target1_title: 'Elementary: Discover',
-    target1_b1: 'Find interests and aptitude through diverse experiences',
-    target1_b2: 'English adaptation + cultural immersion + first portfolio',
-    target1_cta: 'Explorer Program',
-    target2_title: 'Middle School: Build',
-    target2_b1: 'Start meaningful activities that become real specs',
-    target2_b2: 'Projects + presentations + portfolio with admissions lens',
-    target2_cta: 'Launchpad Program',
-    target3_title: 'High School: Complete',
-    target3_b1: 'Full admissions strategy + language intensive',
-    target3_b2: 'Essay, interview, university matching',
-    target3_cta: 'Admissions Strategy',
+    // 2. Audience Split
+    target_split_title: 'Where is your child right now?',
+    target_split: [
+      {
+        tier: 'Discovery Program',
+        age: 'Lower Elementary',
+        description: 'A talent-discovery program for students just starting out. Short, dense sessions reveal each child\'s interests and potential.',
+        bullets: ['Low-commitment short sessions', 'Talent discovery focused', 'Initial direction feedback'],
+        href: '/services',
+        cta: 'Discovery Details',
+        accent: 'bg-amber-100/70 text-amber-900',
+        dot: 'bg-amber-500',
+      },
+      {
+        tier: 'Decision Program',
+        age: 'Middle School',
+        description: 'A program for students at the decision point for admissions and career direction. Deep mentoring and evaluation design the next strategy.',
+        bullets: ['Single or Dual Track', 'Comparative analysis report', 'Connects to strategy consulting'],
+        href: '/services',
+        cta: 'Decision Details',
+        accent: 'bg-sky-100/70 text-sky-900',
+        dot: 'bg-sky-600',
+      },
+    ],
 
-    problem_tag: 'Sound Familiar?',
-    problem_title: 'If you have these questions, you\'re in the right place.',
+    // 3. Problem
+    problem_title: 'The problem isn\'t lack of experience — it\'s absence of direction.',
     problem_items: [
-      "When should we start preparing for overseas admissions?",
-      "Is my child the type who can study abroad successfully?",
-      "I want more than English — I want to set the right direction.",
-      "How do I turn activities into real specs, not just experiences?",
+      '"Should we keep letting them do this?"',
+      '"Is my child really suited for this path?"',
+      '"If we don\'t set the direction right now, will it be too late?"',
     ],
-    problem_answer: 'We assess, design the direction, connect with specialists, and explain the plan — so you know exactly what to do next.',
-    problem_cta: 'Free Consultation',
-    problem_strategy_link: 'See Our Strategy',
+    problem_conclusion: 'What matters more than another experience is deciding what to continue.',
 
-    process_tag: 'How It Works',
-    process_title: 'The 169 Avenue Process',
+    // 4. Solution
+    solution_title: '169Avenue designs the experience and delivers the outcome.',
+    solution_body: 'We don\'t just connect lessons or offer experiences. We observe what each student is truly capable of, and based on that, we recommend the next direction.',
+    solution_subbody: '169Avenue is a premium pathway-design program built on Experience + Strategy + Outcomes.',
+    solution_pillars: [
+      {
+        name: 'Experience',
+        description: 'High-density, in-field sessions with top-tier mentors.',
+        icon: 'bolt',
+      },
+      {
+        name: 'Strategy',
+        description: 'Direction designed around each student\'s temperament and potential.',
+        icon: 'insights',
+      },
+      {
+        name: 'Outcomes',
+        description: 'Reports, strategy consultations, and next-step program linkage.',
+        icon: 'flag',
+      },
+    ],
+
+    // 5. Process
+    process_title: 'How It Works',
+    process_subtitle: 'Every program runs in four sessions.',
     process_steps: [
-      { title: 'Assess', desc: 'We observe your child through the Future Pathway Program — English adaptability, interests, aptitude, and social dynamics in an immersive setting.' },
-      { title: 'Design Direction', desc: 'Based on camp observations and data, we design a personalized direction: academic path, activity focus, and recommended timeline.' },
-      { title: 'Connect Specialists', desc: 'We match your child with the right experts — admissions consultants, sports coaches, art portfolio mentors — based on their unique profile.' },
-      { title: 'Build the Roadmap', desc: 'Activities that become specs, not just experiences. We design a multi-year plan where each step builds toward admissions advantage.' },
-      { title: 'Report to Parents', desc: 'You receive a comprehensive Growth Report with aptitude analysis, recommended direction (academic/athletic/artistic), and a clear next-step roadmap.' },
+      { step: '01', label: 'Pre Session',      title: 'Pre Session',      description: 'We identify the student\'s and parents\' concerns, current state, and goals. Not a simple consultation — a customized diagnostic phase.', icon: 'edit_note' },
+      { step: '02', label: 'Core Session',     title: 'Core Session',     description: 'A high-density focused session in the chosen field. Not an experience — the core phase where the mentor directly observes and evaluates.',   icon: 'bolt' },
+      { step: '03', label: 'Post Report',      title: 'Post Report',      description: 'After the session, we provide a comprehensive report summarizing strengths, limits, growth potential, and the most suitable direction.',    icon: 'insights' },
+      { step: '04', label: 'Strategy Session', title: 'Strategy Session', description: 'Based on the report we explain the next direction and propose the next program or academic/athletic/artistic roadmap.',                  icon: 'route' },
     ],
 
+    // 6. Programs Overview
+    programs_title: 'Programs Designed Around Decision Points',
+    programs: [
+      {
+        name: 'Discovery Program',
+        description: 'An exploratory program for students just starting out. In a short window we observe interest, response, and potential.',
+        meta: [
+          { label: 'For',    value: 'Lower Elementary' },
+          { label: 'Format', value: '1 – 1.5 hour sessions' },
+          { label: 'Goal',   value: 'Talent Discovery' },
+        ],
+        href: '/services',
+        cta: 'View Program',
+        accent: 'amber',
+      },
+      {
+        name: 'Decision Program',
+        description: 'For students who need deeper evaluation for admissions and career. Focus on one field, or compare two to decide the direction.',
+        meta: [
+          { label: 'For',    value: 'Middle School' },
+          { label: 'Format', value: 'Single / Dual Track' },
+          { label: 'Goal',   value: 'Direction Decision' },
+        ],
+        href: '/services',
+        cta: 'View Program',
+        accent: 'sky',
+      },
+    ],
+
+    // 7. Dual Track
+    dual_track_badge: 'Signature',
+    dual_track_title: 'Experience two options. Decide on one direction.',
+    dual_track_body: 'When a student is torn between two fields, 169Avenue doesn\'t stop at letting them try each. With, for example, tennis and art, we draw on each field\'s mentoring and observation to compare which direction fits better and give a final recommendation.',
+    dual_track_highlight: 'This isn\'t two experiences. It\'s one decision program.',
+    dual_track_flow: [
+      'Day 1: Tennis Core Session',
+      'Day 2: Art Core Session',
+      'Integrated Report',
+      'Strategy Session',
+    ],
+
+    // 8. Mentors
+    mentors_title: 'Top-Tier Mentors, Not Ordinary Instructors',
+    mentors: [
+      {
+        emoji: '🎨',
+        name: 'Art Mentor',
+        headline: 'A Parsons-trained evaluative lens and portfolio insight.',
+        body: 'More than teaching art — we approach the student\'s work from the evaluator\'s perspective: what to look for, and how to develop it.',
+      },
+      {
+        emoji: '🎾',
+        name: 'Tennis Mentor',
+        headline: 'Elite coaching shaped by pro experience and real results.',
+        body: 'More than technique instruction — we honestly assess the student\'s potential and competitiveness, coaching in a way that connects to the next step.',
+      },
+    ],
+    mentors_tagline: 'We don\'t highlight average instructors. 169Avenue\'s mentors are experts with the standards and experience to judge a student\'s direction, not just teach a lesson.',
+
+    // 9. Outcomes
+    outcomes_title: 'This program doesn\'t end with an experience.',
+    outcomes_items: [
+      { step: '01', title: 'Comprehensive Analysis Report', description: 'Summarizes the student\'s strengths, response, potential, and most suitable direction.' },
+      { step: '02', title: 'Direction Recommendation',      description: 'Recommends whether an arts/athletics path, an academic path, or a specific concentration is best.' },
+      { step: '03', title: 'Next-Step Design',              description: 'Provides a concrete proposal for which flow — Direction / Academic / Elite Track — comes next.' },
+    ],
+    outcomes_body: 'What parents want isn\'t a "good experience" — it\'s the conviction of where their child should go next.',
+
+    // 10. Next Path
+    next_path_title: 'Once the direction is set, the next step begins.',
+    next_path_cards: [
+      { name: 'Direction Track', tagline: 'A growth track for students whose arts or athletic potential is confirmed.', body: 'Ongoing mentoring, portfolio, live feedback.' },
+      { name: 'Academic Track',  tagline: 'A major- and activity-design track for academic-focused students.',        body: 'Major exploration, activity roadmap, academic direction.' },
+      { name: 'Elite Track',     tagline: 'A long-term, top-tier custom program.',                                      body: 'Senior mentoring, long-term strategy, premium management.' },
+    ],
+    next_path_body: 'The first session is not the end — it\'s the beginning. 169Avenue designs the most suitable next path together with the student, based on the outcome.',
+
+    // 11. CTA
+    cta_title: 'What you need now is not more experiences — it\'s a more precise direction.',
+    cta_body: 'Don\'t judge your child\'s potential on a hunch. Through top-tier mentor observation and analysis, confirm the next step that matters most right now.',
+    cta_btn_primary: 'Request Pre-Diagnosis',
+    cta_btn_secondary: 'Book Consultation',
+
+    // Legacy final_cta_* keys (kept to avoid breaking other pages if referenced)
+    final_cta_title: 'What you need now is not more experiences — it\'s a more precise direction.',
+    final_cta_body: '',
+    final_cta1: 'Request Pre-Diagnosis',
+    final_cta2: 'Book Consultation',
+
+    // Shared mini CTAs (used by MiniCTA + page-level injections)
+    mini_cta_default: 'Not sure if your profile qualifies? Get a free diagnosis.',
+    mini_cta_default_btn: 'Free Diagnosis',
+    mini_cta_case: 'Want to see how your case would be analyzed?',
+    mini_cta_case_btn: 'Request Case Analysis',
+    mini_cta_region: 'Need a strategy for universities in this region?',
+
+    // ─── Cases / FAQ / Trust (used by shared components outside homepage) ───
     case_tag: 'Real-World Strategy',
     case_title: 'Case Studies',
     case_sub: 'Anonymized examples of how we design admissions strategies for different student profiles.',
@@ -116,16 +240,7 @@ export const homeTranslations = {
       { label: 'Scope', c1: 'Overseas only', c2: 'Domestic only', c3: 'Integrated' },
     ],
 
-    final_cta_title: 'Knowing where you stand is the first step.',
-    final_cta_body: 'Submit your profile and receive a target university list, competitiveness assessment, and strategic direction — all within 48 hours.',
-    final_cta1: 'Free Diagnosis',
-    final_cta2: 'Check My Eligibility',
-
-    mini_cta_default: 'Not sure if your profile qualifies? Get a free diagnosis.',
-    mini_cta_default_btn: 'Free Diagnosis',
-    mini_cta_case: 'Want to see how your case would be analyzed?',
-    mini_cta_case_btn: 'Request Case Analysis',
-    mini_cta_region: 'Need a strategy for universities in this region?',
+    problem_strategy_link: 'See Our Strategy',
   },
 
   ko: {
@@ -155,51 +270,174 @@ export const homeTranslations = {
       { title: '아시아-태평양', tag: '신흥 허브', description: '싱가포르와 서울의 글로벌 혁신 허브 신기준.' },
     ],
 
-    hero_h1_1: '단순 경험이 아니라,',
-    hero_h1_2: '미래로 이어지는 경로를 만듭니다.',
-    hero_sub: '아이의 성향을 파악하고, 그에 맞는 방향을 설계하여 전문가와 연결해 드리는 프로그램 입니다.',
-    hero_bullet1: '영어 + 경험: 몰입 수업과 체험형 액티비티',
-    hero_bullet2: '탐색 프로그램: 스포츠, 뮤직, 아트, 프로젝트 — 스펙이 되는 경험',
-    hero_bullet3: '분석 리포트: 성향 분석 + 추천 방향 + 로드맵 제공',
-    hero_cta1: '무료 상담',
+    // 1. Hero
+    hero_eyebrow: 'Premium Pathway Design for Students',
+    hero_h1_1: 'We don\'t run camps.',
+    hero_h1_2: 'We build pathways.',
+    hero_subheadline: '169Avenue는 단순한 유학원이나 체험형 캠프가 아닙니다.',
+    hero_description: '학생의 가능성을 분석하고, 실제 성장과 입시에 연결되는 방향을 설계하는 프리미엄 진로 설계 서비스입니다.',
+    hero_cta1: '사전 진단 신청하기',
     hero_cta2: '프로그램 보기',
-    hero_quote2: '"영어를 가르치지는 것에서 더 나아가 내 아이 진로의 서사, 그 첫 장을 설계합니다."',
 
-    target_title: '연령별 프로그램 — 단순 체험이 아니라 자신의 경험이 되는 커리큘럼',
-    target1_title: '초등: 탐색하기',
-    target1_b1: '다양한 경험으로 흥미와 적성 발견',
-    target1_b2: '영어 적응 + 문화 체험 + 첫 포트폴리오',
-    target1_cta: 'Explorer 프로그램',
-    target2_title: '중등: 시작하기',
-    target2_b1: '스펙이 되는 의미 있는 활동 시작',
-    target2_b2: '프로젝트 + 발표 + 입시 관점 포트폴리오',
-    target2_cta: 'Launchpad 프로그램',
-    target3_title: '고등: 완성하기',
-    target3_b1: '본격 입시 전략 + 어학 집중',
-    target3_b2: '에세이, 면접, 대학 매칭',
-    target3_cta: '입시 전략 상담',
+    // 2. Audience Split
+    target_split_title: '우리 아이는 지금 어떤 단계에 있나요?',
+    target_split: [
+      {
+        tier: 'Discovery Program',
+        age: '초등 저학년',
+        description: '처음 시작하는 아이를 위한 재능 탐색 프로그램. 짧고 밀도 있는 경험을 통해 아이의 흥미와 가능성을 발견합니다.',
+        bullets: ['부담 없는 짧은 세션', '재능 탐색 중심', '초기 방향성 피드백 제공'],
+        href: '/services',
+        cta: 'Discovery 자세히 보기',
+        accent: 'bg-amber-100/70 text-amber-900',
+        dot: 'bg-amber-500',
+      },
+      {
+        tier: 'Decision Program',
+        age: '중학생',
+        description: '입시와 진로의 방향을 결정해야 하는 시점의 학생을 위한 프로그램. 깊이 있는 멘토링과 평가를 통해 다음 단계의 전략을 설계합니다.',
+        bullets: ['단일 또는 듀얼 트랙 가능', '비교 분석 리포트 제공', '전략 상담 연결'],
+        href: '/services',
+        cta: 'Decision 자세히 보기',
+        accent: 'bg-sky-100/70 text-sky-900',
+        dot: 'bg-sky-600',
+      },
+    ],
 
-    problem_tag: '이런 고민, 혹시 하고 계신가요?',
-    problem_title: '이런 질문이 있다면, 제대로 찾아오셨습니다.',
+    // 3. Problem
+    problem_title: '문제는 경험의 부족이 아니라, 방향의 부재입니다',
     problem_items: [
-      '해외 입시, 언제부터 준비해야 하나요?',
-      '우리 아이가 해외에서 잘 할 수 있는 아이인가요?',
-      '영어만 보내는 게 아니라, 방향을 잡아주고 싶어요.',
-      '그냥 경험이 아니라, 입시에 도움이 되는 활동을 시키고 싶어요.',
+      '"이걸 계속 시켜도 될까?"',
+      '"우리 아이가 정말 이 길에 맞는 걸까?"',
+      '"지금 방향을 제대로 잡지 않으면 나중에 늦는 건 아닐까?"',
     ],
-    problem_answer: '아이의 성향과 적성을 분석하여 진로 방향을 설계하고 앞으로의 로드맵을 만들어 드립니다.',
-    problem_cta: '무료 상담',
-    problem_strategy_link: '전략 방식 보기',
+    problem_conclusion: '단순 체험보다 중요한 것은 무엇을 계속할지 결정하는 일입니다.',
 
-    process_tag: '169 Avenue 프로세스',
-    process_title: '이렇게 진행됩니다',
-    process_steps: [
-      { title: '성향 파악', desc: 'Future Pathway Program를 통해 아이를 관찰합니다 — 영어 적응력, 관심사, 적성, 사회성을 몰입 환경에서 파악합니다.' },
-      { title: '방향 설계', desc: '캠프 관찰 데이터를 기반으로 맞춤 방향을 설계합니다: 학업 경로, 활동 포커스, 추천 타임라인.' },
-      { title: '전문가 연결', desc: '아이의 프로필에 맞는 전문가를 매칭합니다 — 입학사정관 출신 컨설턴트, 스포츠 코치, 미술 포트폴리오 멘토.' },
-      { title: '활동 설계', desc: '그냥 경험이 아니라 스펙이 되는 활동을 설계합니다. 각 단계가 입시 우위로 이어지는 다년간 계획을 수립합니다.' },
-      { title: '종합 리포트', desc: '종합 분석 리포트를 제공합니다: 성향 분석, 추천 방향(학업/운동/예술), 명확한 다음 단계 로드맵.' },
+    // 4. Solution
+    solution_title: '169Avenue는 경험을 설계하고, 결과로 연결합니다',
+    solution_body: '우리는 단순히 수업을 연결하거나 체험을 제공하지 않습니다. 학생이 실제로 어떤 가능성을 가지고 있는지 관찰하고, 그 결과를 바탕으로 다음 단계의 방향을 제안합니다.',
+    solution_subbody: '169Avenue는 Experience + Strategy + Outcomes를 결합한 프리미엄 진로 설계 프로그램입니다.',
+    solution_pillars: [
+      {
+        name: 'Experience',
+        description: '최상위 멘토와의 밀도 높은 현장 경험',
+        icon: 'bolt',
+      },
+      {
+        name: 'Strategy',
+        description: '학생의 성향과 잠재력에 맞춘 방향 설계',
+        icon: 'insights',
+      },
+      {
+        name: 'Outcomes',
+        description: '리포트, 전략 상담, 다음 단계 프로그램 연결',
+        icon: 'flag',
+      },
     ],
+
+    // 5. Process
+    process_title: 'How It Works',
+    process_subtitle: '모든 프로그램은 네 단계로 진행됩니다',
+    process_steps: [
+      { step: '01', label: 'Pre Session',      title: 'Pre Session',      description: '학생과 부모의 고민, 현재 상태, 목표를 파악합니다. 단순 상담이 아니라 맞춤형 설계를 위한 사전 진단 단계입니다.', icon: 'edit_note' },
+      { step: '02', label: 'Core Session',     title: 'Core Session',     description: '선택한 분야에서 밀도 높은 집중 세션이 진행됩니다. 단순 체험이 아니라 멘토가 학생을 직접 관찰하고 평가하는 핵심 단계입니다.', icon: 'bolt' },
+      { step: '03', label: 'Post Report',      title: 'Post Report',      description: '세션 이후 학생의 강점, 한계, 성장 가능성, 적합한 방향을 정리한 종합 분석 리포트를 제공합니다.', icon: 'insights' },
+      { step: '04', label: 'Strategy Session', title: 'Strategy Session', description: '리포트를 바탕으로 앞으로의 방향을 설명하고, 다음 단계 프로그램 또는 학업·예체능 로드맵을 제안합니다.', icon: 'route' },
+    ],
+
+    // 6. Programs Overview
+    programs_title: 'Programs Designed Around Decision Points',
+    programs: [
+      {
+        name: 'Discovery Program',
+        description: '처음 시작하는 아이를 위한 탐색형 프로그램. 짧은 시간 안에 흥미와 반응, 잠재력을 확인합니다.',
+        meta: [
+          { label: '대상', value: '초등 저학년' },
+          { label: '구성', value: '1~1.5시간 중심' },
+          { label: '목적', value: '재능 탐색' },
+        ],
+        href: '/services',
+        cta: '프로그램 보기',
+        accent: 'amber',
+      },
+      {
+        name: 'Decision Program',
+        description: '입시와 진로를 고려해 더 깊이 있는 판단이 필요한 학생을 위한 프로그램. 한 분야에 집중하거나, 두 분야를 비교하여 방향을 결정할 수 있습니다.',
+        meta: [
+          { label: '대상', value: '중학생' },
+          { label: '구성', value: '단일 / 듀얼 트랙' },
+          { label: '목적', value: '방향 결정' },
+        ],
+        href: '/services',
+        cta: '프로그램 보기',
+        accent: 'sky',
+      },
+    ],
+
+    // 7. Dual Track
+    dual_track_badge: 'Signature',
+    dual_track_title: '두 가지 선택지를 경험하고, 하나의 방향을 결정합니다',
+    dual_track_body: '학생이 두 분야 사이에서 고민하고 있다면, 169Avenue는 각각의 가능성을 따로 체험시키는 데서 끝나지 않습니다. 예를 들어 테니스와 미술을 함께 선택한 경우, 각 분야의 멘토링과 관찰을 바탕으로 어느 방향이 더 적합한지 비교 분석하고 최종 추천을 제시합니다.',
+    dual_track_highlight: '이것은 두 개의 체험이 아니라, 하나의 결정 프로그램입니다.',
+    dual_track_flow: [
+      'Day 1: Tennis Core Session',
+      'Day 2: Art Core Session',
+      'Integrated Report',
+      'Strategy Session',
+    ],
+
+    // 8. Mentors
+    mentors_title: 'Top-Tier Mentors, Not Ordinary Instructors',
+    mentors: [
+      {
+        emoji: '🎨',
+        name: 'Art Mentor',
+        headline: 'Parsons 기반의 평가 관점과 포트폴리오 인사이트',
+        body: '단순히 미술을 가르치는 것이 아니라, 학생의 작업을 어떤 기준으로 보고 어떻게 발전시켜야 하는지 평가 관점에서 접근합니다.',
+      },
+      {
+        emoji: '🎾',
+        name: 'Tennis Mentor',
+        headline: '프로 경험과 실전 결과를 가진 엘리트 코칭',
+        body: '기술 지도에 그치지 않고, 학생의 잠재력과 경쟁력을 현실적으로 판단하고 다음 단계로 연결할 수 있는 코칭을 제공합니다.',
+      },
+    ],
+    mentors_tagline: '우리는 평균적인 강사진을 내세우지 않습니다. 169Avenue의 멘토는 단순 수업을 넘어, 학생의 방향을 판단할 수 있는 기준과 경험을 갖춘 전문가입니다.',
+
+    // 9. Outcomes
+    outcomes_title: '이 프로그램은 경험으로 끝나지 않습니다',
+    outcomes_items: [
+      { step: '01', title: '종합 분석 리포트', description: '학생의 강점, 반응, 가능성, 적합한 방향을 정리합니다.' },
+      { step: '02', title: '방향성 제안',       description: '예체능형, 학업형, 혹은 특정 분야 집중이 더 적합한지 제안합니다.' },
+      { step: '03', title: '다음 단계 설계',     description: 'Direction / Academic / Elite Track 중 어떤 흐름으로 이어질지 구체적인 제안을 제공합니다.' },
+    ],
+    outcomes_body: '부모가 원하는 것은 "좋은 체험"이 아니라 "우리 아이가 어디로 가야 하는지에 대한 확신"입니다.',
+
+    // 10. Next Path
+    next_path_title: '방향이 정해지면, 다음 단계가 시작됩니다',
+    next_path_cards: [
+      { name: 'Direction Track', tagline: '예체능 가능성이 확인된 학생을 위한 성장 트랙', body: '지속 멘토링, 포트폴리오, 실전 피드백 중심' },
+      { name: 'Academic Track',  tagline: '학업형 학생을 위한 전공·활동 설계 트랙',     body: '전공 탐색, 활동 로드맵, 학업 방향성 중심' },
+      { name: 'Elite Track',     tagline: '최상위 맞춤형 장기 설계 프로그램',             body: '고급 멘토링, 장기 전략, 프리미엄 관리 중심' },
+    ],
+    next_path_body: '첫 세션은 끝이 아니라 시작입니다. 169Avenue는 학생의 결과에 따라 가장 적합한 다음 경로를 함께 설계합니다.',
+
+    // 11. CTA
+    cta_title: '지금 필요한 것은 더 많은 체험이 아니라, 더 정확한 방향입니다',
+    cta_body: '우리 아이의 가능성을 감으로 판단하지 마세요. 최상위 멘토의 관찰과 분석을 통해, 지금 가장 필요한 다음 단계를 확인해보세요.',
+    cta_btn_primary: '사전 진단 신청하기',
+    cta_btn_secondary: '상담 예약하기',
+
+    final_cta_title: '지금 필요한 것은 더 많은 체험이 아니라, 더 정확한 방향입니다',
+    final_cta_body: '',
+    final_cta1: '사전 진단 신청하기',
+    final_cta2: '상담 예약하기',
+
+    mini_cta_default: '내 프로필이 자격이 되는지 확인해 보세요.',
+    mini_cta_default_btn: '무료 진단',
+    mini_cta_case: '내 케이스는 어떻게 분석될까요?',
+    mini_cta_case_btn: '케이스 분석 요청',
+    mini_cta_region: '이 지역 대학 지원 전략이 필요하신가요?',
 
     case_tag: '실전 전략 예시',
     case_title: '케이스 스터디',
@@ -240,15 +478,6 @@ export const homeTranslations = {
       { label: '범위', c1: '해외만', c2: '국내만', c3: '통합' },
     ],
 
-    final_cta_title: '지금, 내 위치를 정확히 아는 것이 가장 중요합니다.',
-    final_cta_body: '프로필을 제출하면 48시간 이내에 지원 가능 대학 리스트, 경쟁력 평가, 전략 방향을 받아보실 수 있습니다.',
-    final_cta1: '무료 진단',
-    final_cta2: '내 자격 확인하기',
-
-    mini_cta_default: '내 프로필이 자격이 되는지 확인해 보세요.',
-    mini_cta_default_btn: '무료 진단',
-    mini_cta_case: '내 케이스는 어떻게 분석될까요?',
-    mini_cta_case_btn: '케이스 분석 요청',
-    mini_cta_region: '이 지역 대학 지원 전략이 필요하신가요?',
+    problem_strategy_link: '전략 방식 보기',
   },
 } as const

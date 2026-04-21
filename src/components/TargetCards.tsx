@@ -1,54 +1,60 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
-const TARGET_META = [
-  { link: '/services', icon: 'child_care' },
-  { link: '/services', icon: 'rocket_launch' },
-  { link: '/services', icon: 'school' },
-]
-
+/**
+ * AudienceSplit: 2-card split routing parents to the right program.
+ * File name kept as TargetCards.tsx to preserve existing import paths.
+ */
 export function TargetCards() {
   const { t } = useLanguage()
 
-  const targets = [
-    { title: t.target1_title, bullets: [t.target1_b1, t.target1_b2], cta: t.target1_cta },
-    { title: t.target2_title, bullets: [t.target2_b1, t.target2_b2], cta: t.target2_cta },
-    { title: t.target3_title, bullets: [t.target3_b1, t.target3_b2], cta: t.target3_cta },
-  ]
-
   return (
-    <section className="px-8 md:px-16 lg:px-24 mb-32 md:mb-40 max-w-screen-2xl mx-auto">
-      <div className="mb-12 md:mb-16">
-        <h2 className="font-headline text-3xl md:text-4xl text-primary">
-          {t.target_title}
-        </h2>
-      </div>
+    <section className="px-6 md:px-16 lg:px-24 mb-24 md:mb-40 max-w-screen-2xl mx-auto">
+      <h2 className="font-headline text-2xl md:text-4xl text-primary tracking-tight mb-12 md:mb-16 max-w-3xl">
+        {t.target_split_title}
+      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {targets.map((card, i) => (
-          <Link
-            key={card.title}
-            to={TARGET_META[i].link}
-            className="group bg-surface-container-low p-8 md:p-10 hover:bg-primary transition-colors duration-500 flex flex-col"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        {t.target_split.map((card) => (
+          <div
+            key={card.tier}
+            className="group bg-surface-container-lowest shadow-sm p-8 md:p-12 flex flex-col"
           >
-            <span className="material-symbols-outlined text-secondary group-hover:text-on-primary/60 text-3xl mb-6 transition-colors duration-500">
-              {TARGET_META[i].icon}
-            </span>
-            <h3 className="font-headline text-xl md:text-2xl text-primary group-hover:text-on-primary mb-4 transition-colors duration-500">
-              {card.title}
-            </h3>
-            <ul className="space-y-2 mb-8 flex-1">
+            <div className={`inline-flex items-center gap-2 self-start px-3 py-1 mb-8 ${card.accent}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${card.dot}`} />
+              <span className="font-label text-[10px] uppercase tracking-[0.2em] font-semibold">
+                {card.tier}
+              </span>
+            </div>
+
+            <div className="font-label text-xs uppercase tracking-widest text-on-surface-variant mb-3">
+              {card.age}
+            </div>
+
+            <p className="font-body text-base md:text-lg text-primary/80 leading-relaxed mb-8">
+              {card.description}
+            </p>
+
+            <ul className="space-y-2 mb-10">
               {card.bullets.map((b) => (
-                <li key={b} className="flex items-start gap-2 text-sm font-body text-on-surface-variant group-hover:text-on-primary/70 leading-relaxed transition-colors duration-500">
-                  <span className="material-symbols-outlined text-secondary group-hover:text-on-primary/50 text-xs mt-1 shrink-0 transition-colors duration-500">check</span>
+                <li
+                  key={b}
+                  className="flex items-start gap-2 font-body text-sm text-on-surface-variant leading-relaxed"
+                >
+                  <span className="material-symbols-outlined text-secondary text-sm mt-0.5 shrink-0">check</span>
                   {b}
                 </li>
               ))}
             </ul>
-            <span className="font-label text-xs uppercase tracking-widest text-primary group-hover:text-on-primary border-b border-primary/20 group-hover:border-on-primary/30 pb-1 self-start transition-colors duration-500">
-              {card.cta} →
-            </span>
-          </Link>
+
+            <Link
+              to={card.href}
+              className="mt-auto inline-flex items-center gap-2 font-label text-xs uppercase tracking-widest text-primary border-b border-primary/20 group-hover:border-primary pb-1 self-start transition-colors"
+            >
+              {card.cta}
+              <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </Link>
+          </div>
         ))}
       </div>
     </section>

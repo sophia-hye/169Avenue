@@ -27,7 +27,7 @@ function DropdownMenu({ label, items, isOpen, onToggle }: {
         <div className="absolute top-full left-0 mt-2 bg-surface/95 backdrop-blur-md shadow-lg border border-outline-variant/10 min-w-[240px] py-2 z-50">
           {items.map((item) => (
             <Link
-              key={item.to}
+              key={item.to + item.label}
               to={item.to}
               className="block px-6 py-3 font-body text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
             >
@@ -42,27 +42,16 @@ function DropdownMenu({ label, items, isOpen, onToggle }: {
 
 export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false)
-  const [servicesOpen, setServicesOpen] = useState(false)
-  const [blogOpen, setBlogOpen] = useState(false)
-  const [admissionsOpen, setAdmissionsOpen] = useState(false)
+  const [programsOpen, setProgramsOpen] = useState(false)
   const { language, setLanguage, t } = useLanguage()
   const { isAdmin } = useAuth()
 
-  const SERVICES_ITEMS = [
-    { label: 'Future Pathway Program', to: '/services' },
-    { label: t.nav_us_experience, to: '/services/us-experience' },
-  ]
-
-  const BLOG_ITEMS = [
-    { label: t.nav_blog, to: '/blog' },
-    { label: t.nav_case_studies, to: '/stories' },
-  ]
-
-  const ADMISSIONS_ITEMS = [
-    { label: t.nav_domestic_overview, to: '/domestic' },
-    { label: t.nav_foreign_to_korean, to: '/domestic/freshman' },
-    { label: t.nav_foreign_uni_transfer, to: '/domestic/transfer' },
-    { label: t.nav_international, to: '/destinations' },
+  const PROGRAMS_ITEMS = [
+    { label: t.nav_discovery_program, to: '/programs/discovery' },
+    { label: t.nav_decision_program, to: '/programs/decision' },
+    { label: t.nav_direction_track, to: '/programs/direction' },
+    { label: t.nav_academic_track, to: '/programs/academic' },
+    { label: t.nav_elite_track, to: '/programs/elite' },
   ]
 
   return (
@@ -74,29 +63,32 @@ export function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-10">
-            <Link to="/about" className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300">
+            <Link
+              to="/about"
+              className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300"
+            >
               {t.nav_about}
             </Link>
+            <Link
+              to="/how-it-works"
+              className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300"
+            >
+              {t.nav_how_it_works}
+            </Link>
             <DropdownMenu
-              label={t.nav_partners}
-              items={SERVICES_ITEMS}
-              isOpen={servicesOpen}
-              onToggle={() => setServicesOpen(!servicesOpen)}
+              label={t.nav_programs}
+              items={PROGRAMS_ITEMS}
+              isOpen={programsOpen}
+              onToggle={() => setProgramsOpen(!programsOpen)}
             />
-            <DropdownMenu
-              label={t.nav_blog}
-              items={BLOG_ITEMS}
-              isOpen={blogOpen}
-              onToggle={() => setBlogOpen(!blogOpen)}
-            />
+            <Link
+              to="/consultation"
+              className="font-headline tracking-tight text-lg text-primary/70 hover:text-secondary transition-colors duration-300"
+            >
+              {t.nav_contact}
+            </Link>
             {isAdmin && (
               <>
-                <DropdownMenu
-                  label={t.nav_admissions}
-                  items={ADMISSIONS_ITEMS}
-                  isOpen={admissionsOpen}
-                  onToggle={() => setAdmissionsOpen(!admissionsOpen)}
-                />
                 <Link to="/admin/diagnosis" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
                   {t.nav_diagnosis}
                 </Link>
@@ -135,12 +127,6 @@ export function Navbar() {
                 한
               </button>
             </div>
-            <Link
-              to="/consultation"
-              className="bg-primary text-on-primary px-8 py-3 font-body text-sm uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95"
-            >
-              {t.nav_consult}
-            </Link>
           </div>
         </div>
       </nav>

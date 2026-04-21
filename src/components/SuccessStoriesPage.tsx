@@ -148,12 +148,12 @@ function MobileStories() {
         <nav className="flex flex-wrap justify-center gap-4">
           <Link to="/" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.home}</Link>
           <Link to="/about" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.nav_about}</Link>
-          <Link to="/services" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.nav_partners}</Link>
+          <Link to="/services" className="text-on-surface-variant/60 text-sm font-body hover:text-primary transition-colors">{t.nav_programs}</Link>
         </nav>
         <p className="text-xs text-on-surface-variant/40 font-body tracking-wide">{t.copyright}</p>
       </footer>
 
-      <MobileBottomNav activeTab="stories" />
+      <MobileBottomNav />
       <div className="h-16" />
     </div>
   )

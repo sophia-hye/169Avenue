@@ -122,7 +122,7 @@ export function StoryDetailPage() {
       </div>
 
       {/* Mobile */}
-      <MobileShell activeTab="stories">{content}</MobileShell>
+      <MobileShell>{content}</MobileShell>
       <MobileFooter />
     </div>
   )

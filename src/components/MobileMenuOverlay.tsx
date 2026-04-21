@@ -7,11 +7,6 @@ interface Props {
   onClose: () => void
 }
 
-interface Section {
-  title: string
-  items: { label: string; to: string }[]
-}
-
 export function MobileMenuOverlay({ onClose }: Props) {
   const { t } = useLanguage()
   const { isAdmin } = useAuth()
@@ -28,36 +23,15 @@ export function MobileMenuOverlay({ onClose }: Props) {
     }
   }, [onClose])
 
-  const publicSections: Section[] = [
-    {
-      title: t.nav_partners,
-      items: [
-        { label: 'Future Pathway Program', to: '/services' },
-        { label: t.nav_us_experience, to: '/services/us-experience' },
-      ],
-    },
-    {
-      title: t.nav_blog,
-      items: [
-        { label: t.nav_blog, to: '/blog' },
-        { label: t.nav_case_studies, to: '/stories' },
-      ],
-    },
-  ]
-
-  const adminSections: Section[] = [
-    {
-      title: t.nav_admissions,
-      items: [
-        { label: t.nav_domestic_overview, to: '/domestic' },
-        { label: t.nav_foreign_to_korean, to: '/domestic/freshman' },
-        { label: t.nav_foreign_uni_transfer, to: '/domestic/transfer' },
-        { label: t.nav_international, to: '/destinations' },
-      ],
-    },
-  ]
-
   const handleClick = () => onClose()
+
+  const programsItems = [
+    { label: t.nav_discovery_program, to: '/programs/discovery' },
+    { label: t.nav_decision_program, to: '/programs/decision' },
+    { label: t.nav_direction_track, to: '/programs/direction' },
+    { label: t.nav_academic_track, to: '/programs/academic' },
+    { label: t.nav_elite_track, to: '/programs/elite' },
+  ]
 
   return (
     <div className="md:hidden fixed inset-0 z-[100] bg-surface flex flex-col">
@@ -73,7 +47,7 @@ export function MobileMenuOverlay({ onClose }: Props) {
 
       {/* Menu */}
       <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-10">
-        {/* About — single link */}
+        {/* About */}
         <Link
           to="/about"
           onClick={handleClick}
@@ -82,52 +56,48 @@ export function MobileMenuOverlay({ onClose }: Props) {
           {t.nav_about}
         </Link>
 
-        {/* Public dropdown sections */}
-        {publicSections.map((section) => (
-          <div key={section.title}>
-            <h3 className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4">
-              {section.title}
-            </h3>
-            <ul className="space-y-3">
-              {section.items.map((item) => (
-                <li key={item.to}>
-                  <Link
-                    to={item.to}
-                    onClick={handleClick}
-                    className="block font-body text-lg text-primary/80 hover:text-secondary transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {/* The 169 Method */}
+        <Link
+          to="/how-it-works"
+          onClick={handleClick}
+          className="block font-headline text-2xl text-primary tracking-tight"
+        >
+          {t.nav_how_it_works}
+        </Link>
 
-        {/* Admin sections */}
+        {/* Programs group */}
+        <div>
+          <h3 className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4">
+            {t.nav_programs}
+          </h3>
+          <ul className="space-y-3">
+            {programsItems.map((item) => (
+              <li key={item.label}>
+                <Link
+                  to={item.to}
+                  onClick={handleClick}
+                  className="block font-body text-lg text-primary/80 hover:text-secondary transition-colors"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Contact */}
+        <Link
+          to="/consultation"
+          onClick={handleClick}
+          className="block font-headline text-2xl text-primary tracking-tight"
+        >
+          {t.nav_contact}
+        </Link>
+
+        {/* Admin */}
         {isAdmin && (
           <>
             <div className="h-px bg-outline-variant/20" />
-            {adminSections.map((section) => (
-              <div key={section.title}>
-                <h3 className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4">
-                  {section.title}
-                </h3>
-                <ul className="space-y-3">
-                  {section.items.map((item) => (
-                    <li key={item.to}>
-                      <Link
-                        to={item.to}
-                        onClick={handleClick}
-                        className="block font-body text-lg text-primary/80 hover:text-secondary transition-colors"
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
             <div className="space-y-3">
               <Link
                 to="/admin/diagnosis"

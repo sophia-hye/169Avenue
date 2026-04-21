@@ -411,7 +411,7 @@ export function PartnersPage() {
         <main className="pt-32"><ServicesContent /></main>
         <Footer />
       </div>
-      <MobileShell activeTab="partners"><ServicesContent /></MobileShell>
+      <MobileShell activeTab="programs"><ServicesContent /></MobileShell>
       <MobileFooter />
     </div>
   )

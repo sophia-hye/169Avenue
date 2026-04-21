@@ -31,7 +31,7 @@ export function BlogPage() {
         <main className="pt-32"><BlogContent /></main>
         <Footer />
       </div>
-      <MobileShell activeTab="blog"><BlogContent /></MobileShell>
+      <MobileShell><BlogContent /></MobileShell>
       <MobileFooter />
     </div>
   )

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 
-export type MobileTabId = 'about' | 'partners' | 'blog' | 'stories' | 'diagnosis' | 'report'
+export type MobileTabId = 'about' | 'programs' | 'how' | 'contact' | 'diagnosis' | 'report'
 
 interface Tab {
   id: MobileTabId
@@ -22,10 +22,10 @@ export function MobileBottomNav({ activeTab }: Props) {
 
   const tabs = useMemo<Tab[]>(() => {
     const base: Tab[] = [
-      { id: 'about',    label: t.bottom_about,    to: '/about',    icon: 'info' },
-      { id: 'partners', label: t.bottom_partners, to: '/services', icon: 'handshake' },
-      { id: 'blog',     label: t.bottom_blog,     to: '/blog',     icon: 'article' },
-      { id: 'stories',  label: t.bottom_stories,  to: '/stories',  icon: 'auto_stories' },
+      { id: 'about',    label: t.bottom_about,    to: '/about',           icon: 'info' },
+      { id: 'how',      label: t.bottom_how,      to: '/how-it-works',    icon: 'route' },
+      { id: 'programs', label: t.bottom_programs, to: '/services',        icon: 'layers' },
+      { id: 'contact',  label: t.bottom_contact,  to: '/consultation',    icon: 'mail' },
     ]
     if (!isAdmin) return base
     return [
@@ -36,7 +36,7 @@ export function MobileBottomNav({ activeTab }: Props) {
   }, [t, isAdmin])
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl flex justify-around items-center px-2 py-3 z-50 border-t border-outline-variant/10">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-xl flex justify-around items-center px-2 py-3 z-50 border-t border-outline-variant/10">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id
         return (
