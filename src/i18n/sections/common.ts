@@ -6,7 +6,7 @@ export const commonTranslations = {
     nav_how_it_works: 'The 169 Method',
     nav_contact: 'Consultation',
     nav_consult: 'Consultation',
-    nav_diagnosis: 'Diagnosis',
+    nav_diagnosis: 'Student Insights',
     nav_student_report: 'Student Report',
     // Programs dropdown items
     nav_discovery_program: 'Discovery Program',
@@ -42,7 +42,7 @@ export const commonTranslations = {
     bottom_programs: 'Programs',
     bottom_how: 'Method',
     bottom_contact: 'Consult',
-    bottom_diagnosis: 'Diagnosis',
+    bottom_diagnosis: 'Insights',
     bottom_report: 'Report',
   },
 
@@ -52,7 +52,7 @@ export const commonTranslations = {
     nav_how_it_works: 'The 169 Method',
     nav_contact: '상담',
     nav_consult: '상담',
-    nav_diagnosis: '학생 진단',
+    nav_diagnosis: '학생 인사이트',
     nav_student_report: '성장 리포트',
     nav_discovery_program: 'Discovery Program',
     nav_decision_program: 'Decision Program',
@@ -84,7 +84,7 @@ export const commonTranslations = {
     bottom_programs: '프로그램',
     bottom_how: 'Method',
     bottom_contact: '상담',
-    bottom_diagnosis: '학생 진단',
+    bottom_diagnosis: '인사이트',
     bottom_report: '리포트',
   },
 } as const
