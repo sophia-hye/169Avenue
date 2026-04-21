@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 
-export type MobileTabId = 'about' | 'programs' | 'how' | 'contact' | 'diagnosis' | 'report'
+export type MobileTabId = 'about' | 'programs' | 'how' | 'contact' | 'diagnosis'
 
 interface Tab {
   id: MobileTabId

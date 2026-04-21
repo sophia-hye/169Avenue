@@ -43,7 +43,6 @@ export const commonTranslations = {
     bottom_how: 'Method',
     bottom_contact: 'Consult',
     bottom_diagnosis: 'Insights',
-    bottom_report: 'Report',
   },
 
   ko: {
@@ -85,6 +84,5 @@ export const commonTranslations = {
     bottom_how: 'Method',
     bottom_contact: '상담',
     bottom_diagnosis: '인사이트',
-    bottom_report: '리포트',
   },
 } as const

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Navbar } from '../../Navbar'
+import { MobileTopBar } from '../../MobileTopBar'
+import { MobileBottomNav } from '../../MobileBottomNav'
 import { useLanguage } from '../../../context/LanguageContext'
 import {
   addObservation,
@@ -124,7 +126,8 @@ export function StudentWorkspacePage() {
   return (
     <>
       <Navbar />
-      <main className="pt-24 pb-16" style={{ maxWidth: 1400, margin: '0 auto' }}>
+      <MobileTopBar />
+      <main className="pt-20 md:pt-24 pb-24 md:pb-16" style={{ maxWidth: 1400, margin: '0 auto' }}>
         <div className="flex flex-col md:flex-row md:gap-6 px-4 md:px-6">
           {/* Sidebar */}
           <Sidebar
@@ -145,9 +148,6 @@ export function StudentWorkspacePage() {
                 {/* Header */}
                 <div className="mb-6 pb-6 border-b border-outline-variant/15 flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex items-center gap-4 flex-1 min-w-0">
-                    <Link to="/admin/students" className="md:hidden text-on-surface-variant/60 hover:text-primary">
-                      <span className="material-symbols-outlined">arrow_back</span>
-                    </Link>
                     <div className="min-w-0">
                       <h1 className="font-headline text-2xl md:text-3xl text-primary tracking-tight truncate">
                         {current.student.name || '—'}
@@ -217,11 +217,13 @@ export function StudentWorkspacePage() {
       )}
 
       {toast && (
-        <div className="fixed bottom-6 right-6 z-[150] bg-primary text-on-primary px-4 py-2.5 font-body text-xs shadow-lg">
+        <div className="fixed bottom-20 md:bottom-6 right-6 z-[150] bg-primary text-on-primary px-4 py-2.5 font-body text-xs shadow-lg">
           <span className="material-symbols-outlined text-sm align-middle mr-1.5">check_circle</span>
           {toast}
         </div>
       )}
+
+      <MobileBottomNav activeTab="diagnosis" />
     </>
   )
 }
