@@ -89,7 +89,7 @@ export function Navbar() {
             </Link>
             {isAdmin && (
               <>
-                <Link to="/admin/diagnosis" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
+                <Link to="/admin/students" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
                   {t.nav_diagnosis}
                 </Link>
                 <Link to="/admin/report" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">

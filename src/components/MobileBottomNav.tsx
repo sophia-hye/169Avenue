@@ -30,7 +30,7 @@ export function MobileBottomNav({ activeTab }: Props) {
     if (!isAdmin) return base
     return [
       ...base,
-      { id: 'diagnosis', label: t.bottom_diagnosis, to: '/admin/diagnosis', icon: 'analytics' },
+      { id: 'diagnosis', label: t.bottom_diagnosis, to: '/admin/students',  icon: 'analytics' },
       { id: 'report',    label: t.bottom_report,    to: '/admin/report',    icon: 'description' },
     ]
   }, [t, isAdmin])

@@ -1,6 +1,7 @@
 export const adminPresentationTranslations = {
   en: {
-    pres_report_title: 'Student Diagnosis Report',
+    pres_report_title: 'Student Diagnostic Report',
+    pres_report_subtitle: '169Avenue Premium Pathway Assessment',
     pres_slides: ['Cover', 'Profile', 'Assessment', 'Key Findings', 'Personality', 'Direction', 'Next Steps'],
     pres_popup_blocked: 'Please allow popups.',
     pres_previous: 'Previous',
@@ -40,10 +41,242 @@ export const adminPresentationTranslations = {
     pres_schedule_consult: 'Schedule a Consultation',
     pres_best: 'Best',
     pres_grow: 'Grow',
+
+    // PDF-only extended keys (11-section redesign)
+    pdf_diag_date: 'Assessment Date',
+    pdf_diag_field: 'Diagnostic Field',
+    pdf_report_id: 'Report ID',
+    pdf_field_general: 'General Pathway',
+
+    pdf_exec_title: 'Executive Summary',
+    pdf_exec_sub: 'What this report concludes, at a glance.',
+    pdf_exec_overall: 'Overall Recommendation',
+    pdf_exec_strengths: 'Key Strengths',
+    pdf_exec_risks: 'Key Risks',
+    pdf_exec_nextstep: 'Recommended Next Step',
+
+    pdf_snapshot_title: 'Student Snapshot',
+    pdf_snapshot_sub: 'Background and context for the assessment.',
+    pdf_consultant_note: 'Consultant Note',
+
+    pdf_dashboard_title: 'Overall Diagnostic Dashboard',
+    pdf_dashboard_sub: 'Five-axis readout with an overall interpretation line.',
+    pdf_interp_label: 'Interpretation',
+
+    pdf_domain_title: 'Domain-by-Domain Analysis',
+    pdf_domain_sub: 'Each domain, read as a judgment — not a grade.',
+    pdf_col_domain: 'Domain',
+    pdf_col_score: 'Score',
+    pdf_col_status: 'Status',
+    pdf_col_strength: 'Strength',
+    pdf_col_improve: 'Improve',
+    pdf_col_reading: 'Reading',
+    pdf_status_fit: 'Fit',
+    pdf_status_needs_work: 'Needs Work',
+    pdf_status_redesign: 'Requires Redesign',
+
+    pdf_personality_title: 'Personality & Learning Style',
+    pdf_personality_sub: 'How this student engages — and what it means for their pathway.',
+    pdf_educational_meaning: 'Educational Meaning',
+
+    pdf_track_title: 'Track Fit Analysis',
+    pdf_track_sub: 'Which of our five tracks fit this student, and why.',
+    pdf_track_fit: 'Fit',
+    pdf_track_rationale: 'Rationale',
+    pdf_track_rec_high: 'Strongly Recommended',
+    pdf_track_rec_mid: 'Recommended',
+    pdf_track_rec_low: 'Not Yet',
+    pdf_best_fit: 'Best Fit',
+    pdf_best_fit_reason: 'Why This Track',
+
+    pdf_compare_title: 'Comparative Fit Analysis',
+    pdf_compare_sub: 'How the student compares across their current interest areas.',
+    pdf_compare_area: 'Interest Area',
+    pdf_compare_current: 'Current Standing',
+    pdf_compare_readiness: 'Readiness to Commit',
+
+    pdf_final_title: 'Final Recommendation',
+    pdf_final_sub: 'The direction we would stake our name on.',
+    pdf_final_path: 'Recommended Path',
+    pdf_final_why: 'Why This Path',
+    pdf_final_notyet: 'Not Recommended Yet',
+    pdf_final_horizon: 'Recommended Horizon',
+
+    pdf_nextstep_title: 'Recommended Next Step',
+    pdf_nextstep_sub: 'A concrete, time-bound starting point.',
+    pdf_option_a: 'Option A — Start Now',
+    pdf_option_b: 'Option B — Prepare First',
+    pdf_strategy_agenda: 'Strategy Session Agenda',
+
+    pdf_appendix_title: 'Appendix — Scoring Guide',
+    pdf_appendix_sub: 'How to read the numbers in this report.',
+    pdf_scale_title: '5-Point Scale',
+    pdf_criteria_title: 'Evaluation Criteria',
+
+    // Auto-generated phrases
+    pdf_interp_excellent: 'This student shows strong readiness across most axes. The next step is about choosing a direction, not building a foundation.',
+    pdf_interp_good: 'This student has a solid base. A deliberate next step will turn potential into momentum.',
+    pdf_interp_average: 'This student has a workable starting point, but the direction must be chosen carefully. Focus on what is most teachable right now.',
+    pdf_interp_developing: 'This student is still in the foundation phase. The priority is environment and rhythm, not specialization.',
+
+    pdf_horizon_6m: '6 months',
+    pdf_horizon_12m: '12 months',
+    pdf_horizon_18m: '18 months',
+
+    pdf_agenda_items: [
+      'Review the recommended path and confirm family alignment.',
+      'Map the 6-month schedule and checkpoints.',
+      'Decide on Option A or Option B as the entry point.',
+      'Define what progress looks like and how we measure it.',
+    ],
+
+    pdf_scale_rows: [
+      { score: '5', label: 'Exceptional', desc: 'Clearly above peer level; ready to lead in this domain.' },
+      { score: '4', label: 'Strong',      desc: 'Consistently above expectation; a clear strength.' },
+      { score: '3', label: 'Adequate',    desc: 'Meets expectation; workable but not distinctive yet.' },
+      { score: '2', label: 'Developing',  desc: 'Below expectation; requires structured support.' },
+      { score: '1', label: 'Foundational',desc: 'Needs foundation work before direction can be set.' },
+    ],
+    pdf_criteria_items: [
+      { label: 'Judgment, not grade', desc: 'Scores describe whether a student is Fit, Needs Work, or Requires Redesign — not good or bad.' },
+      { label: 'Context-weighted',    desc: 'Track fit scores weight the five axes differently for each program path.' },
+      { label: 'Direction over data', desc: 'The purpose of this report is to decide a next step — not to rank the student.' },
+    ],
+
+    // Track names + rationale bases
+    pdf_tracks: [
+      { key: 'discovery', name: 'Discovery Program', blurb: 'Talent-finding for lower elementary.' },
+      { key: 'decision',  name: 'Decision Program',  blurb: 'Direction-setting for middle school.' },
+      { key: 'direction', name: 'Direction Track',   blurb: 'Specialist pathway after direction is set.' },
+      { key: 'academic',  name: 'Academic Track',    blurb: 'For students whose path is academic depth.' },
+      { key: 'elite',     name: 'Elite Track',       blurb: 'Top-tier admissions and performance design.' },
+    ],
+
+    // Axis → judgment copy used in domain table reading column
+    pdf_axis_readings: {
+      english: {
+        fit: 'English is a live asset — can be used as a platform, not a hurdle.',
+        needs_work: 'Functional but not yet a leverage point; needs targeted lift.',
+        redesign: 'Foundation-level. Direction cannot lean on English yet.',
+      },
+      attitude: {
+        fit: 'Work habits are dependable. New challenges will compound into results.',
+        needs_work: 'Shows up, but consistency under pressure is not yet proven.',
+        redesign: 'Attitude is the bottleneck. Fix rhythm before scaling ambition.',
+      },
+      interest: {
+        fit: 'Interest is clear and directed — the student already has a center.',
+        needs_work: 'Interests exist but are still scattered; a focal point is emerging.',
+        redesign: 'No clear pull yet. Exposure is the priority over specialization.',
+      },
+      personality: {
+        fit: 'Temperament fits a performance environment. Can handle real feedback.',
+        needs_work: 'Mostly ready; some settings still drain rather than energize them.',
+        redesign: 'Environment design matters more than curriculum right now.',
+      },
+      overseas: {
+        fit: 'Ready for an overseas or English-immersive setting if chosen.',
+        needs_work: 'Workable, but an overseas move would stretch multiple axes at once.',
+        redesign: 'Overseas is not the right lever yet — strengthen base first.',
+      },
+    },
+
+    /* ─── PDF v2 improvements ─── */
+
+    pdf_exec_why: 'Why This Path',
+    pdf_track_tier_best: 'Best Fit',
+    pdf_track_tier_secondary: 'Secondary Fit',
+    pdf_track_tier_not_yet: 'Not Recommended Yet',
+
+    pdf_col_positive: 'Positive Signal',
+    pdf_col_risk: 'Risk Signal',
+    pdf_signal_observed: 'Observed',
+    pdf_signal_watch: 'Watch',
+
+    pdf_stage_label: 'Current Stage',
+    pdf_stage_exploration: 'Exploration Stage',
+    pdf_stage_decision: 'Decision Stage',
+    pdf_stage_specialization: 'Specialization Stage',
+
+    pdf_strategy_title: 'Learning Strategy',
+    pdf_strategy_sub: 'How this student should be taught — not just how they are.',
+    pdf_strategy_summary_label: 'Learning Style Summary',
+    pdf_strategy_env_label: 'Environment Fit',
+    pdf_strategy_mode_label: 'Learning Response Mode',
+    pdf_strategy_rec_env_label: 'Recommended Environment',
+    pdf_strategy_env_structured: 'Structured — clear rules, tight feedback, predictable rhythm.',
+    pdf_strategy_env_semi: 'Semi-structured — defined goals with room to explore inside them.',
+    pdf_strategy_env_open: 'Open / Exploratory — loose frame, student sets direction.',
+    pdf_strategy_mode_mentor: 'Mentor-led — student grows fastest under direct guidance and frequent feedback.',
+    pdf_strategy_mode_explore: 'Exploratory — let the student lead; mentor holds the frame, not the content.',
+    pdf_strategy_mode_hybrid: 'Hybrid — alternate structured blocks with open exploration windows.',
+
+    pdf_strategy_summary: {
+      focus:        { high: 'Depth-capable learner — thrives in long-form, single-topic work.',
+                      mid:  'Workable focus — performs with structure and regular check-ins.',
+                      low:  'Short-interval learner — needs small wins and rhythm before depth.' },
+      exploration:  { high: 'Self-directed learner — initiative precedes instruction.',
+                      mid:  'Interest sparks but needs prompting to turn into action.',
+                      low:  'Receptive learner — acts on what is presented.' },
+      expression:   { high: 'Output-driven learner — ideas become visible work quickly.',
+                      mid:  'Produces on request — not yet pushing out on their own.',
+                      low:  'Internal learner — ideas stay inside until surfaced deliberately.' },
+      coachability: { high: 'Feedback-hungry learner — correction compounds into growth.',
+                      mid:  'Accepts feedback; application is inconsistent.',
+                      low:  'Feedback-sensitive — correction currently costs morale.' },
+      confidence:   { high: 'Performance-ready learner — holds up under visibility.',
+                      mid:  'Performs in familiar settings — new audiences shake them.',
+                      low:  'Private-performer — output drops when watched.' },
+      adaptability: { high: 'Context-fluent learner — new settings do not cost output.',
+                      mid:  'Adjusts with effort — change costs a session or two.',
+                      low:  'Continuity-dependent learner — keep the frame stable.' },
+    },
+    pdf_strategy_env_by_track: {
+      discovery: 'Small-group exposure sessions with varied stimuli. Emphasis on observation, not output.',
+      decision:  'Mentor-led direction-setting with structured feedback every 2 weeks.',
+      direction: 'Specialist studio or training environment; apprenticeship-style progression.',
+      academic:  'High-expectation academic track with regular assessments and tight feedback loops.',
+      elite:     'Premium cohort environment with high peer caliber and individualized performance design.',
+    },
+
+    pdf_compare_response: 'Current Response',
+    pdf_compare_sustain: 'Sustainability',
+    pdf_compare_ready: 'Selection Readiness',
+    pdf_compare_recommend: 'Recommend?',
+    pdf_compare_yes: 'Yes',
+    pdf_compare_watch: 'Watch',
+    pdf_compare_wait: 'Not Yet',
+
+    pdf_suits_label: 'Suits Student Type',
+    pdf_suits_by_track: {
+      discovery: 'Early-stage explorers who have not yet found their center of gravity.',
+      decision:  'Students at the direction-setting inflection point — interests exist but choice is pending.',
+      direction: 'Students ready to commit to a specialist pathway — exploration phase is over.',
+      academic:  'Students whose gravity is academic depth and whose path is book-forward.',
+      elite:     'Top-tier performers prepared for admissions-level intensity and visibility.',
+    },
+
+    pdf_option_a_label: 'Option A — Immediate Start',
+    pdf_option_b_label: 'Option B — Alternative Path',
+    pdf_option_a_by_track: {
+      discovery: 'Begin a 4-week Discovery Program observation cycle. Goal: identify the student\'s center of gravity within the month.',
+      decision:  'Enroll in Decision Program (1-month intensive). Goal: arrive at a committed direction by end of the month.',
+      direction: 'Start Direction Track onboarding with a dedicated mentor. Goal: establish the specialist trajectory within 6 weeks.',
+      academic:  'Enter Academic Track with diagnostic testing in week 1. Goal: calibrate the study plan within 4 weeks.',
+      elite:     'Begin Elite Track admissions-design consultation. Goal: frame the 12-month performance arc.',
+    },
+    pdf_option_b_by_track: {
+      discovery: 'If the family needs more evidence first, run a 2-week observation sprint before committing to the full cycle.',
+      decision:  'If direction feels premature, run a short Discovery cycle to sharpen interests before deciding.',
+      direction: 'If specialist commitment feels early, run one more Decision Program cycle to stress-test the chosen direction.',
+      academic:  'If the student needs more personality work before academic intensity, pair with Direction Track for 8 weeks first.',
+      elite:     'If overall readiness is mixed, begin with Academic Track for 3 months before moving to Elite-level design.',
+    },
   },
 
   ko: {
     pres_report_title: '학생 진단 리포트',
+    pres_report_subtitle: '169Avenue Premium Pathway Assessment',
     pres_slides: ['표지', '프로필', '5축 평가', '영역별 분석', '성향 분석', '추천 방향', '다음 단계'],
     pres_popup_blocked: '팝업을 허용해주세요.',
     pres_previous: '이전',
@@ -83,5 +316,233 @@ export const adminPresentationTranslations = {
     pres_schedule_consult: '상담 예약하기',
     pres_best: '강점',
     pres_grow: '개선',
+
+    // PDF-only extended keys
+    pdf_diag_date: '진단일',
+    pdf_diag_field: '진단 분야',
+    pdf_report_id: '리포트 ID',
+    pdf_field_general: '통합 진단',
+
+    pdf_exec_title: 'Executive Summary',
+    pdf_exec_sub: '이 리포트가 내린 결론을 한눈에.',
+    pdf_exec_overall: '종합 제안',
+    pdf_exec_strengths: '핵심 강점',
+    pdf_exec_risks: '주의 포인트',
+    pdf_exec_nextstep: '권장 다음 단계',
+
+    pdf_snapshot_title: 'Student Snapshot',
+    pdf_snapshot_sub: '이 진단이 놓인 배경과 맥락.',
+    pdf_consultant_note: '컨설턴트 노트',
+
+    pdf_dashboard_title: '종합 진단 대시보드',
+    pdf_dashboard_sub: '5축 지표와 해석 한 줄.',
+    pdf_interp_label: '해석',
+
+    pdf_domain_title: '영역별 상세 분석',
+    pdf_domain_sub: '각 영역은 점수가 아니라 판단으로 읽습니다.',
+    pdf_col_domain: '영역',
+    pdf_col_score: '점수',
+    pdf_col_status: '현재 상태',
+    pdf_col_strength: '강점',
+    pdf_col_improve: '보완 포인트',
+    pdf_col_reading: '해석',
+    pdf_status_fit: '적합',
+    pdf_status_needs_work: '보완 필요',
+    pdf_status_redesign: '후속 설계 권장',
+
+    pdf_personality_title: '성향 · 학습 스타일',
+    pdf_personality_sub: '이 학생이 학습에 반응하는 방식과 그 교육적 의미.',
+    pdf_educational_meaning: '교육적 의미',
+
+    pdf_track_title: 'Track Fit Analysis',
+    pdf_track_sub: '5개 트랙 중, 이 학생에게 맞는 경로.',
+    pdf_track_fit: '적합도',
+    pdf_track_rationale: '근거',
+    pdf_track_rec_high: '강력 추천',
+    pdf_track_rec_mid: '추천',
+    pdf_track_rec_low: '아직 아님',
+    pdf_best_fit: 'Best Fit',
+    pdf_best_fit_reason: '이 트랙인 이유',
+
+    pdf_compare_title: '관심 분야 비교 분석',
+    pdf_compare_sub: '학생이 지금 가진 관심 영역 간 비교.',
+    pdf_compare_area: '관심 분야',
+    pdf_compare_current: '현재 수준',
+    pdf_compare_readiness: '선택 준비도',
+
+    pdf_final_title: 'Final Recommendation',
+    pdf_final_sub: '169Avenue가 이름을 걸고 제안하는 방향.',
+    pdf_final_path: '권장 경로',
+    pdf_final_why: '이 경로인 이유',
+    pdf_final_notyet: '아직 권장하지 않는 것',
+    pdf_final_horizon: '권장 기간',
+
+    pdf_nextstep_title: '권장 다음 단계',
+    pdf_nextstep_sub: '구체적이고 시한이 있는 시작점.',
+    pdf_option_a: 'Option A — 지금 시작',
+    pdf_option_b: 'Option B — 준비 후 시작',
+    pdf_strategy_agenda: '전략 세션 아젠다',
+
+    pdf_appendix_title: 'Appendix — 평가 기준',
+    pdf_appendix_sub: '이 리포트의 숫자를 어떻게 읽어야 하는가.',
+    pdf_scale_title: '5점 척도',
+    pdf_criteria_title: '평가 원칙',
+
+    pdf_interp_excellent: '대부분의 영역에서 준비도가 매우 높습니다. 지금 필요한 것은 기반 쌓기가 아니라 "방향을 정하는 일"입니다.',
+    pdf_interp_good: '튼튼한 기반이 있습니다. 의도적으로 설계된 다음 단계가 가능성을 결과로 만듭니다.',
+    pdf_interp_average: '출발할 수는 있지만, 방향을 신중히 정해야 합니다. 지금 가장 "가르쳐지는" 지점부터 시작하세요.',
+    pdf_interp_developing: '아직 기초 단계입니다. 전문화보다 환경과 리듬이 우선입니다.',
+
+    pdf_horizon_6m: '6개월',
+    pdf_horizon_12m: '12개월',
+    pdf_horizon_18m: '18개월',
+
+    pdf_agenda_items: [
+      '권장 경로를 검토하고 가족 내 합의를 확인합니다.',
+      '6개월 일정과 체크포인트를 구체화합니다.',
+      'Option A / Option B 중 출발점을 결정합니다.',
+      '성장을 무엇으로 측정할지 정의합니다.',
+    ],
+
+    pdf_scale_rows: [
+      { score: '5', label: '탁월',   desc: '또래 평균을 명확히 상회. 해당 영역에서 주도 가능.' },
+      { score: '4', label: '우수',   desc: '꾸준히 기대 이상. 분명한 강점으로 활용 가능.' },
+      { score: '3', label: '적정',   desc: '기대 수준. 가용하지만 아직 차별점이 없음.' },
+      { score: '2', label: '발전 중', desc: '기대 이하. 구조적 지원이 필요한 단계.' },
+      { score: '1', label: '기초',   desc: '방향 설계 전에 기초 작업이 먼저 필요.' },
+    ],
+    pdf_criteria_items: [
+      { label: '점수가 아니라 판단',  desc: '점수는 "좋다/나쁘다"가 아니라 적합 · 보완 필요 · 후속 설계 권장을 가리킵니다.' },
+      { label: '맥락에 따라 가중',    desc: 'Track Fit은 5축을 트랙마다 다른 비중으로 조합합니다.' },
+      { label: '데이터보다 방향',    desc: '이 리포트의 목적은 순위가 아니라 "다음 한 걸음"을 결정하는 것입니다.' },
+    ],
+
+    pdf_tracks: [
+      { key: 'discovery', name: 'Discovery Program', blurb: '초등 저학년 — 재능 탐색.' },
+      { key: 'decision',  name: 'Decision Program',  blurb: '중학생 — 방향 결정.' },
+      { key: 'direction', name: 'Direction Track',   blurb: '방향 결정 이후 전문 경로.' },
+      { key: 'academic',  name: 'Academic Track',    blurb: '학업 중심 심화 경로.' },
+      { key: 'elite',     name: 'Elite Track',       blurb: '최상위 입시·퍼포먼스 설계.' },
+    ],
+
+    pdf_axis_readings: {
+      english: {
+        fit: '영어가 "도구"로 작동합니다. 장벽이 아니라 발판으로 활용 가능합니다.',
+        needs_work: '쓸 수 있지만 강점으로는 부족. 타깃을 정한 상승 작업이 필요합니다.',
+        redesign: '아직 기초 단계. 방향을 영어 위에 세우기는 이르다.',
+      },
+      attitude: {
+        fit: '학습 습관이 안정적. 새로운 도전이 결과로 축적됩니다.',
+        needs_work: '참여는 하지만, 압박 상황에서의 일관성이 아직 증명되지 않음.',
+        redesign: '태도가 병목입니다. 야심을 키우기 전에 리듬부터 잡아야 합니다.',
+      },
+      interest: {
+        fit: '관심이 분명하고 방향이 있음 — 이미 중심이 있는 학생입니다.',
+        needs_work: '관심은 있지만 분산. 포커스가 잡히는 중입니다.',
+        redesign: '아직 끌림이 분명하지 않음. 전문화보다 노출이 우선.',
+      },
+      personality: {
+        fit: '성향이 퍼포먼스 환경과 맞습니다. 실제 피드백을 견디고 성장합니다.',
+        needs_work: '대체로 준비됨. 일부 상황에서는 아직 소진됨.',
+        redesign: '지금은 "커리큘럼"보다 "환경 설계"가 더 중요합니다.',
+      },
+      overseas: {
+        fit: '해외/영어 몰입 환경이 선택지로 살아있습니다.',
+        needs_work: '가능은 하지만, 해외 이동이 여러 축을 동시에 늘리게 됩니다.',
+        redesign: '지금 해외는 올바른 지렛대가 아닙니다. 기초를 먼저 다지세요.',
+      },
+    },
+
+    /* ─── PDF v2 improvements (KO) ─── */
+
+    pdf_exec_why: '이 경로인 이유',
+    pdf_track_tier_best: 'Best Fit',
+    pdf_track_tier_secondary: 'Secondary Fit',
+    pdf_track_tier_not_yet: 'Not Recommended Yet',
+
+    pdf_col_positive: '강점 신호',
+    pdf_col_risk: '리스크 신호',
+    pdf_signal_observed: '관찰',
+    pdf_signal_watch: '주의',
+
+    pdf_stage_label: '현재 단계',
+    pdf_stage_exploration: 'Exploration Stage',
+    pdf_stage_decision: 'Decision Stage',
+    pdf_stage_specialization: 'Specialization Stage',
+
+    pdf_strategy_title: 'Learning Strategy',
+    pdf_strategy_sub: '이 학생을 "어떻게 가르쳐야 하는가"에 대한 판단.',
+    pdf_strategy_summary_label: '학습 스타일 요약',
+    pdf_strategy_env_label: '환경 적합도',
+    pdf_strategy_mode_label: '학습 반응 방식',
+    pdf_strategy_rec_env_label: '추천 환경',
+    pdf_strategy_env_structured: '구조형 — 명확한 규칙, 촘촘한 피드백, 예측 가능한 리듬.',
+    pdf_strategy_env_semi: '반구조형 — 목표는 정해지되, 그 안에서 탐색 여지가 있음.',
+    pdf_strategy_env_open: '개방형 — 느슨한 프레임, 학생이 방향을 주도.',
+    pdf_strategy_mode_mentor: '멘토 주도형 — 직접 지도와 잦은 피드백이 성장 속도를 가장 높입니다.',
+    pdf_strategy_mode_explore: '탐색 주도형 — 학생이 내용을 이끌고, 멘토는 프레임을 잡아줍니다.',
+    pdf_strategy_mode_hybrid: '혼합형 — 구조화된 블록과 개방된 탐색 시간을 번갈아 배치.',
+
+    pdf_strategy_summary: {
+      focus:        { high: '깊이형 학습자 — 장시간 · 단일 주제 작업에서 최고치.',
+                      mid:  '구조와 정기 점검이 주어지면 깊이 유지 가능.',
+                      low:  '짧은 주기형 학습자 — 깊이 이전에 리듬과 소규모 성취 필요.' },
+      exploration:  { high: '자기주도형 학습자 — 지시보다 이니셔티브가 먼저.',
+                      mid:  '관심은 있으나 행동으로 가려면 자극 필요.',
+                      low:  '수용형 학습자 — 주어진 것에 따라 움직임.' },
+      expression:   { high: '산출 주도형 학습자 — 생각이 빠르게 결과물로 이어짐.',
+                      mid:  '요청 시 산출함 — 스스로 밀어내진 않음.',
+                      low:  '내면형 학습자 — 의도적으로 끌어내지 않으면 안에 머무름.' },
+      coachability: { high: '피드백 친화형 학습자 — 교정이 성장으로 축적.',
+                      mid:  '피드백 수용하지만 적용 일관성이 낮음.',
+                      low:  '피드백 민감형 — 교정이 현재는 사기 비용을 치름.' },
+      confidence:   { high: '퍼포먼스 준비형 학습자 — 주목 상황에서도 무너지지 않음.',
+                      mid:  '익숙한 환경에선 수행 가능 — 새 청중에서 흔들림.',
+                      low:  '비공개형 퍼포머 — 지켜보는 시선에서 산출이 떨어짐.' },
+      adaptability: { high: '맥락 유연형 학습자 — 새 환경이 산출을 떨어뜨리지 않음.',
+                      mid:  '적응 가능하나 변화 비용이 있음 (1~2 세션).',
+                      low:  '연속성 의존형 — 프레임을 안정적으로 유지할 것.' },
+    },
+    pdf_strategy_env_by_track: {
+      discovery: '다양한 자극이 있는 소규모 노출 세션. 산출보다 관찰을 우선.',
+      decision:  '멘토 주도의 방향 설정. 2주마다 구조화된 피드백.',
+      direction: '전문 스튜디오 · 트레이닝 환경. 도제식 누적 진행.',
+      academic:  '높은 기대치의 학업 트랙. 정기 평가와 타이트한 피드백 루프.',
+      elite:     '높은 동료 기준의 프리미엄 코호트. 개별 퍼포먼스 설계.',
+    },
+
+    pdf_compare_response: '현재 반응',
+    pdf_compare_sustain: '지속 가능성',
+    pdf_compare_ready: '선택 준비도',
+    pdf_compare_recommend: '추천 여부',
+    pdf_compare_yes: '추천',
+    pdf_compare_watch: '관찰',
+    pdf_compare_wait: '아직',
+
+    pdf_suits_label: '추천 대상 유형',
+    pdf_suits_by_track: {
+      discovery: '아직 중심을 찾지 못한 초기 탐색형 학생에게 적합합니다.',
+      decision:  '관심은 있으나 선택이 필요한, 방향 결정 국면의 학생에게 적합합니다.',
+      direction: '탐색 단계를 지나 전문 경로에 전념할 준비가 된 학생에게 적합합니다.',
+      academic:  '학업 중심 깊이가 핵심 중력인 학생에게 적합합니다.',
+      elite:     '입시 수준의 강도와 가시성에 준비된 최상위 학생에게 적합합니다.',
+    },
+
+    pdf_option_a_label: 'Option A — 지금 시작',
+    pdf_option_b_label: 'Option B — 대안 경로',
+    pdf_option_a_by_track: {
+      discovery: '4주간의 Discovery Program 관찰 사이클을 시작. 목표: 한 달 안에 학생의 중심축을 찾는다.',
+      decision:  'Decision Program (1개월 집중)에 등록. 목표: 한 달 안에 방향을 결정한다.',
+      direction: '전담 멘토와 함께 Direction Track 온보딩을 시작. 목표: 6주 안에 전문 경로를 확립한다.',
+      academic:  '1주차 진단 평가와 함께 Academic Track에 진입. 목표: 4주 안에 학습 계획을 보정한다.',
+      elite:     'Elite Track 입시 설계 상담을 시작. 목표: 12개월 퍼포먼스 아크를 프레이밍한다.',
+    },
+    pdf_option_b_by_track: {
+      discovery: '가족이 더 많은 근거를 원한다면, 2주간의 관찰 스프린트 후 본 사이클에 진입.',
+      decision:  '방향 결정이 이르다면, 짧은 Discovery 사이클로 관심을 선명히 한 뒤 결정.',
+      direction: '전문화 전념이 이르다면, Decision Program 한 사이클을 더 진행해 방향을 스트레스 테스트.',
+      academic:  '학업 강도 이전에 성향 작업이 더 필요하면, 8주간 Direction Track과 병행.',
+      elite:     '전반적 준비도가 혼합된 상태라면, 3개월간 Academic Track으로 시작한 뒤 Elite 설계로 이행.',
+    },
   },
 } as const

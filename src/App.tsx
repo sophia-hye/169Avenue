@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LanguageProvider } from './context/LanguageContext'
 import { AuthProvider } from './context/AuthContext'
 import { ScrollToTop } from './components/ScrollToTop'
@@ -31,7 +31,7 @@ import { AcademicTrackPage } from './components/AcademicTrackPage'
 import { EliteTrackPage } from './components/EliteTrackPage'
 import { HowItWorksPage } from './components/HowItWorksPage'
 import { StudentReportPage } from './components/admin/StudentReportPage'
-import { DiagnosisPage } from './components/admin/diagnosis/DiagnosisPage'
+import { StudentWorkspacePage } from './components/admin/students/StudentWorkspacePage'
 
 function App() {
   return (
@@ -68,7 +68,9 @@ function App() {
         <Route path="/programs/elite" element={<EliteTrackPage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route path="/admin/report" element={<ProtectedRoute><StudentReportPage /></ProtectedRoute>} />
-        <Route path="/admin/diagnosis" element={<ProtectedRoute><DiagnosisPage /></ProtectedRoute>} />
+        <Route path="/admin/students" element={<ProtectedRoute><StudentWorkspacePage /></ProtectedRoute>} />
+        <Route path="/admin/students/:studentId" element={<ProtectedRoute><StudentWorkspacePage /></ProtectedRoute>} />
+        <Route path="/admin/diagnosis" element={<Navigate to="/admin/students" replace />} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>

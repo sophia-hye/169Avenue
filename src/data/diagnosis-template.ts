@@ -1,3 +1,16 @@
+export type SchoolType = '' | 'general' | 'international' | 'overseas'
+export type MainActivity = '' | 'academic' | 'art' | 'tennis' | 'other'
+export type ActivityDuration = '' | 'lt-6m' | '6-12m' | 'gt-1y'
+export type EnglishLevel = '' | 'none' | 'academy' | 'daily' | 'overseas'
+export type DirectionDilemma = '' | 'art-vs-academic' | 'tennis-vs-art' | 'arts-vs-academic' | 'unsure'
+export type DirectionConfidence = '' | 'none' | 'considering' | 'somewhat' | 'certain'
+export type NewActivityAttitude = '' | 'active' | 'situational' | 'passive'
+export type FocusLevel = '' | 'long' | 'medium' | 'distracted'
+export type SelfDirection = '' | 'self' | 'when-told' | 'rarely'
+export type ParentConcernType = '' | 'direction' | 'continuation' | 'admission-link' | 'losing-interest'
+export type TargetEducation = '' | 'overseas-univ' | 'domestic-univ' | 'undecided'
+export type InterestField = '' | 'arts-sports' | 'academic' | 'both' | 'unsure'
+
 export interface ParentSurvey {
   studentName: string
   grade: string
@@ -8,6 +21,22 @@ export interface ParentSurvey {
   educationGoal: string
   overseasExperience: string
   concerns: string
+  // Step-form additions (optional for backward compatibility)
+  schoolType?: SchoolType
+  parentPhone?: string
+  mainActivity?: MainActivity
+  activityDuration?: ActivityDuration
+  englishLevel?: EnglishLevel
+  directionDilemma?: DirectionDilemma
+  directionConfidence?: DirectionConfidence
+  newActivityAttitude?: NewActivityAttitude
+  focusLevel?: FocusLevel
+  selfDirection?: SelfDirection
+  parentConcernType?: ParentConcernType
+  pastAttempts?: string
+  targetEducation?: TargetEducation
+  interestField?: InterestField
+  keyQuestion?: string
 }
 
 export interface StudentSurvey {
@@ -18,25 +47,34 @@ export interface StudentSurvey {
   interestArea: string
 }
 
-export interface ObserverEntry {
-  category: string
+/** Observer v2 — structured evaluation engine for The 169 Method */
+export const OBSERVER_DOMAIN_KEYS = [
+  'focus', 'exploration', 'expression', 'coachability', 'confidence', 'adaptability',
+] as const
+
+export type ObserverDomainKey = typeof OBSERVER_DOMAIN_KEYS[number]
+
+export interface ObserverItem {
+  /** Stable key identifier for the item within its domain — also used as i18n key. */
+  key: string
   label: string
   score: number // 1-5
   note: string
 }
+
+export interface ObserverDomain {
+  items: ObserverItem[]
+  mentorNote: string
+}
+
+export type ObserverMap = Record<ObserverDomainKey, ObserverDomain>
 
 export interface DiagnosisData {
   id: string
   createdAt: string
   parent: ParentSurvey
   student: StudentSurvey
-  observer: {
-    english: ObserverEntry[]
-    attitude: ObserverEntry[]
-    interest: ObserverEntry[]
-    personality: ObserverEntry[]
-    overseas: ObserverEntry[]
-  }
+  observer: ObserverMap
   summary: {
     type: ('exploratory' | 'focused' | 'expressive')[]
     overallNote: string
@@ -45,37 +83,79 @@ export interface DiagnosisData {
   }
 }
 
-export const OBSERVER_TEMPLATE = {
-  english: [
-    { category: 'English', label: 'Conversation Level', score: 3, note: '' },
-    { category: 'English', label: 'Presentation Confidence', score: 3, note: '' },
-    { category: 'English', label: 'Listening Comprehension', score: 3, note: '' },
-    { category: 'English', label: 'Vocabulary Range', score: 3, note: '' },
-  ],
-  attitude: [
-    { category: 'Attitude', label: 'Focus / Concentration', score: 3, note: '' },
-    { category: 'Attitude', label: 'Task Completion', score: 3, note: '' },
-    { category: 'Attitude', label: 'Adaptability', score: 3, note: '' },
-    { category: 'Attitude', label: 'Participation', score: 3, note: '' },
-  ],
-  interest: [
-    { category: 'Interest', label: 'Academic Curiosity', score: 3, note: '' },
-    { category: 'Interest', label: 'Sports Engagement', score: 3, note: '' },
-    { category: 'Interest', label: 'Art / Creative Expression', score: 3, note: '' },
-    { category: 'Interest', label: 'Leadership Initiative', score: 3, note: '' },
-  ],
-  personality: [
-    { category: 'Personality', label: 'Exploratory Drive', score: 3, note: '' },
-    { category: 'Personality', label: 'Depth of Focus', score: 3, note: '' },
-    { category: 'Personality', label: 'Expressiveness', score: 3, note: '' },
-    { category: 'Personality', label: 'Social Confidence', score: 3, note: '' },
-  ],
-  overseas: [
-    { category: 'Overseas', label: 'Environmental Adaptability', score: 3, note: '' },
-    { category: 'Overseas', label: 'Independence', score: 3, note: '' },
-    { category: 'Overseas', label: 'Cultural Openness', score: 3, note: '' },
-    { category: 'Overseas', label: 'Stress Resilience', score: 3, note: '' },
-  ],
+/**
+ * Static item catalog per domain.
+ * Keys stay stable across languages — display labels come from i18n.
+ */
+const mkItem = (key: string, label: string): ObserverItem => ({ key, label, score: 3, note: '' })
+
+export const OBSERVER_TEMPLATE: ObserverMap = {
+  focus: {
+    mentorNote: '',
+    items: [
+      mkItem('sustained_attention',     'Sustained Attention'),
+      mkItem('task_completion',         'Task Completion'),
+      mkItem('depth_of_engagement',     'Depth of Engagement'),
+      mkItem('recovery_from_distraction', 'Recovery from Distraction'),
+    ],
+  },
+  exploration: {
+    mentorNote: '',
+    items: [
+      mkItem('curiosity_driven_action', 'Curiosity-Driven Action'),
+      mkItem('self_starting',           'Self-Starting Behavior'),
+      mkItem('question_asking',         'Question Asking'),
+      mkItem('range_of_interests',      'Range of Interests'),
+    ],
+  },
+  expression: {
+    mentorNote: '',
+    items: [
+      mkItem('articulation',            'Articulation of Ideas'),
+      mkItem('creative_output',         'Creative Output'),
+      mkItem('skill_application',       'Technical Skill Application'),
+      mkItem('presentation_confidence', 'Presentation Confidence'),
+    ],
+  },
+  coachability: {
+    mentorNote: '',
+    items: [
+      mkItem('receiving_correction',    'Receiving Correction'),
+      mkItem('applying_feedback',       'Applying Feedback'),
+      mkItem('willingness_to_retry',    'Willingness to Retry'),
+      mkItem('self_reflection',         'Self-Reflection'),
+    ],
+  },
+  confidence: {
+    mentorNote: '',
+    items: [
+      mkItem('peer_interaction',        'Peer Interaction'),
+      mkItem('leadership_moments',      'Leadership Moments'),
+      mkItem('handling_visibility',     'Handling Visibility'),
+      mkItem('emotional_steadiness',    'Emotional Steadiness'),
+    ],
+  },
+  adaptability: {
+    mentorNote: '',
+    items: [
+      mkItem('new_context_adjustment',  'New Context Adjustment'),
+      mkItem('handling_ambiguity',      'Handling Ambiguity'),
+      mkItem('stress_resilience',       'Stress Resilience'),
+      mkItem('openness_to_change',      'Openness to Change'),
+    ],
+  },
+}
+
+/** Deep clone the template so mutations don't bleed across diagnoses. */
+const cloneTemplate = (): ObserverMap => {
+  const out = {} as ObserverMap
+  for (const k of OBSERVER_DOMAIN_KEYS) {
+    out[k] = {
+      mentorNote: '',
+      items: OBSERVER_TEMPLATE[k].items.map((it) => ({ ...it })),
+    }
+  }
+  return out
 }
 
 export const INTEREST_OPTIONS = [
@@ -96,6 +176,21 @@ export const DEFAULT_DIAGNOSIS: DiagnosisData = {
     educationGoal: '',
     overseasExperience: '',
     concerns: '',
+    schoolType: '',
+    parentPhone: '',
+    mainActivity: '',
+    activityDuration: '',
+    englishLevel: '',
+    directionDilemma: '',
+    directionConfidence: '',
+    newActivityAttitude: '',
+    focusLevel: '',
+    selfDirection: '',
+    parentConcernType: '',
+    pastAttempts: '',
+    targetEducation: '',
+    interestField: '',
+    keyQuestion: '',
   },
   student: {
     ageGroup: 'upper-elem',
@@ -104,7 +199,7 @@ export const DEFAULT_DIAGNOSIS: DiagnosisData = {
     goalOrDream: '',
     interestArea: '',
   },
-  observer: { ...OBSERVER_TEMPLATE },
+  observer: cloneTemplate(),
   summary: {
     type: [],
     overallNote: '',
@@ -113,14 +208,39 @@ export const DEFAULT_DIAGNOSIS: DiagnosisData = {
   },
 }
 
-/** Calculate axis averages for radar chart */
+/** Display axis label (English) for a domain key. Used for radar chart axis names. */
+export const DOMAIN_DISPLAY: Record<ObserverDomainKey, string> = {
+  focus:        'Focus',
+  exploration:  'Exploration',
+  expression:   'Expression',
+  coachability: 'Coachability',
+  confidence:   'Confidence',
+  adaptability: 'Adaptability',
+}
+
+/** Calculate domain averages for radar chart. */
 export function calcRadarScores(observer: DiagnosisData['observer']): { axis: string; value: number }[] {
-  const avg = (entries: ObserverEntry[]) => entries.reduce((s, e) => s + e.score, 0) / entries.length
-  return [
-    { axis: 'English', value: avg(observer.english) },
-    { axis: 'Attitude', value: avg(observer.attitude) },
-    { axis: 'Interest', value: avg(observer.interest) },
-    { axis: 'Personality', value: avg(observer.personality) },
-    { axis: 'Overseas', value: avg(observer.overseas) },
-  ]
+  return OBSERVER_DOMAIN_KEYS.map((key) => {
+    const items = observer[key].items
+    const value = items.length ? items.reduce((s, it) => s + it.score, 0) / items.length : 0
+    return { axis: DOMAIN_DISPLAY[key], value }
+  })
+}
+
+/** Legacy helper retained for backward compatibility with callers expecting a flat entry list. */
+export interface ObserverEntry {
+  category: string
+  label: string
+  score: number
+  note: string
+}
+export function flattenObserver(observer: ObserverMap): ObserverEntry[] {
+  const out: ObserverEntry[] = []
+  for (const key of OBSERVER_DOMAIN_KEYS) {
+    const dom = observer[key]
+    for (const it of dom.items) {
+      out.push({ category: DOMAIN_DISPLAY[key], label: it.label, score: it.score, note: it.note })
+    }
+  }
+  return out
 }

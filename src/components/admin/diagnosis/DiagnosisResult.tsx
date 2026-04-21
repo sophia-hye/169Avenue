@@ -1,5 +1,11 @@
-import { calcRadarScores, type DiagnosisData } from '../../../data/diagnosis-template'
+import { calcRadarScores, OBSERVER_DOMAIN_KEYS, type DiagnosisData } from '../../../data/diagnosis-template'
 import { PERSONALITY_LABELS, type PersonalityType } from '../../../data/report-template'
+import {
+  computeDomainAverages,
+  computeTrackFits,
+  pickRecommendedTrack,
+  computeAutoTypes,
+} from '../../../data/observer-interpretation'
 import { RadarChart } from './RadarChart'
 import { useLanguage } from '../../../context/LanguageContext'
 
@@ -26,6 +32,11 @@ export function DiagnosisResult({ data, onChange }: Props) {
   const s = data.summary
   const overall = scores.reduce((sum, sc) => sum + sc.value, 0) / scores.length
 
+  const avgs = computeDomainAverages(data.observer)
+  const fits = computeTrackFits(avgs)
+  const { track: recTrack } = pickRecommendedTrack(fits, overall)
+  const trackNames = t.diag_obs_track_names as Record<string, string>
+
   const set = (field: keyof typeof s, value: string | PersonalityType[]) => {
     onChange({ ...data, summary: { ...s, [field]: value } })
   }
@@ -35,12 +46,7 @@ export function DiagnosisResult({ data, onChange }: Props) {
     set('type', next)
   }
 
-  const personalityScores = data.observer.personality
-  const autoTypes: PersonalityType[] = []
-  if (personalityScores[0]?.score >= 4) autoTypes.push('exploratory')
-  if (personalityScores[1]?.score >= 4) autoTypes.push('focused')
-  if (personalityScores[2]?.score >= 4) autoTypes.push('expressive')
-
+  const autoTypes = computeAutoTypes(avgs)
   const overallGrade = ScoreGrade(overall, t.diag_res_grades)
 
   return (
@@ -56,19 +62,37 @@ export function DiagnosisResult({ data, onChange }: Props) {
             {t.diag_res_overall}
           </div>
         </div>
-        <div className="flex-1 grid grid-cols-5 gap-4">
+        <div className="flex-1 grid grid-cols-6 gap-3">
           {displayScores.map((sc) => {
             const g = ScoreGrade(sc.value, t.diag_res_grades)
             return (
               <div key={sc.axis} className="text-center">
                 <div className="font-headline text-xl text-primary">{sc.value.toFixed(1)}</div>
-                <div className="font-body text-[10px] uppercase tracking-widest text-on-surface-variant/50 mt-0.5">{sc.axis}</div>
+                <div className="font-body text-[10px] uppercase tracking-widest text-on-surface-variant/50 mt-0.5 truncate">{sc.axis}</div>
                 <div className="w-full h-1.5 bg-outline-variant/10 rounded-full mt-2 overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${(sc.value / 5) * 100}%`, background: g.color }} />
                 </div>
               </div>
             )
           })}
+        </div>
+      </div>
+
+      {/* Auto-recommended track */}
+      <div className="mb-8 bg-primary text-on-primary p-5 flex items-center justify-between gap-6 flex-wrap">
+        <div>
+          <div className="font-label text-[10px] uppercase tracking-[0.22em] text-secondary/80 mb-1">
+            {t.diag_obs_rec_track_label}
+          </div>
+          <div className="font-headline text-xl tracking-tight">{trackNames[recTrack.key]}</div>
+        </div>
+        <div className="flex items-center gap-6">
+          {fits.slice(0, 3).map((f) => (
+            <div key={f.key} className="text-right">
+              <div className="font-body text-[10px] uppercase tracking-widest opacity-60">{trackNames[f.key]}</div>
+              <div className="font-headline text-base">{f.pct}%</div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -83,10 +107,14 @@ export function DiagnosisResult({ data, onChange }: Props) {
           <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.diag_res_findings_title}</h4>
           <div className="space-y-4">
             {scores.map((sc, i) => {
-              const entries = data.observer[(['english', 'attitude', 'interest', 'personality', 'overseas'] as const)[i]]
+              const key = OBSERVER_DOMAIN_KEYS[i]
+              const entries = data.observer[key].items
               const topEntry = [...entries].sort((a, b) => b.score - a.score)[0]
               const lowEntry = [...entries].sort((a, b) => a.score - b.score)[0]
               const g = ScoreGrade(sc.value, t.diag_res_grades)
+              const items = t.diag_obs_items as Record<string, { label: string }>
+              const topLabel = topEntry ? (items[topEntry.key]?.label || topEntry.label) : ''
+              const lowLabel = lowEntry ? (items[lowEntry.key]?.label || lowEntry.label) : ''
               return (
                 <div key={sc.axis} className="border-b border-outline-variant/10 pb-3">
                   <div className="flex items-center justify-between mb-1">
@@ -96,9 +124,9 @@ export function DiagnosisResult({ data, onChange }: Props) {
                     </span>
                   </div>
                   <div className="flex gap-4 text-xs text-on-surface-variant/60">
-                    <span>{t.diag_res_strength}: <span className="text-primary">{topEntry?.label}</span> ({topEntry?.score}/5)</span>
-                    {lowEntry?.label !== topEntry?.label && (
-                      <span>{t.diag_res_improve}: <span className="text-primary">{lowEntry?.label}</span> ({lowEntry?.score}/5)</span>
+                    <span>{t.diag_res_strength}: <span className="text-primary">{topLabel}</span> ({topEntry?.score}/5)</span>
+                    {lowLabel !== topLabel && (
+                      <span>{t.diag_res_improve}: <span className="text-primary">{lowLabel}</span> ({lowEntry?.score}/5)</span>
                     )}
                   </div>
                 </div>
@@ -139,18 +167,28 @@ export function DiagnosisResult({ data, onChange }: Props) {
         </div>
       </div>
 
-      {/* Observation Highlights */}
+      {/* Observation Highlights (flattened item notes + domain mentor notes) */}
       <div className="mb-8 bg-surface-container-low p-6">
         <h4 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.diag_res_observation_title}</h4>
         <div className="space-y-2">
-          {Object.values(data.observer).flat().filter((e) => e.note).map((e, i) => (
+          {OBSERVER_DOMAIN_KEYS.flatMap((key) => {
+            const dom = data.observer[key]
+            const domainLabel = (t.diag_obs_domains as Record<string, string>)[key]
+            const itemLabels = t.diag_obs_items as Record<string, { label: string }>
+            const rows: { category: string; label: string; note: string }[] = []
+            if (dom.mentorNote) rows.push({ category: domainLabel, label: t.diag_obs_mentor_note_label as string, note: dom.mentorNote })
+            for (const it of dom.items) {
+              if (it.note) rows.push({ category: domainLabel, label: itemLabels[it.key]?.label || it.label, note: it.note })
+            }
+            return rows
+          }).map((row, i) => (
             <div key={i} className="flex items-start gap-3 py-2 border-b border-outline-variant/5">
-              <span className="font-body text-xs text-secondary shrink-0 mt-0.5">{e.category}</span>
-              <span className="font-body text-xs text-on-surface-variant/40 shrink-0">{e.label}:</span>
-              <span className="font-body text-sm text-primary">{e.note}</span>
+              <span className="font-body text-xs text-secondary shrink-0 mt-0.5">{row.category}</span>
+              <span className="font-body text-xs text-on-surface-variant/40 shrink-0">{row.label}:</span>
+              <span className="font-body text-sm text-primary">{row.note}</span>
             </div>
           ))}
-          {Object.values(data.observer).flat().filter((e) => e.note).length === 0 && (
+          {OBSERVER_DOMAIN_KEYS.every((k) => !data.observer[k].mentorNote && data.observer[k].items.every((it) => !it.note)) && (
             <p className="font-body text-xs text-on-surface-variant/30">{t.diag_res_no_observations}</p>
           )}
         </div>

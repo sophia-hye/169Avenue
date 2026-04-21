@@ -100,7 +100,7 @@ export function MobileMenuOverlay({ onClose }: Props) {
             <div className="h-px bg-outline-variant/20" />
             <div className="space-y-3">
               <Link
-                to="/admin/diagnosis"
+                to="/admin/students"
                 onClick={handleClick}
                 className="block font-headline text-xl text-secondary tracking-tight"
               >
