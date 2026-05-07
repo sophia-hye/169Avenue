@@ -12,9 +12,9 @@ import {
   deleteObservation,
   deleteStudent,
   getCase,
+  initStudentStore,
   listStudents,
   markExported,
-  runMigrations,
   saveCase,
   updateObservation,
   updateSurvey,
@@ -25,6 +25,7 @@ import {
   type StudentIndexEntry,
   type Status,
 } from '../../../data/student-store'
+import { isSupabaseConfigured, SUPABASE_SETUP_MESSAGE } from '../../../lib/supabase'
 import { DEFAULT_DIAGNOSIS, OBSERVER_DOMAIN_KEYS, type DiagnosisData, type ObserverMap } from '../../../data/diagnosis-template'
 import {
   computeDomainAverages,
@@ -49,17 +50,25 @@ export function StudentWorkspacePage() {
   const [tab, setTab] = useState<TabId>('overview')
   const [presenting, setPresenting] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
+  const [storeReady, setStoreReady] = useState(false)
 
   useEffect(() => {
-    runMigrations()
-    setList(listStudents())
+    let cancelled = false
+    void (async () => {
+      await initStudentStore()
+      if (cancelled) return
+      setList(listStudents())
+      setStoreReady(true)
+    })()
+    return () => { cancelled = true }
   }, [])
 
   useEffect(() => {
+    if (!storeReady) return
     if (!studentId) { setCurrent(null); return }
     const c = getCase(studentId)
     setCurrent(c)
-  }, [studentId])
+  }, [studentId, storeReady])
 
   const refreshList = () => setList(listStudents())
 
@@ -127,6 +136,19 @@ export function StudentWorkspacePage() {
     <>
       <Navbar />
       <MobileTopBar />
+      {!isSupabaseConfigured && (
+        <div
+          className="fixed top-3 left-1/2 -translate-x-1/2 z-50 max-w-[720px] w-[calc(100vw-24px)] px-3 py-2 rounded-lg border bg-amber-50 border-amber-300 text-amber-900 text-xs shadow"
+          role="status"
+        >
+          ⚠️ {SUPABASE_SETUP_MESSAGE}
+        </div>
+      )}
+      {!storeReady && (
+        <div className="fixed top-20 right-4 z-40 px-3 py-1.5 rounded-md bg-black/70 text-white text-xs shadow">
+          데이터 불러오는 중…
+        </div>
+      )}
       <main className="pt-20 md:pt-24 pb-24 md:pb-16" style={{ maxWidth: 1400, margin: '0 auto' }}>
         <div className="flex flex-col md:flex-row md:gap-6 px-4 md:px-6">
           {/* Sidebar */}

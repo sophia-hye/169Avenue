@@ -4,8 +4,9 @@ import {
   type ObserverMap,
   type ParentSurvey,
 } from './diagnosis-template'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
-/* ─── Keys ─── */
+/* ─── Keys (legacy localStorage) ─── */
 
 const INDEX_KEY = '169av-students-index'
 const CASE_KEY = (id: string) => `169av-case-${id}`
@@ -13,6 +14,8 @@ const CASE_KEY = (id: string) => `169av-case-${id}`
 const LEGACY_SLOT_KEY = '169av-diagnosis'
 /** Legacy per-student key (pre-case refactor, flat DiagnosisData). */
 const LEGACY_STUDENT_KEY = (id: string) => `169av-student-${id}`
+/** Once we've pushed local cases to Supabase we set this so we don't keep doing it. */
+const SUPABASE_MIGRATION_FLAG = '169av-migrated-to-supabase'
 
 /* ─── Types ─── */
 
@@ -97,6 +100,19 @@ function emptyObserver(): ObserverMap {
   }, {} as ObserverMap)
 }
 
+/* ─── Module-level cache ─── */
+/**
+ * Single source of truth at runtime. Public functions stay synchronous and
+ * read/write this Map. Persistence happens in the background:
+ *  - When Supabase is configured: fire-and-forget upsert/delete on student_cases
+ *  - Otherwise:                    legacy localStorage writes (offline fallback)
+ */
+const cache = new Map<string, StudentCase>()
+let initialized = false
+let initPromise: Promise<void> | null = null
+
+/* ─── Local storage I/O (used as fallback + as legacy migration source) ─── */
+
 function readIndex(): StudentIndexEntry[] {
   try {
     const raw = localStorage.getItem(INDEX_KEY)
@@ -108,10 +124,10 @@ function readIndex(): StudentIndexEntry[] {
   }
 }
 function writeIndex(idx: StudentIndexEntry[]): void {
-  localStorage.setItem(INDEX_KEY, JSON.stringify(idx))
+  try { localStorage.setItem(INDEX_KEY, JSON.stringify(idx)) } catch { /* ignore */ }
 }
 
-function readCase(id: string): StudentCase | null {
+function readCaseLocal(id: string): StudentCase | null {
   try {
     const raw = localStorage.getItem(CASE_KEY(id))
     if (!raw) return null
@@ -120,11 +136,11 @@ function readCase(id: string): StudentCase | null {
     return null
   }
 }
-function writeCase(c: StudentCase): void {
-  localStorage.setItem(CASE_KEY(c.student.id), JSON.stringify(c))
+function writeCaseLocal(c: StudentCase): void {
+  try { localStorage.setItem(CASE_KEY(c.student.id), JSON.stringify(c)) } catch { /* ignore */ }
 }
-function removeCase(id: string): void {
-  localStorage.removeItem(CASE_KEY(id))
+function removeCaseLocal(id: string): void {
+  try { localStorage.removeItem(CASE_KEY(id)) } catch { /* ignore */ }
 }
 
 /** Defensive: fill missing fields from a possibly-partial case JSON. */
@@ -147,6 +163,10 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     recommendation: r.recommendation,
     nextProgram: r.nextProgram,
     nextSteps: r.nextSteps,
+    roadmapShort: r.roadmapShort,
+    roadmapMid: r.roadmapMid,
+    roadmapLong: r.roadmapLong,
+    closingMessage: r.closingMessage,
     generatedAt: r.generatedAt,
     version: typeof r.version === 'number' ? r.version : 1,
   }))
@@ -202,14 +222,259 @@ function indexEntry(c: StudentCase): StudentIndexEntry {
   }
 }
 
-/* ─── Public API ─── */
+/* ─── Supabase I/O ─── */
+
+async function fetchAllFromSupabase(): Promise<StudentCase[]> {
+  if (!isSupabaseConfigured || !supabase) return []
+  const { data, error } = await supabase.from('student_cases').select('id, data')
+  if (error) {
+    console.error('[student-store] fetchAll failed:', error)
+    return []
+  }
+  return (data || []).map((row: { id: string; data: unknown }) => normalizeCase(row.data, row.id))
+}
+
+async function uploadAllToSupabase(cases: StudentCase[]): Promise<boolean> {
+  if (!isSupabaseConfigured || !supabase || cases.length === 0) return false
+  const payload = cases.map((c) => ({ id: c.student.id, data: c }))
+  const { error } = await supabase.from('student_cases').upsert(payload, { onConflict: 'id' })
+  if (error) {
+    console.error('[student-store] upload failed:', error)
+    return false
+  }
+  return true
+}
+
+function persistCase(c: StudentCase): void {
+  if (isSupabaseConfigured && supabase) {
+    void supabase
+      .from('student_cases')
+      .upsert({ id: c.student.id, data: c }, { onConflict: 'id' })
+      .then(({ error }) => { if (error) console.error('[student-store] persist failed:', error) })
+  } else {
+    writeCaseLocal(c)
+    const idx = readIndex()
+    const i = idx.findIndex((e) => e.id === c.student.id)
+    const entry = indexEntry(c)
+    if (i >= 0) idx[i] = entry
+    else idx.push(entry)
+    writeIndex(idx)
+  }
+}
+
+function persistDelete(id: string): void {
+  if (isSupabaseConfigured && supabase) {
+    void supabase
+      .from('student_cases')
+      .delete()
+      .eq('id', id)
+      .then(({ error }) => { if (error) console.error('[student-store] delete failed:', error) })
+  } else {
+    removeCaseLocal(id)
+    const idx = readIndex().filter((e) => e.id !== id)
+    writeIndex(idx)
+  }
+}
+
+/* ─── Init ─── */
+
+/**
+ * Run once at app startup. Hydrates the in-memory cache from whichever source
+ * is available (Supabase if configured, otherwise legacy localStorage).
+ *
+ * On first run with Supabase configured AND a non-empty localStorage, this
+ * uploads the local cases to Supabase and marks the migration complete.
+ *
+ * Public sync functions (`listStudents`, `getCase`, `saveCase`, …) return
+ * stale/empty results until this resolves. The single consumer
+ * (`StudentWorkspacePage`) awaits this in its mount effect.
+ */
+export async function initStudentStore(): Promise<void> {
+  if (initialized) return
+  if (initPromise) return initPromise
+  initPromise = (async () => {
+    try {
+      // 1. Run legacy localStorage migrations (older single-slot / per-student
+      //    flat formats → 169av-case-{id}). Pure local, no network.
+      runLegacyLocalStorageMigrations()
+
+      if (isSupabaseConfigured) {
+        // 2. Try to hydrate from Supabase first (source of truth when present).
+        const remote = await fetchAllFromSupabase()
+        if (remote.length > 0) {
+          for (const c of remote) cache.set(c.student.id, c)
+          return
+        }
+
+        // 3. Supabase is empty. If we have local cases AND haven't migrated
+        //    yet, push them up so the user keeps their existing data.
+        const alreadyMigrated = (() => {
+          try { return localStorage.getItem(SUPABASE_MIGRATION_FLAG) === '1' } catch { return false }
+        })()
+        if (!alreadyMigrated) {
+          const localCases = collectAllLocalCases()
+          if (localCases.length > 0) {
+            const ok = await uploadAllToSupabase(localCases)
+            if (ok) {
+              try { localStorage.setItem(SUPABASE_MIGRATION_FLAG, '1') } catch { /* ignore */ }
+              for (const c of localCases) cache.set(c.student.id, c)
+              console.info(`[student-store] Migrated ${localCases.length} cases from localStorage to Supabase.`)
+              return
+            }
+          }
+        }
+        // Otherwise: empty cache — first-time-clean state.
+        return
+      }
+
+      // Supabase not configured → legacy mode: cache from localStorage.
+      for (const c of collectAllLocalCases()) cache.set(c.student.id, c)
+    } finally {
+      initialized = true
+    }
+  })()
+  return initPromise
+}
+
+/** Back-compat alias. Prefer `initStudentStore()` in new code. */
+export function runMigrations(): { migrated: number } {
+  // Eagerly kick off async init in the background. Existing callers don't
+  // await but they always also call `listStudents()` after; the async result
+  // is delivered via the `initStudentStore` promise the caller separately
+  // awaits in modern code.
+  void initStudentStore()
+  return { migrated: 0 }
+}
+
+function collectAllLocalCases(): StudentCase[] {
+  const out: StudentCase[] = []
+  // Prefer entries in the index for ordering, then sweep raw keys for orphans.
+  const seen = new Set<string>()
+  for (const entry of readIndex()) {
+    const c = readCaseLocal(entry.id)
+    if (c) { out.push(c); seen.add(entry.id) }
+  }
+  try {
+    const total = localStorage.length
+    for (let i = 0; i < total; i++) {
+      const k = localStorage.key(i)
+      if (!k || !k.startsWith('169av-case-')) continue
+      const id = k.replace('169av-case-', '')
+      if (seen.has(id)) continue
+      const c = readCaseLocal(id)
+      if (c) { out.push(c); seen.add(id) }
+    }
+  } catch { /* ignore */ }
+  return out
+}
+
+function runLegacyLocalStorageMigrations(): void {
+  try {
+    // Migrate per-student legacy records listed in the old index
+    const idx = readIndex()
+    for (const entry of idx) {
+      // If a case already exists under CASE_KEY, skip
+      if (localStorage.getItem(CASE_KEY(entry.id))) continue
+      const legacyRaw = localStorage.getItem(LEGACY_STUDENT_KEY(entry.id))
+      if (!legacyRaw) continue
+      try {
+        const legacy = JSON.parse(legacyRaw) as {
+          id?: string; createdAt?: string; parent?: ParentSurvey
+          observer?: ObserverMap
+          summary?: { overallNote?: string; recommendedDirection?: string; nextSteps?: string }
+          exports?: number; lastExportedAt?: string
+        }
+        const id = entry.id
+        const c: StudentCase = {
+          student: {
+            id,
+            name: legacy.parent?.studentName || entry.name || '',
+            grade: legacy.parent?.grade || entry.grade || '',
+            school: legacy.parent?.school || '',
+            program: entry.program || '',
+            createdAt: legacy.createdAt || nowDate(),
+            updatedAt: nowIso(),
+          },
+          survey: { ...DEFAULT_DIAGNOSIS.parent, ...(legacy.parent || {}) },
+          observations: legacy.observer
+            ? [{
+                id: newId('o'),
+                sessionDate: legacy.createdAt || nowDate(),
+                sessionLabel: 'Session 1',
+                observer: legacy.observer,
+                overallNote: legacy.summary?.overallNote,
+                createdAt: legacy.createdAt || nowIso(),
+              }]
+            : [],
+          reports: (legacy.exports || 0) > 0
+            ? [{
+                id: newId('r'),
+                observationIds: [],
+                recommendation: legacy.summary?.recommendedDirection,
+                nextSteps: legacy.summary?.nextSteps,
+                generatedAt: legacy.lastExportedAt,
+                version: 1,
+              }]
+            : [],
+        }
+        writeCaseLocal(c)
+        try { localStorage.removeItem(LEGACY_STUDENT_KEY(id)) } catch { /* ignore */ }
+      } catch { /* skip one record */ }
+    }
+
+    // Migrate single-slot if no students exist yet
+    const legacySlot = localStorage.getItem(LEGACY_SLOT_KEY)
+    if (legacySlot && readIndex().length === 0) {
+      try {
+        const legacy = JSON.parse(legacySlot) as {
+          id?: string; createdAt?: string; parent?: ParentSurvey
+          observer?: ObserverMap
+          summary?: { overallNote?: string; recommendedDirection?: string; nextSteps?: string }
+        }
+        const id = newId('s')
+        const c: StudentCase = {
+          student: {
+            id,
+            name: legacy.parent?.studentName || 'Migrated',
+            grade: legacy.parent?.grade || '',
+            school: '',
+            program: '',
+            createdAt: legacy.createdAt || nowDate(),
+            updatedAt: nowIso(),
+          },
+          survey: { ...DEFAULT_DIAGNOSIS.parent, ...(legacy.parent || {}) },
+          observations: legacy.observer
+            ? [{
+                id: newId('o'),
+                sessionDate: legacy.createdAt || nowDate(),
+                sessionLabel: 'Session 1',
+                observer: legacy.observer,
+                overallNote: legacy.summary?.overallNote,
+                createdAt: nowIso(),
+              }]
+            : [],
+          reports: [],
+        }
+        writeCaseLocal(c)
+        const idx2 = readIndex()
+        idx2.push(indexEntry(c))
+        writeIndex(idx2)
+        try { localStorage.removeItem(LEGACY_SLOT_KEY) } catch { /* ignore */ }
+      } catch { /* skip */ }
+    }
+  } catch { /* ignore */ }
+}
+
+/* ─── Public API (sync, cache-backed) ─── */
 
 export function listStudents(): StudentIndexEntry[] {
-  return [...readIndex()].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+  return Array.from(cache.values())
+    .map((c) => indexEntry(c))
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
 
 export function getCase(id: string): StudentCase | null {
-  return readCase(id)
+  return cache.get(id) ?? null
 }
 
 export function createStudent(input: { name: string; grade?: string }): StudentCase {
@@ -229,29 +494,21 @@ export function createStudent(input: { name: string; grade?: string }): StudentC
     observations: [],
     reports: [],
   }
-  writeCase(c)
-  const idx = readIndex()
-  idx.push(indexEntry(c))
-  writeIndex(idx)
+  cache.set(id, c)
+  persistCase(c)
   return c
 }
 
 export function saveCase(c: StudentCase): StudentCase {
   const next: StudentCase = { ...c, student: { ...c.student, updatedAt: nowIso() } }
-  writeCase(next)
-  const idx = readIndex()
-  const i = idx.findIndex((e) => e.id === c.student.id)
-  const entry = indexEntry(next)
-  if (i >= 0) idx[i] = entry
-  else idx.push(entry)
-  writeIndex(idx)
+  cache.set(next.student.id, next)
+  persistCase(next)
   return next
 }
 
 export function deleteStudent(id: string): void {
-  removeCase(id)
-  const idx = readIndex().filter((e) => e.id !== id)
-  writeIndex(idx)
+  cache.delete(id)
+  persistDelete(id)
 }
 
 /* ─── Survey helpers ─── */
@@ -355,108 +612,4 @@ export function aggregateObservations(observations: Observation[]): ObserverMap 
     agg[dk].mentorNote = notes.join('\n')
   }
   return agg
-}
-
-/* ─── Migrations ─── */
-
-/**
- * One-time migration from legacy formats:
- *  - single slot (169av-diagnosis)
- *  - per-student flat DiagnosisData (169av-student-{id})
- * Pulls into the new case-based storage. Idempotent.
- */
-export function runMigrations(): { migrated: number } {
-  let migrated = 0
-  try {
-    // Migrate per-student legacy records listed in the old index
-    const idx = readIndex()
-    for (const entry of idx) {
-      // If a case already exists under CASE_KEY, skip
-      if (localStorage.getItem(CASE_KEY(entry.id))) continue
-      const legacyRaw = localStorage.getItem(LEGACY_STUDENT_KEY(entry.id))
-      if (!legacyRaw) continue
-      try {
-        const legacy = JSON.parse(legacyRaw) as {
-          id?: string; createdAt?: string; parent?: ParentSurvey
-          observer?: ObserverMap
-          summary?: { overallNote?: string; recommendedDirection?: string; nextSteps?: string }
-          exports?: number; lastExportedAt?: string
-        }
-        const id = entry.id
-        const c: StudentCase = {
-          student: {
-            id,
-            name: legacy.parent?.studentName || entry.name || '',
-            grade: legacy.parent?.grade || entry.grade || '',
-            school: legacy.parent?.school || '',
-            program: entry.program || '',
-            createdAt: legacy.createdAt || nowDate(),
-            updatedAt: nowIso(),
-          },
-          survey: { ...DEFAULT_DIAGNOSIS.parent, ...(legacy.parent || {}) },
-          observations: legacy.observer
-            ? [{
-                id: newId('o'),
-                sessionDate: legacy.createdAt || nowDate(),
-                sessionLabel: 'Session 1',
-                observer: legacy.observer,
-                overallNote: legacy.summary?.overallNote,
-                createdAt: legacy.createdAt || nowIso(),
-              }]
-            : [],
-          reports: (legacy.exports || 0) > 0
-            ? [{
-                id: newId('r'),
-                observationIds: [],
-                recommendation: legacy.summary?.recommendedDirection,
-                nextSteps: legacy.summary?.nextSteps,
-                generatedAt: legacy.lastExportedAt,
-                version: 1,
-              }]
-            : [],
-        }
-        writeCase(c)
-        localStorage.removeItem(LEGACY_STUDENT_KEY(id))
-        migrated += 1
-      } catch { /* skip one record */ }
-    }
-
-    // Migrate single-slot if no students exist yet
-    const legacySlot = localStorage.getItem(LEGACY_SLOT_KEY)
-    if (legacySlot && readIndex().length === 0) {
-      try {
-        const legacy = JSON.parse(legacySlot) as {
-          id?: string; createdAt?: string; parent?: ParentSurvey
-          observer?: ObserverMap
-          summary?: { overallNote?: string; recommendedDirection?: string; nextSteps?: string }
-        }
-        const c = createStudent({ name: legacy.parent?.studentName || 'Migrated', grade: legacy.parent?.grade || '' })
-        const next: StudentCase = {
-          ...c,
-          survey: { ...c.survey, ...(legacy.parent || {}) },
-          observations: legacy.observer
-            ? [{
-                id: newId('o'), sessionDate: legacy.createdAt || nowDate(), sessionLabel: 'Session 1',
-                observer: legacy.observer, overallNote: legacy.summary?.overallNote, createdAt: nowIso(),
-              }]
-            : [],
-        }
-        saveCase(next)
-        localStorage.removeItem(LEGACY_SLOT_KEY)
-        migrated += 1
-      } catch { /* skip */ }
-    }
-
-    // Refresh index entries for any cases whose status needs re-derivation
-    const freshIdx: StudentIndexEntry[] = []
-    const allIds = Array.from({ length: localStorage.length }, (_, i) => localStorage.key(i))
-      .filter((k): k is string => !!k && k.startsWith('169av-case-'))
-      .map((k) => k.replace('169av-case-', ''))
-    for (const id of allIds) {
-      const c = readCase(id)
-      if (c) freshIdx.push(indexEntry(c))
-    }
-    if (freshIdx.length > 0) writeIndex(freshIdx)
-  } catch { /* ignore */ }
-  return { migrated }
 }
