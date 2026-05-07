@@ -36,7 +36,7 @@ function App() {
   return (
     <LanguageProvider>
     <AuthProvider>
-    <BrowserRouter basename="/169Avenue">
+    <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
