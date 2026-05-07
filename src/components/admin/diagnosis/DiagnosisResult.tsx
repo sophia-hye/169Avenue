@@ -157,7 +157,7 @@ export function DiagnosisResult({ data, onChange }: Props) {
                   <span className={`font-body text-sm font-medium ${active ? 'text-secondary' : 'text-on-surface-variant/60'}`}>
                     {ko ? info.ko : info.en}
                   </span>
-                  {isAuto && <span className="text-[9px] text-secondary bg-secondary/10 px-1.5 py-0.5">AUTO</span>}
+                  {isAuto && <span className="text-[9px] text-secondary bg-secondary/10 px-1.5 py-0.5">{t.diag_res_auto_badge}</span>}
                 </div>
                 <span className="font-body text-xs text-on-surface-variant/40">{ko ? info.desc_ko : info.desc_en}</span>
               </button>

@@ -92,6 +92,7 @@ const REGION_DATA: Record<string, RegionData> = {
 const REGION_ORDER = ['us', 'uk', 'eu', 'ap'] as const
 
 function USDetailSection() {
+  const { t } = useLanguage()
   const [hoveredState, setHoveredState] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -103,12 +104,12 @@ function USDetailSection() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary block mb-1">
-                Interactive Map
+                {t.region_interactive_map}
               </span>
               <p className="font-body text-sm text-on-surface-variant">
                 {hoveredState
-                  ? `${STATE_NAMES[hoveredState] || hoveredState} — ${getUniversitiesByState(hoveredState).length} universities — Click to explore`
-                  : 'Click a state to view its top universities'
+                  ? t.region_hint_hover.replace('{name}', STATE_NAMES[hoveredState] || hoveredState).replace('{count}', String(getUniversitiesByState(hoveredState).length))
+                  : t.region_us_hint_idle
                 }
               </p>
             </div>
@@ -122,7 +123,7 @@ function USDetailSection() {
           />
           <div className="mt-6 text-center">
             <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60">
-              {US_UNIVERSITIES.length} Top Universities Across {new Set(US_UNIVERSITIES.map((u) => u.state)).size} States
+              {t.region_us_summary.replace('{count}', String(US_UNIVERSITIES.length)).replace('{states}', String(new Set(US_UNIVERSITIES.map((u) => u.state)).size))}
             </span>
           </div>
         </div>
@@ -133,18 +134,15 @@ function USDetailSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           <div className="lg:col-span-5">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
-              Regional Overview
+              {t.region_overview_label}
             </span>
             <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
-              The United States remains the gold standard for higher education, housing eight Ivy League
-              universities and the world's top research institutions. Our curators maintain deep, personal
-              relationships with admissions committees across the eastern seaboard, the West Coast innovation
-              corridor, and the Southern academic powerhouses.
+              {t.region_us_long}
             </p>
           </div>
           <div className="lg:col-span-7">
             <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
-              Top 10 Institutions
+              {t.region_top_10_institutions}
             </span>
             <div className="space-y-0">
               {US_UNIVERSITIES.slice(0, 10).map((uni) => (
@@ -174,7 +172,7 @@ function USDetailSection() {
       {/* States Quick Links */}
       <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
         <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
-          Browse by State
+          {t.region_browse_by_state}
         </h3>
         <div className="flex flex-wrap gap-3">
           {getStatesWithUniversities().map((s) => (
@@ -193,6 +191,7 @@ function USDetailSection() {
 }
 
 function UKDetailSection() {
+  const { t } = useLanguage()
   const [hoveredNation, setHoveredNation] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -208,12 +207,12 @@ function UKDetailSection() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary block mb-1">
-                Interactive Map
+                {t.region_interactive_map}
               </span>
               <p className="font-body text-sm text-on-surface-variant">
                 {hoveredNation
-                  ? `${UK_NATION_NAMES[hoveredNation] || hoveredNation} — ${getUniversitiesByNation(hoveredNation).length} universities — Click to explore`
-                  : 'Hover over a nation, then click to explore its universities'
+                  ? t.region_hint_hover.replace('{name}', UK_NATION_NAMES[hoveredNation] || hoveredNation).replace('{count}', String(getUniversitiesByNation(hoveredNation).length))
+                  : t.region_uk_hint_idle
                 }
               </p>
             </div>
@@ -225,7 +224,7 @@ function UKDetailSection() {
           />
           <div className="mt-6 text-center">
             <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60">
-              {UK_UNIVERSITIES.length} Top Universities Across {getNationsWithUniversities().length} Nations
+              {t.region_uk_summary.replace('{count}', String(UK_UNIVERSITIES.length)).replace('{nations}', String(getNationsWithUniversities().length))}
             </span>
           </div>
         </div>
@@ -236,17 +235,15 @@ function UKDetailSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           <div className="lg:col-span-5">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
-              Regional Overview
+              {t.region_overview_label}
             </span>
             <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
-              The United Kingdom offers an unparalleled depth of academic heritage. Oxford and Cambridge
-              remain the pinnacle of intellectual rigour. The Russell Group universities provide
-              world-class research environments, while London's institutions offer global connectivity.
+              {t.region_uk_long}
             </p>
           </div>
           <div className="lg:col-span-7">
             <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
-              {hoveredNation ? `${UK_NATION_NAMES[hoveredNation]} Institutions` : 'Top Institutions'}
+              {hoveredNation ? t.region_nation_institutions.replace('{name}', UK_NATION_NAMES[hoveredNation]) : t.region_top_institutions}
             </span>
             <div className="space-y-0">
               {displayedUnis.map((uni) => (
@@ -276,7 +273,7 @@ function UKDetailSection() {
       {/* Nations Quick Links */}
       <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
         <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
-          Browse by Nation
+          {t.region_browse_by_nation}
         </h3>
         <div className="flex flex-wrap gap-3">
           {getNationsWithUniversities().map((n) => (
@@ -295,6 +292,7 @@ function UKDetailSection() {
 }
 
 function EuropeDetailSection({ region }: { region: RegionData }) {
+  const { t } = useLanguage()
   const [hoveredCountry] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -305,10 +303,10 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
         <div className="bg-surface-container-lowest p-8 md:p-12 shadow-sm">
           <div className="mb-8">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary block mb-1">
-              Interactive Map
+              {t.region_interactive_map}
             </span>
             <p className="font-body text-sm text-on-surface-variant">
-              Click a country to explore its universities
+              {t.region_eu_hint_idle}
             </p>
           </div>
           <EuropeMap
@@ -323,15 +321,15 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           <div className="lg:col-span-5">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
-              Regional Overview
+              {t.region_overview_label}
             </span>
             <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
-              {region.longDescription}
+              {region.id === 'eu' ? t.region_eu_long : t.region_ap_long}
             </p>
           </div>
           <div className="lg:col-span-7">
             <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
-              Featured Institutions
+              {t.region_top_institutions}
             </span>
             <div className="space-y-0">
               {region.universities.map((uni, i) => (
@@ -366,7 +364,7 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
       {/* Browse by Country */}
       <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
         <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
-          Browse by Country
+          {t.region_browse_by_country}
         </h3>
         <div className="flex flex-wrap gap-3">
           {['250', '276', '756', '380', '528', '056', '724', '752', '208', '040'].map((cId) => (
@@ -385,6 +383,7 @@ function EuropeDetailSection({ region }: { region: RegionData }) {
 }
 
 function APDetailSection({ region }: { region: RegionData }) {
+  const { t } = useLanguage()
   const [hoveredCountry] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -397,12 +396,12 @@ function APDetailSection({ region }: { region: RegionData }) {
         <div className="bg-surface-container-lowest p-8 md:p-12 shadow-sm">
           <div className="mb-8">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary block mb-1">
-              Interactive Map
+              {t.region_interactive_map}
             </span>
             <p className="font-body text-sm text-on-surface-variant">
               {hoveredCountry
-                ? `${AP_COUNTRY_NAMES[hoveredCountry]} — ${AP_UNIVERSITIES.filter((u) => u.countryId === hoveredCountry).length} universities — Click to explore`
-                : 'Click a country to explore its universities'
+                ? t.region_hint_hover.replace('{name}', AP_COUNTRY_NAMES[hoveredCountry]).replace('{count}', String(AP_UNIVERSITIES.filter((u) => u.countryId === hoveredCountry).length))
+                : t.region_eu_hint_idle
               }
             </p>
           </div>
@@ -412,7 +411,7 @@ function APDetailSection({ region }: { region: RegionData }) {
           />
           <div className="mt-6 text-center">
             <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60">
-              {AP_UNIVERSITIES.length} Top Universities Across {Object.keys(AP_COUNTRY_NAMES).length} Countries
+              {t.region_us_summary.replace('{count}', String(AP_UNIVERSITIES.length)).replace('{states}', String(Object.keys(AP_COUNTRY_NAMES).length))}
             </span>
           </div>
         </div>
@@ -423,15 +422,15 @@ function APDetailSection({ region }: { region: RegionData }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           <div className="lg:col-span-5">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
-              Regional Overview
+              {t.region_overview_label}
             </span>
             <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
-              {region.longDescription}
+              {region.id === 'eu' ? t.region_eu_long : t.region_ap_long}
             </p>
           </div>
           <div className="lg:col-span-7">
             <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
-              Featured Institutions
+              {t.region_top_institutions}
             </span>
             <div className="space-y-0">
               {region.universities.map((uni, i) => (
@@ -466,7 +465,7 @@ function APDetailSection({ region }: { region: RegionData }) {
       {/* Browse by Country */}
       <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
         <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
-          Browse by Country
+          {t.region_browse_by_country}
         </h3>
         <div className="flex flex-wrap gap-3">
           {AP_COUNTRY_ORDER.map((cId) => (

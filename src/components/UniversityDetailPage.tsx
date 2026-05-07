@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
+import { useLanguage } from '../context/LanguageContext'
 import { getUniversityBySlug } from '../data/university-utils'
 import { getUniversityStats } from '../data/university-data'
 
@@ -21,13 +22,14 @@ function StatCard({ icon, label, value }: { icon: string; label: string; value: 
 }
 
 function PhotoGallery({ images, name }: { images: readonly string[]; name: string }) {
+  const { t } = useLanguage()
   if (images.length === 0) return null
   const [main, ...rest] = images
 
   return (
     <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-10 md:mb-16">
       <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-4 md:mb-6 block">
-        Campus Gallery
+        {t.uni_campus_gallery}
       </span>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="md:col-span-2 overflow-hidden group aspect-[16/10] bg-surface-container">
@@ -54,15 +56,16 @@ function PhotoGallery({ images, name }: { images: readonly string[]; name: strin
 }
 
 function UniversityContent({ slug }: { slug: string }) {
+  const { t } = useLanguage()
   const uni = getUniversityBySlug(slug)
 
   if (!uni) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 gap-6">
         <span className="material-symbols-outlined text-5xl text-outline-variant">search_off</span>
-        <h1 className="font-headline text-3xl text-primary">University not found</h1>
+        <h1 className="font-headline text-3xl text-primary">{t.uni_not_found}</h1>
         <Link to="/field" className="font-label text-xs uppercase tracking-widest text-secondary hover:underline">
-          Back to Fields
+          {t.uni_back_to_fields}
         </Link>
       </div>
     )
@@ -80,7 +83,7 @@ function UniversityContent({ slug }: { slug: string }) {
           className="inline-flex items-center gap-2 group font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 hover:text-secondary transition-colors"
         >
           <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
-          Back
+          {t.common_back}
         </button>
       </div>
 
@@ -101,13 +104,13 @@ function UniversityContent({ slug }: { slug: string }) {
           <div className="md:col-span-4 flex md:flex-col md:items-end gap-4">
             <div className="flex items-baseline gap-2">
               <span className="font-headline italic text-5xl md:text-7xl text-secondary/30">#{topRank}</span>
-              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Top Rank</span>
+              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.uni_top_rank}</span>
             </div>
             <Link
               to="/consultation"
               className="inline-block bg-primary text-on-primary px-6 md:px-8 py-3 md:py-4 font-label text-xs uppercase tracking-widest hover:bg-secondary transition-all duration-300 active:scale-95"
             >
-              Inquire
+              {t.common_inquire}
             </Link>
           </div>
         </div>
@@ -116,13 +119,13 @@ function UniversityContent({ slug }: { slug: string }) {
       {/* Stats Grid */}
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-10 md:mb-16">
         <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-4 md:mb-6 block">
-          Key Facts
+          {t.uni_key_facts}
         </span>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard icon="groups" label="Total Students" value={stats.students} />
-          <StatCard icon="school" label="Annual Tuition" value={stats.tuition} />
-          <StatCard icon="apartment" label="Room & Board" value={stats.roomBoard} />
-          <StatCard icon="how_to_reg" label="Acceptance Rate" value={stats.acceptance} />
+          <StatCard icon="groups" label={t.uni_total_students} value={stats.students} />
+          <StatCard icon="school" label={t.uni_annual_tuition} value={stats.tuition} />
+          <StatCard icon="apartment" label={t.uni_room_board} value={stats.roomBoard} />
+          <StatCard icon="how_to_reg" label={t.uni_acceptance_rate} value={stats.acceptance} />
         </div>
       </section>
 
@@ -137,7 +140,7 @@ function UniversityContent({ slug }: { slug: string }) {
       {/* Field Rankings */}
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-10 md:mb-16">
         <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-6 md:mb-8 block">
-          Global Rankings by Discipline
+          {t.uni_global_rankings_by_discipline}
         </span>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {uni.fields.map(({ field, rank }) => (
@@ -153,8 +156,8 @@ function UniversityContent({ slug }: { slug: string }) {
                 {field.icon}
               </span>
               <div className="flex-1 min-w-0">
-                <p className="font-headline text-base md:text-lg text-primary truncate">{field.name}</p>
-                <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Rank #{rank}</p>
+                <p className="font-headline text-base md:text-lg text-primary truncate">{t.fields[field.id]?.name ?? field.name}</p>
+                <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{t.uni_rank_n.replace('{n}', String(rank))}</p>
               </div>
               <span className="font-headline italic text-3xl text-outline-variant/30 group-hover:text-secondary/40 transition-colors shrink-0">
                 {String(rank).padStart(2, '0')}
@@ -185,17 +188,17 @@ function UniversityContent({ slug }: { slug: string }) {
         <div className="bg-primary text-on-primary p-10 md:p-16 flex flex-col md:flex-row items-start md:items-center gap-8">
           <div className="flex-1">
             <h2 className="font-headline text-2xl md:text-3xl italic mb-3">
-              Pursue {uni.name}
+              {t.uni_pursue.replace('{name}', uni.name)}
             </h2>
             <p className="font-body text-on-primary/70 text-sm md:text-base max-w-xl leading-relaxed">
-              Our curators have deep expertise navigating the admissions process for this institution. Begin your private consultation today.
+              {t.uni_pursue_body}
             </p>
           </div>
           <Link
             to="/consultation"
             className="shrink-0 bg-surface text-primary px-8 py-4 font-label text-xs uppercase tracking-widest hover:bg-secondary hover:text-surface transition-all duration-300 active:scale-95"
           >
-            Begin Consultation
+            {t.begin_consultation}
           </Link>
         </div>
       </section>

@@ -115,7 +115,7 @@ export const academicTranslations = {
     academic_next_tag: 'Next Step',
     academic_next_title: '최상위를 목표한다면, Elite Track',
     academic_next_body: '최상위권 대학을 목표하는 학생에게는, Elite Track이 동일한 전략 설계를 장기 프리미엄 관리로 확장해 드립니다.',
-    academic_next_link_label: 'Elite Track으로 이어가기',
+    academic_next_link_label: 'Elite Track 보기',
     academic_next_link_desc: '최상위 맞춤형 장기 설계 프로그램.',
 
     academic_cta_title: '노력보다 설계가 먼저입니다',

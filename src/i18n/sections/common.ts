@@ -43,6 +43,29 @@ export const commonTranslations = {
     bottom_how: 'Method',
     bottom_contact: 'Consult',
     bottom_diagnosis: 'Insights',
+
+    // Shared utility strings (used across many pages)
+    common_back: 'Back',
+    common_view: 'View',
+    common_inquire: 'Inquire',
+    common_explore: 'Explore',
+    common_cancel: 'Cancel',
+    common_confirm: 'Confirm',
+    common_next: 'Next',
+    common_previous: 'Previous',
+    common_universities_lc: 'universities',
+    common_loading_map: 'Loading Map…',
+
+    // Search overlay
+    search_placeholder: 'Search universities or fields…',
+    search_sub_field: 'Academic Field',
+
+    // Admin login modal
+    admin_access_title: 'Admin Access',
+    admin_password_placeholder: 'Password',
+    admin_incorrect_password: 'Incorrect password',
+    admin_label_on: 'Admin ON',
+    admin_label: 'Admin',
   },
 
   ko: {
@@ -84,5 +107,25 @@ export const commonTranslations = {
     bottom_how: 'Method',
     bottom_contact: '상담',
     bottom_diagnosis: '인사이트',
+
+    common_back: '뒤로',
+    common_view: '보기',
+    common_inquire: '문의',
+    common_explore: '둘러보기',
+    common_cancel: '취소',
+    common_confirm: '확인',
+    common_next: '다음',
+    common_previous: '이전',
+    common_universities_lc: '개 대학',
+    common_loading_map: '지도 로딩 중…',
+
+    search_placeholder: '대학 또는 분야 검색…',
+    search_sub_field: '학문 분야',
+
+    admin_access_title: '관리자 인증',
+    admin_password_placeholder: '비밀번호',
+    admin_incorrect_password: '비밀번호가 올바르지 않습니다',
+    admin_label_on: '관리자 ON',
+    admin_label: '관리자',
   },
 } as const

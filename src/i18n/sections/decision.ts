@@ -113,7 +113,7 @@ export const decisionTranslations = {
     decision_structure_title: '진단에서 방향까지, 네 단계',
     decision_structure_steps: [
       { step: '01', label: 'Pre',      title: '사전 설계',          description: '학생 분석 및 맞춤 설계.', icon: 'edit_note' },
-      { step: '02', label: 'Core',     title: '3시간 집중 세션',    description: '멘토의 실전 관찰과 평가.',  icon: 'bolt' },
+      { step: '02', label: 'Core',     title: '3시간 세션',         description: '멘토의 실전 관찰과 평가.',  icon: 'bolt' },
       { step: '03', label: 'Post',     title: '종합 리포트',        description: '강점·한계·성장 가능성 정리.', icon: 'insights' },
       { step: '04', label: 'Strategy', title: '방향 상담',          description: '전략 설명 및 다음 단계 제안.', icon: 'route' },
     ],

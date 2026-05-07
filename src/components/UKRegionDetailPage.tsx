@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
+import { useLanguage } from '../context/LanguageContext'
 import { UK_UNIVERSITIES, UK_NATION_NAMES, getUniversitiesByNation, getNationsWithUniversities } from '../data/uk-universities'
 import { toSlug } from '../data/university-utils'
 import { getUKNationDetail } from '../data/uk-regions-detail'
@@ -52,13 +53,15 @@ function ImageGallery({ images, nationName }: { images: readonly string[]; natio
 }
 
 export function UKRegionDetailPage() {
+  const { t } = useLanguage()
   const { nationId } = useParams<{ nationId: string }>()
   const id = nationId?.toLowerCase() || ''
   const nationName = UK_NATION_NAMES[id]
   const universities = getUniversitiesByNation(id)
   const nationDetail = getUKNationDetail(id)
+  const nationDetailI18n = t.ukRegions[id]
 
-  if (!nationName || !nationDetail) {
+  if (!nationName || !nationDetail || !nationDetailI18n) {
     return <Navigate to="/destinations/uk" replace />
   }
 
@@ -76,7 +79,7 @@ export function UKRegionDetailPage() {
             arrow_back
           </span>
           <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
-            United Kingdom Map
+            {t.region_back_uk}
           </span>
         </Link>
       </div>
@@ -86,7 +89,7 @@ export function UKRegionDetailPage() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div>
             <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4 block">
-              {nationName} &middot; {universities.length} {universities.length === 1 ? 'Institution' : 'Institutions'} in Top Rankings
+              {nationName} &middot; {universities.length} {universities.length === 1 ? t.region_institution_singular : t.region_institution_plural} {t.region_in_top_rankings}
             </span>
             <h1 className="font-headline text-4xl md:text-6xl lg:text-8xl text-primary tracking-tighter leading-none">
               {nationName}
@@ -95,7 +98,7 @@ export function UKRegionDetailPage() {
           <div className="flex items-center space-x-4 pb-2">
             <span className="material-symbols-outlined text-secondary">school</span>
             <span className="font-body text-on-surface-variant text-lg">
-              {universities.length} of {UK_UNIVERSITIES.length} top-ranked universities
+              {t.region_of_top_ranked.replace('{count}', String(universities.length)).replace('{total}', String(UK_UNIVERSITIES.length))}
             </span>
           </div>
         </div>
@@ -109,18 +112,18 @@ export function UKRegionDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           <div className="lg:col-span-7">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
-              About {nationName}
+              {t.region_about.replace('{name}', nationName)}
             </span>
             <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
-              {nationDetail.description}
+              {nationDetailI18n.description}
             </p>
           </div>
           <div className="lg:col-span-5">
             <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
-              Key Highlights
+              {t.region_key_highlights}
             </span>
             <div className="space-y-6">
-              {nationDetail.highlights.map((h, i) => (
+              {nationDetailI18n.highlights.map((h, i) => (
                 <div key={i} className="flex items-start space-x-4">
                   <span className="font-headline italic text-2xl text-secondary/40 leading-none mt-1">
                     {String(i + 1).padStart(2, '0')}
@@ -168,7 +171,7 @@ export function UKRegionDetailPage() {
               </div>
               <div className="col-span-12 md:col-span-2 flex items-center justify-end">
                 <span className="inline-flex items-center space-x-2 font-label text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">
-                  <span>View</span>
+                  <span>{t.common_view}</span>
                   <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">
                     arrow_forward
                   </span>
@@ -182,7 +185,7 @@ export function UKRegionDetailPage() {
       {/* Other Nations Quick Links */}
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-12 md:mb-20">
         <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
-          Explore Other Nations
+          {t.region_explore_other_nations}
         </h3>
         <div className="flex flex-wrap gap-3">
           {nationsWithUnis.map((n) => (
@@ -210,7 +213,7 @@ export function UKRegionDetailPage() {
               className="group py-16 pr-12 border-b md:border-b-0 md:border-r border-outline-variant/20"
             >
               <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">
-                Previous
+                {t.common_previous}
               </span>
               <div className="flex items-center space-x-4">
                 <span className="material-symbols-outlined text-sm group-hover:-translate-x-2 transition-transform">arrow_back</span>
@@ -219,7 +222,7 @@ export function UKRegionDetailPage() {
                     {UK_NATION_NAMES[prevNation]}
                   </h4>
                   <span className="font-label text-[10px] text-secondary">
-                    {getUniversitiesByNation(prevNation).length} universities
+                    {getUniversitiesByNation(prevNation).length} {t.common_universities_lc}
                   </span>
                 </div>
               </div>
@@ -233,7 +236,7 @@ export function UKRegionDetailPage() {
               className="group py-16 pl-0 md:pl-12 text-right"
             >
               <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">
-                Next
+                {t.common_next}
               </span>
               <div className="flex items-center justify-end space-x-4">
                 <div>
@@ -241,7 +244,7 @@ export function UKRegionDetailPage() {
                     {UK_NATION_NAMES[nextNation]}
                   </h4>
                   <span className="font-label text-[10px] text-secondary">
-                    {getUniversitiesByNation(nextNation).length} universities
+                    {getUniversitiesByNation(nextNation).length} {t.common_universities_lc}
                   </span>
                 </div>
                 <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
@@ -257,16 +260,16 @@ export function UKRegionDetailPage() {
       <section className="px-8 md:px-16 py-32 text-center bg-primary text-on-primary">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-headline text-5xl md:text-6xl italic mb-12 leading-tight">
-            Study in {nationName}
+            {t.region_study_in.replace('{name}', nationName)}
           </h2>
           <p className="font-body text-zinc-400 text-lg mb-16 max-w-xl mx-auto">
-            Our curators will guide you through the admissions process for {nationName}'s top institutions.
+            {t.region_study_in_body.replaceAll('{name}', nationName)}
           </p>
           <Link
             to="/consultation"
             className="bg-surface text-primary px-16 py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500"
           >
-            Book a Private Consultation
+            {t.book_consultation}
           </Link>
         </div>
       </section>

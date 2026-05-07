@@ -9,6 +9,7 @@ import { MobileShell, MobileFooter } from './MobileShell'
 import { MidPageCTA } from './PageCTA'
 import { FIELDS, type Field, type FieldUniversity } from '../data/fields'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { useLanguage } from '../context/LanguageContext'
 import { toSlug } from '../data/university-utils'
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
@@ -21,6 +22,7 @@ interface GeoFeature {
 }
 
 function FieldMap({ universities }: { universities: readonly FieldUniversity[] }) {
+  const { t } = useLanguage()
   const [countries, setCountries] = useState<GeoFeature[]>([])
   const [hoveredUni, setHoveredUni] = useState<FieldUniversity | null>(null)
   const svgRef = useRef<SVGSVGElement>(null)
@@ -48,7 +50,7 @@ function FieldMap({ universities }: { universities: readonly FieldUniversity[] }
   if (countries.length === 0) {
     return (
       <div className="flex items-center justify-center py-20 md:py-32">
-        <span className="font-label text-sm text-on-surface-variant tracking-widest uppercase animate-pulse">Loading Map...</span>
+        <span className="font-label text-sm text-on-surface-variant tracking-widest uppercase animate-pulse">{t.common_loading_map}</span>
       </div>
     )
   }
@@ -100,20 +102,21 @@ function FieldMap({ universities }: { universities: readonly FieldUniversity[] }
 }
 
 function FieldContent({ selectedField, setSelectedField }: { selectedField: Field; setSelectedField: (f: Field) => void }) {
+  const { t } = useLanguage()
   return (
     <>
       {/* Header */}
       <header className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-10 md:mb-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-end">
           <div className="md:col-span-7">
-            <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">Academic Excellence by Discipline</span>
+            <span className="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">{t.field_page_eyebrow}</span>
             <h1 className="font-headline text-4xl md:text-6xl lg:text-8xl text-primary tracking-tighter leading-none">
-              Fields of <br /><span className="italic">Study</span>
+              {t.field_page_h1_1} <br /><span className="italic">{t.field_page_h1_2}</span>
             </h1>
           </div>
           <div className="md:col-span-5">
             <p className="font-body text-on-surface-variant text-base md:text-lg leading-relaxed md:border-l md:border-outline-variant/30 md:pl-8">
-              Explore the world's top-ranked universities by academic discipline.
+              {t.field_page_intro}
             </p>
           </div>
         </div>
@@ -133,8 +136,8 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
               }`}
             >
               <span className="material-symbols-outlined text-sm md:text-base" style={selectedField.id === field.id ? {} : { fontVariationSettings: "'wght' 200" }}>{field.icon}</span>
-              <span className="hidden sm:inline">{field.name}</span>
-              <span className="sm:hidden">{field.name.split(' ')[0]}</span>
+              <span className="hidden sm:inline">{t.fields[field.id]?.name ?? field.name}</span>
+              <span className="sm:hidden">{(t.fields[field.id]?.name ?? field.name).split(' ')[0]}</span>
             </button>
           ))}
         </div>
@@ -145,9 +148,9 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
         <div key={selectedField.id} style={{ animation: 'fadeIn 0.4s ease' }}>
           <div className="flex items-center space-x-4 mb-4">
             <span className="material-symbols-outlined text-secondary text-2xl md:text-3xl">{selectedField.icon}</span>
-            <h2 className="font-headline text-2xl md:text-3xl lg:text-4xl text-primary">{selectedField.name}</h2>
+            <h2 className="font-headline text-2xl md:text-3xl lg:text-4xl text-primary">{t.fields[selectedField.id]?.name ?? selectedField.name}</h2>
           </div>
-          <p className="font-body text-on-surface-variant text-sm md:text-lg max-w-3xl mb-6 md:mb-8">{selectedField.description}</p>
+          <p className="font-body text-on-surface-variant text-sm md:text-lg max-w-3xl mb-6 md:mb-8">{t.fields[selectedField.id]?.description ?? selectedField.description}</p>
         </div>
       </section>
 
@@ -159,7 +162,7 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
           </div>
           <div className="mt-4 md:mt-6 text-center">
             <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant/60">
-              Top {selectedField.universities.length} in {selectedField.name}
+              {t.field_top_in.replace('{count}', String(selectedField.universities.length)).replace('{name}', t.fields[selectedField.id]?.name ?? selectedField.name)}
             </span>
           </div>
         </div>
@@ -171,7 +174,7 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
       <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-20 md:mb-40">
         <div key={selectedField.id} style={{ animation: 'fadeIn 0.4s ease' }}>
           <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-6 md:mb-8 block">
-            Global Rankings — {selectedField.name}
+            {t.destinations_global_rankings} — {t.fields[selectedField.id]?.name ?? selectedField.name}
           </span>
           <div className="border-t border-outline-variant/20">
             {selectedField.universities.map((uni, i) => (
@@ -189,7 +192,7 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
                   <span className="font-body text-xs md:text-sm text-on-surface-variant">{uni.city}, {uni.country}</span>
                 </div>
                 <span className="shrink-0 font-label text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors hidden sm:block">
-                  View
+                  {t.common_view}
                 </span>
                 <span className="material-symbols-outlined text-secondary text-sm shrink-0 sm:hidden group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </Link>
@@ -202,8 +205,9 @@ function FieldContent({ selectedField, setSelectedField }: { selectedField: Fiel
 }
 
 export function FieldPage() {
+  const { t } = useLanguage()
   const [selectedField, setSelectedField] = useState<Field>(FIELDS[0])
-  usePageTitle('Fields of Study - 전공별 대학 순위')
+  usePageTitle(t.field_page_title)
 
   return (
     <div className="bg-surface selection:bg-secondary/30">

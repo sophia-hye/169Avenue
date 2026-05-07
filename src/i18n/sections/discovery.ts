@@ -100,7 +100,7 @@ export const discoveryTranslations = {
     discovery_structure_title: '짧고 밀도 있게, 유연하게',
     discovery_structure_items: [
       { icon: 'schedule', label: '세션 구성',   value: '1~1.5시간 세션' },
-      { icon: 'layers',   label: '운영 방식',   value: '단일 또는 복수 세션 가능' },
+      { icon: 'layers',   label: '운영 방식',   value: '단일/복수 세션' },
     ],
 
     discovery_key_badge: 'First Step',
@@ -117,7 +117,7 @@ export const discoveryTranslations = {
     discovery_next_tag: 'Next Step',
     discovery_next_title: '결정이 필요한 순간, 다음 단계가 시작됩니다',
     discovery_next_body: '흥미가 확인되면, 발견(Discovery)에서 결정(Decision)으로 — 하나의 방향을 찾는 프로그램으로 이어집니다.',
-    discovery_next_link_label: 'Decision Program으로 이어가기',
+    discovery_next_link_label: 'Decision Program 보기',
     discovery_next_link_desc: '방향을 결정해야 하는 중학생을 위한 프로그램.',
 
     discovery_cta_title: '첫 경험을 시작하세요',

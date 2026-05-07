@@ -4,6 +4,9 @@ import { useLanguage } from '../context/LanguageContext'
 
 export function SuccessStory() {
   const { t } = useLanguage()
+  const storyI18n = t.storiesData[FEATURED_STORY.id]
+  const quote = storyI18n?.quote ?? FEATURED_STORY.quote
+  const classYear = storyI18n?.classYear ?? FEATURED_STORY.classYear
   return (
     <section id="stories" className="max-w-screen-2xl mx-auto px-8 md:px-16 lg:px-24 mb-40">
       <div className="relative py-20 px-8 md:px-24 bg-surface-container-lowest overflow-hidden shadow-sm">
@@ -18,7 +21,7 @@ export function SuccessStory() {
               {t.success_story_link}
             </Link>
             <p className="text-3xl md:text-5xl font-headline italic leading-tight text-primary mb-10">
-              {FEATURED_STORY.quote}
+              {quote}
             </p>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-6">
@@ -28,7 +31,7 @@ export function SuccessStory() {
                     {FEATURED_STORY.name}
                   </p>
                   <p className="font-serif italic text-sm text-secondary">
-                    {FEATURED_STORY.university}, {FEATURED_STORY.classYear}
+                    {FEATURED_STORY.university}, {classYear}
                   </p>
                 </div>
               </div>

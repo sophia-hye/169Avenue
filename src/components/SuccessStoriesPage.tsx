@@ -16,6 +16,7 @@ function MobileStories() {
   const { language, setLanguage, t } = useLanguage()
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const featuredI18n = t.storiesData[FEATURED_STORY.id]
   return (
     <div className="md:hidden">
       {/* Mobile Top Bar */}
@@ -74,12 +75,12 @@ function MobileStories() {
               <img alt={FEATURED_STORY.name} className="w-full h-full object-cover grayscale transition-transform duration-700 hover:scale-105" src={FEATURED_STORY.image} />
             </div>
             <div className="absolute -bottom-10 right-0 left-8 bg-surface-container-lowest p-8 shadow-sm">
-              <p className="font-headline italic text-2xl text-primary leading-tight mb-4">{FEATURED_STORY.quote}</p>
+              <p className="font-headline italic text-2xl text-primary leading-tight mb-4">{featuredI18n?.quote ?? FEATURED_STORY.quote}</p>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-label text-sm font-bold text-primary">{FEATURED_STORY.name}</p>
                   <p className="font-label text-[10px] uppercase tracking-[0.1em] text-on-surface-variant">
-                    {FEATURED_STORY.classYear} &middot; {FEATURED_STORY.university}
+                    {featuredI18n?.classYear ?? FEATURED_STORY.classYear} &middot; {FEATURED_STORY.university}
                   </p>
                 </div>
                 <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>auto_stories</span>
@@ -106,7 +107,7 @@ function MobileStories() {
                 <div className="flex flex-col gap-2">
                   <span className="font-label uppercase text-[10px] tracking-[0.1em] text-secondary">{story.university}</span>
                   <h3 className="font-headline italic text-2xl text-primary">{story.name}</h3>
-                  <p className="font-body text-on-surface-variant text-sm leading-relaxed max-w-[90%]">{story.description}</p>
+                  <p className="font-body text-on-surface-variant text-sm leading-relaxed max-w-[90%]">{t.storiesData[story.id]?.description ?? story.description}</p>
                   <div className="mt-4 flex items-center gap-2 group-hover:gap-4 transition-all duration-300">
                     <span className="font-label text-xs font-bold uppercase tracking-[0.1em]">{t.read_narrative}</span>
                     <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -118,9 +119,9 @@ function MobileStories() {
 
           {/* Mid-page CTA */}
           <div className="mt-12 bg-surface-container-lowest p-8 shadow-sm text-center">
-            <p className="font-headline italic text-xl text-primary mb-6">Have a similar case?</p>
+            <p className="font-headline italic text-xl text-primary mb-6">{t.stories_similar_case_short}</p>
             <Link to="/consultation" className="inline-block bg-primary text-on-primary px-8 py-4 font-label text-xs uppercase tracking-widest hover:bg-secondary transition-colors">
-              Get My Case Analyzed
+              {t.stories_get_analyzed}
             </Link>
           </div>
 
@@ -161,7 +162,8 @@ function MobileStories() {
 
 export function SuccessStoriesPage() {
   const { t } = useLanguage()
-  usePageTitle('Case Studies - 케이스 스터디')
+  usePageTitle(t.stories_page_title)
+  const featuredI18n = t.storiesData[FEATURED_STORY.id]
   return (
     <div className="bg-surface selection:bg-secondary/20">
       {/* Desktop */}
@@ -196,12 +198,12 @@ export function SuccessStoriesPage() {
               </div>
               <div className="lg:col-span-5 p-12 md:p-24 flex flex-col justify-center">
                 <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-6 block">
-                  {FEATURED_STORY.university} &middot; {FEATURED_STORY.classYear}
+                  {FEATURED_STORY.university} &middot; {featuredI18n?.classYear ?? FEATURED_STORY.classYear}
                 </span>
-                <h2 className="font-headline text-4xl md:text-5xl italic mb-10 leading-tight">{FEATURED_STORY.quote}</h2>
+                <h2 className="font-headline text-4xl md:text-5xl italic mb-10 leading-tight">{featuredI18n?.quote ?? FEATURED_STORY.quote}</h2>
                 <div className="mb-12">
                   <h3 className="font-headline text-2xl mb-4">{FEATURED_STORY.name}</h3>
-                  <p className="font-body text-on-surface-variant leading-relaxed mb-6">{FEATURED_STORY.description}</p>
+                  <p className="font-body text-on-surface-variant leading-relaxed mb-6">{featuredI18n?.description ?? FEATURED_STORY.description}</p>
                 </div>
                 <div>
                   <span className="inline-flex items-center space-x-4">
@@ -231,13 +233,13 @@ export function SuccessStoriesPage() {
                 </div>
                 <span className="font-label text-[10px] uppercase tracking-widest text-secondary mb-2 block">{story.university}</span>
                 <h4 className="font-headline text-2xl mb-4 group-hover:text-secondary transition-colors">{story.name}</h4>
-                <p className="font-body text-sm text-on-surface-variant leading-relaxed">{story.description}</p>
+                <p className="font-body text-sm text-on-surface-variant leading-relaxed">{t.storiesData[story.id]?.description ?? story.description}</p>
               </Link>
             ))}
           </div>
         </section>
 
-        <MidPageCTA text="Have a similar case? Get your strategy designed." buttonText="Get My Case Analyzed" />
+        <MidPageCTA text={t.stories_similar_case_long} buttonText={t.stories_get_analyzed} />
 
         {/* Editorial Insight */}
         <section className="mb-48 relative">

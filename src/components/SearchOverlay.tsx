@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllUniversities } from '../data/university-utils'
 import { FIELDS } from '../data/fields'
+import { useLanguage } from '../context/LanguageContext'
 
 interface SearchOverlayProps {
   onClose: () => void
@@ -15,18 +16,19 @@ interface Result {
   icon: string
 }
 
-function buildResults(query: string): Result[] {
+function buildResults(query: string, fieldSubLabel: string, fieldNames: Record<string, string>): Result[] {
   const q = query.toLowerCase().trim()
   if (!q) return []
 
   const results: Result[] = []
 
   for (const field of FIELDS) {
-    if (field.name.toLowerCase().includes(q)) {
+    const name = fieldNames[field.id] ?? field.name
+    if (name.toLowerCase().includes(q) || field.name.toLowerCase().includes(q)) {
       results.push({
         type: 'field',
-        label: field.name,
-        sub: 'Academic Field',
+        label: name,
+        sub: fieldSubLabel,
         to: '/field',
         icon: field.icon,
       })
@@ -49,6 +51,7 @@ function buildResults(query: string): Result[] {
 }
 
 export function SearchOverlay({ onClose }: SearchOverlayProps) {
+  const { t } = useLanguage()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<Result[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
@@ -58,8 +61,10 @@ export function SearchOverlay({ onClose }: SearchOverlayProps) {
   }, [])
 
   useEffect(() => {
-    setResults(buildResults(query))
-  }, [query])
+    const fieldNames: Record<string, string> = {}
+    for (const id in t.fields) fieldNames[id] = t.fields[id].name
+    setResults(buildResults(query, t.search_sub_field, fieldNames))
+  }, [query, t.search_sub_field, t.fields])
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -86,7 +91,7 @@ export function SearchOverlay({ onClose }: SearchOverlayProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search universities or fields..."
+            placeholder={t.search_placeholder}
             className="flex-1 bg-transparent font-headline text-xl text-primary placeholder:text-on-surface-variant/40 focus:outline-none"
           />
           <button onClick={onClose} className="text-on-surface-variant/60 hover:text-primary transition-colors">

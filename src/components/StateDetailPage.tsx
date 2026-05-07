@@ -3,6 +3,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
 import { MidPageCTA } from './PageCTA'
+import { useLanguage } from '../context/LanguageContext'
 import { US_UNIVERSITIES, STATE_NAMES, getUniversitiesByState, getStatesWithUniversities } from '../data/us-universities'
 import { toSlug } from '../data/university-utils'
 import { getStateDetail } from '../data/us-states-detail'
@@ -97,11 +98,13 @@ function ImageGallery({ images, stateName }: { images: readonly string[]; stateN
 }
 
 export function StateDetailPage() {
+  const { t } = useLanguage()
   const { stateCode } = useParams<{ stateCode: string }>()
   const code = stateCode?.toUpperCase() || ''
   const stateName = STATE_NAMES[code]
   const universities = getUniversitiesByState(code)
   const stateDetail = getStateDetail(code)
+  const stateDetailI18n = t.usStates[code] ?? t.usStateFallback
 
   if (!stateName || universities.length === 0) {
     return <Navigate to="/destinations/us" replace />
@@ -122,7 +125,7 @@ export function StateDetailPage() {
               arrow_back
             </span>
             <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
-              United States Map
+              {t.region_back_us}
             </span>
           </Link>
         </div>
@@ -132,7 +135,7 @@ export function StateDetailPage() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
             <div>
               <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4 block">
-                {code} &middot; {universities.length} {universities.length === 1 ? 'Institution' : 'Institutions'} in Top 100
+                {code} &middot; {universities.length} {universities.length === 1 ? t.region_institution_singular : t.region_institution_plural} {t.region_in_top_100}
               </span>
               <h1 className="font-headline text-4xl md:text-6xl lg:text-8xl text-primary tracking-tighter leading-none">
                 {stateName}
@@ -141,7 +144,7 @@ export function StateDetailPage() {
             <div className="flex items-center space-x-4 pb-2">
               <span className="material-symbols-outlined text-secondary">school</span>
               <span className="font-body text-on-surface-variant text-lg">
-                {universities.length} of {US_UNIVERSITIES.length} top-ranked universities
+                {t.region_of_top_ranked.replace('{count}', String(universities.length)).replace('{total}', String(US_UNIVERSITIES.length))}
               </span>
             </div>
           </div>
@@ -156,18 +159,18 @@ export function StateDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             <div className="lg:col-span-7">
               <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
-                About {stateName}
+                {t.region_about.replace('{name}', stateName)}
               </span>
               <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
-                {stateDetail.description}
+                {stateDetailI18n.description}
               </p>
             </div>
             <div className="lg:col-span-5">
               <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
-                Key Highlights
+                {t.region_key_highlights}
               </span>
               <div className="space-y-6">
-                {stateDetail.highlights.map((h, i) => (
+                {stateDetailI18n.highlights.map((h, i) => (
                   <div key={i} className="flex items-start space-x-4">
                     <span className="font-headline italic text-2xl text-secondary/40 leading-none mt-1">
                       {String(i + 1).padStart(2, '0')}
@@ -215,7 +218,7 @@ export function StateDetailPage() {
                 </div>
                 <div className="col-span-12 md:col-span-2 flex items-center justify-end">
                   <span className="inline-flex items-center space-x-2 font-label text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">
-                    <span>View</span>
+                    <span>{t.common_view}</span>
                     <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">
                       arrow_forward
                     </span>
@@ -231,7 +234,7 @@ export function StateDetailPage() {
         {/* Other States Quick Links */}
         <section className="px-6 md:px-16 max-w-screen-2xl mx-auto mb-12 md:mb-20">
           <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
-            Explore Other States
+            {t.region_explore_other_states}
           </h3>
           <div className="flex flex-wrap gap-3">
             {statesWithUnis.map((s) => (
@@ -259,7 +262,7 @@ export function StateDetailPage() {
                 className="group py-16 pr-12 border-b md:border-b-0 md:border-r border-outline-variant/20"
               >
                 <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">
-                  Previous
+                  {t.common_previous}
                 </span>
                 <div className="flex items-center space-x-4">
                   <span className="material-symbols-outlined text-sm group-hover:-translate-x-2 transition-transform">arrow_back</span>
@@ -268,7 +271,7 @@ export function StateDetailPage() {
                       {STATE_NAMES[prevState]}
                     </h4>
                     <span className="font-label text-[10px] text-secondary">
-                      {getUniversitiesByState(prevState).length} universities
+                      {getUniversitiesByState(prevState).length} {t.common_universities_lc}
                     </span>
                   </div>
                 </div>
@@ -282,7 +285,7 @@ export function StateDetailPage() {
                 className="group py-16 pl-0 md:pl-12 text-right"
               >
                 <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">
-                  Next
+                  {t.common_next}
                 </span>
                 <div className="flex items-center justify-end space-x-4">
                   <div>
@@ -290,7 +293,7 @@ export function StateDetailPage() {
                       {STATE_NAMES[nextState]}
                     </h4>
                     <span className="font-label text-[10px] text-secondary">
-                      {getUniversitiesByState(nextState).length} universities
+                      {getUniversitiesByState(nextState).length} {t.common_universities_lc}
                     </span>
                   </div>
                   <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
@@ -306,16 +309,16 @@ export function StateDetailPage() {
         <section className="px-8 md:px-16 py-32 text-center bg-primary text-on-primary">
           <div className="max-w-3xl mx-auto">
             <h2 className="font-headline text-5xl md:text-6xl italic mb-12 leading-tight">
-              Study in {stateName}
+              {t.region_study_in.replace('{name}', stateName)}
             </h2>
             <p className="font-body text-zinc-400 text-lg mb-16 max-w-xl mx-auto">
-              Our curators will guide you through the admissions process for {stateName}'s top institutions.
+              {t.region_study_in_body.replaceAll('{name}', stateName)}
             </p>
             <Link
               to="/consultation"
               className="bg-surface text-primary px-16 py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500"
             >
-              Book a Private Consultation
+              {t.book_consultation}
             </Link>
           </div>
         </section>

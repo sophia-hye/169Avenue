@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function AdminToggle() {
   const { isAdmin, login, logout } = useAuth()
+  const { t } = useLanguage()
   const [showModal, setShowModal] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
@@ -36,7 +38,7 @@ export function AdminToggle() {
           isAdmin ? 'text-secondary' : 'text-primary/20 hover:text-primary/40'
         }`}
         aria-label={isAdmin ? 'Disable admin mode' : 'Enable admin mode'}
-        title={isAdmin ? 'Admin ON' : 'Admin'}
+        title={isAdmin ? t.admin_label_on : t.admin_label}
       >
         <span
           className="material-symbols-outlined text-lg"
@@ -52,19 +54,19 @@ export function AdminToggle() {
             onSubmit={handleSubmit}
             className="bg-surface border border-outline-variant/20 shadow-xl w-full max-w-sm mx-4 p-8"
           >
-            <h3 className="font-headline text-xl text-primary mb-6 tracking-tight">Admin Access</h3>
+            <h3 className="font-headline text-xl text-primary mb-6 tracking-tight">{t.admin_access_title}</h3>
             <input
               type="password"
               value={password}
               onChange={(e) => { setPassword(e.target.value); setError(false) }}
-              placeholder="Password"
+              placeholder={t.admin_password_placeholder}
               autoFocus
               className={`w-full border px-4 py-3 font-body text-sm text-primary bg-surface-container-low outline-none transition-colors ${
                 error ? 'border-red-400' : 'border-outline-variant/30 focus:border-secondary'
               }`}
             />
             {error && (
-              <p className="text-red-500 text-xs font-body mt-2">Incorrect password</p>
+              <p className="text-red-500 text-xs font-body mt-2">{t.admin_incorrect_password}</p>
             )}
             <div className="flex gap-3 mt-6">
               <button
@@ -72,13 +74,13 @@ export function AdminToggle() {
                 onClick={() => setShowModal(false)}
                 className="flex-1 px-4 py-3 font-body text-sm text-primary/60 border border-outline-variant/30 hover:bg-surface-container-low transition-colors"
               >
-                Cancel
+                {t.common_cancel}
               </button>
               <button
                 type="submit"
                 className="flex-1 px-4 py-3 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors"
               >
-                Confirm
+                {t.common_confirm}
               </button>
             </div>
           </form>

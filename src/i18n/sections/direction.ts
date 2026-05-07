@@ -97,7 +97,7 @@ export const directionTranslations = {
     direction_structure_tag: 'Structure',
     direction_structure_title: '지속되는 코칭 블록',
     direction_structure_items: [
-      { icon: 'event',  label: '프로그램 기간', value: '4~8주 프로그램' },
+      { icon: 'event',  label: '프로그램 기간', value: '4~8주' },
       { icon: 'repeat', label: '진행 방식',     value: '주 1회 세션' },
     ],
 
@@ -113,9 +113,9 @@ export const directionTranslations = {
     ],
 
     direction_next_tag: 'Next Step',
-    direction_next_title: '최상위로 갈 준비가 됐다면, Elite Track',
+    direction_next_title: '최상위 단계, Elite Track',
     direction_next_body: '실력이 갖춰지면, 최상위 수준을 목표하는 학생을 위한 장기 프리미엄 관리 트랙으로 연결합니다.',
-    direction_next_link_label: 'Elite Track으로 이어가기',
+    direction_next_link_label: 'Elite Track 보기',
     direction_next_link_desc: '최상위 맞춤형 장기 설계 프로그램.',
 
     direction_cta_title: '구조 있는 성장을 시작하세요',

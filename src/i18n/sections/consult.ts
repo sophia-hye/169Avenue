@@ -87,7 +87,7 @@ export const consultTranslations = {
     consult_hero_eyebrow: 'Consultation',
     consult_hero_headline: '상담은 문의가 아니라, 방향을 찾는 첫 단계입니다',
     consult_hero_sub: '학생의 현재 상태와 고민을 바탕으로, 어떤 프로그램이 맞는지 그리고 어떤 방향으로 가야 하는지 함께 설계합니다.',
-    consult_hero_cta: '상담 신청서 작성하기',
+    consult_hero_cta: '상담 신청하기',
 
     consult_audience_tag: 'Who This Consultation Is For',
     consult_audience_title: '이런 경우 상담이 필요합니다',

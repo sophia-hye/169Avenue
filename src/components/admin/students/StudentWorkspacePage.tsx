@@ -693,7 +693,7 @@ function RecommendationTab({ c, save }: { c: StudentCase; save: (c: StudentCase)
           <div className="mb-8 bg-surface-container-low p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary">{t.preview_track_fits as string}</h3>
-              <span className="font-body text-xs text-on-surface-variant/40">Overall {overall.toFixed(1)}</span>
+              <span className="font-body text-xs text-on-surface-variant/40">{t.diag_res_overall_short} {overall.toFixed(1)}</span>
             </div>
             <div className="space-y-2">
               {fits.map((f) => (

@@ -98,7 +98,7 @@ export const eliteTranslations = {
     elite_outcomes_title: '입시와 연결되고, 결과로 마무리됩니다',
     elite_outcomes_items: [
       { step: '01', label: '입시와 연결되는 실행' },
-      { step: '02', label: '최종적이고 실체적인 결과' },
+      { step: '02', label: '최종 실체 결과' },
     ],
 
     elite_cta_title: '최상위를 목표할 준비가 되셨다면',

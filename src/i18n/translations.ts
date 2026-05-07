@@ -11,6 +11,13 @@ import { eliteTranslations } from './sections/elite'
 import { howitworksTranslations } from './sections/howitworks'
 import { discoveryTranslations } from './sections/discovery'
 import { domesticTranslations } from './sections/domestic'
+import { domesticDetailTranslations } from './sections/domesticDetail'
+import { apCountriesTranslations } from './sections/apCountries'
+import { euCountriesTranslations } from './sections/euCountries'
+import { ukRegionsTranslations } from './sections/ukRegions'
+import { usStatesTranslations } from './sections/usStates'
+import { fieldsTranslations } from './sections/fields'
+import { storiesDataTranslations } from './sections/storiesData'
 import { storiesTranslations } from './sections/stories'
 import { blogTranslations } from './sections/blog'
 import { termsTranslations } from './sections/terms'
@@ -34,6 +41,13 @@ export const translations = {
     ...howitworksTranslations.en,
     ...discoveryTranslations.en,
     ...domesticTranslations.en,
+    ...domesticDetailTranslations.en,
+    ...apCountriesTranslations.en,
+    ...euCountriesTranslations.en,
+    ...ukRegionsTranslations.en,
+    ...usStatesTranslations.en,
+    ...fieldsTranslations.en,
+    ...storiesDataTranslations.en,
     ...storiesTranslations.en,
     ...blogTranslations.en,
     ...termsTranslations.en,
@@ -56,6 +70,13 @@ export const translations = {
     ...howitworksTranslations.ko,
     ...discoveryTranslations.ko,
     ...domesticTranslations.ko,
+    ...domesticDetailTranslations.ko,
+    ...apCountriesTranslations.ko,
+    ...euCountriesTranslations.ko,
+    ...ukRegionsTranslations.ko,
+    ...usStatesTranslations.ko,
+    ...fieldsTranslations.ko,
+    ...storiesDataTranslations.ko,
     ...storiesTranslations.ko,
     ...blogTranslations.ko,
     ...termsTranslations.ko,

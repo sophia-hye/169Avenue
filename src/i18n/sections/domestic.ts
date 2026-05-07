@@ -69,8 +69,8 @@ export const domesticTranslations = {
     domestic_problem_quote: '내신은 있는데 방향이 없다면, 전략이 필요한 시점입니다.',
     domestic_problem_body: '성적만으로는 합격할 수 없습니다. 전공 방향, 지원 전략, 서류 구성까지 — 구조적으로 설계해야 합니다.',
     domestic_pathways_title: '3가지 핵심 경로',
-    domestic_recommended_label: '이런 학생에게 적합합니다',
-    domestic_what_you_get_label: '이 서비스를 통해 얻는 것',
+    domestic_recommended_label: '추천 대상',
+    domestic_what_you_get_label: '얻는 것',
     domestic_learn_more: '자세히 보기',
     domestic_pathways: [
       {

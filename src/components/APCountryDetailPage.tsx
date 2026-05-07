@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { MobileShell, MobileFooter } from './MobileShell'
+import { useLanguage } from '../context/LanguageContext'
 import { AP_UNIVERSITIES, AP_COUNTRY_NAMES } from './maps/AsiaPacificMap'
 import { getAPCountryDetail } from '../data/ap-countries-detail'
 import { toSlug } from '../data/university-utils'
@@ -68,11 +69,13 @@ function ImageGallery({ images, name }: { images: readonly string[]; name: strin
 const COUNTRY_ORDER = ['702', '410', '392', '156', '036', '554', '356']
 
 export function APCountryDetailPage() {
+  const { t } = useLanguage()
   const { countryId } = useParams<{ countryId: string }>()
   const id = countryId || ''
   const countryName = AP_COUNTRY_NAMES[id]
   const universities = AP_UNIVERSITIES.filter((u) => u.countryId === id)
   const detail = getAPCountryDetail(id)
+  const detailI18n = t.apCountries[id] ?? t.apCountryFallback
 
   if (!countryName || universities.length === 0) {
     return <Navigate to="/destinations/ap" replace />
@@ -89,7 +92,7 @@ export function APCountryDetailPage() {
         <Link to="/destinations/ap" className="inline-flex items-center space-x-3 group">
           <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
           <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
-            Asia-Pacific Map
+            {t.region_back_ap}
           </span>
         </Link>
       </div>
@@ -99,7 +102,7 @@ export function APCountryDetailPage() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div>
             <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary mb-4 block">
-              Asia-Pacific &middot; {universities.length} {universities.length === 1 ? 'Institution' : 'Institutions'}
+              Asia-Pacific &middot; {universities.length} {universities.length === 1 ? t.region_institution_singular : t.region_institution_plural}
             </span>
             <h1 className="font-headline text-6xl md:text-8xl text-primary tracking-tighter leading-none">
               {countryName}
@@ -108,7 +111,7 @@ export function APCountryDetailPage() {
           <div className="flex items-center space-x-4 pb-2">
             <span className="material-symbols-outlined text-secondary">school</span>
             <span className="font-body text-on-surface-variant text-lg">
-              {universities.length} featured universities
+              {universities.length} {t.region_featured_universities}
             </span>
           </div>
         </div>
@@ -121,18 +124,18 @@ export function APCountryDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           <div className="lg:col-span-7">
             <span className="font-label text-[10px] uppercase tracking-[0.2em] text-secondary mb-6 block">
-              About {countryName}
+              {t.region_about.replace('{name}', countryName)}
             </span>
             <p className="font-body text-on-surface-variant text-lg leading-[1.9]">
-              {detail.description}
+              {detailI18n.description}
             </p>
           </div>
           <div className="lg:col-span-5">
             <span className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-8 block">
-              Key Highlights
+              {t.region_key_highlights}
             </span>
             <div className="space-y-6">
-              {detail.highlights.map((h, i) => (
+              {detailI18n.highlights.map((h, i) => (
                 <div key={i} className="flex items-start space-x-4">
                   <span className="font-headline italic text-2xl text-secondary/40 leading-none mt-1">
                     {String(i + 1).padStart(2, '0')}
@@ -149,9 +152,9 @@ export function APCountryDetailPage() {
 
       {/* University List */}
       <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
-        <h2 className="font-headline text-3xl md:text-4xl text-primary mb-2">Universities</h2>
+        <h2 className="font-headline text-3xl md:text-4xl text-primary mb-2">{t.region_universities_h2}</h2>
         <span className="font-label text-[10px] uppercase tracking-widest text-secondary mb-10 block">
-          Ranked by institutional prestige
+          {t.region_ranked_by}
         </span>
         <div className="border-t border-outline-variant/20">
           {universities.map((uni, i) => (
@@ -180,7 +183,7 @@ export function APCountryDetailPage() {
               </div>
               <div className="col-span-12 md:col-span-2 flex items-center justify-end">
                 <span className="inline-flex items-center space-x-2 font-label text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">
-                  <span>View</span>
+                  <span>{t.common_view}</span>
                   <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
                 </span>
               </div>
@@ -192,7 +195,7 @@ export function APCountryDetailPage() {
       {/* Other Countries Quick Links */}
       <section className="px-8 md:px-16 max-w-screen-2xl mx-auto mb-20">
         <h3 className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-8">
-          Explore Other Countries
+          {t.region_explore_other_countries}
         </h3>
         <div className="flex flex-wrap gap-3">
           {COUNTRY_ORDER.map((cId) => (
@@ -216,23 +219,23 @@ export function APCountryDetailPage() {
         <div className="grid grid-cols-1 md:grid-cols-2">
           {prevId ? (
             <Link to={`/destinations/ap/${prevId}`} className="group py-16 pr-12 border-b md:border-b-0 md:border-r border-outline-variant/20">
-              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">Previous</span>
+              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">{t.common_previous}</span>
               <div className="flex items-center space-x-4">
                 <span className="material-symbols-outlined text-sm group-hover:-translate-x-2 transition-transform">arrow_back</span>
                 <div>
                   <h4 className="font-headline text-2xl group-hover:text-secondary transition-colors">{AP_COUNTRY_NAMES[prevId]}</h4>
-                  <span className="font-label text-[10px] text-secondary">{AP_UNIVERSITIES.filter((u) => u.countryId === prevId).length} universities</span>
+                  <span className="font-label text-[10px] text-secondary">{AP_UNIVERSITIES.filter((u) => u.countryId === prevId).length} {t.common_universities_lc}</span>
                 </div>
               </div>
             </Link>
           ) : <div className="py-16 border-b md:border-b-0 md:border-r border-outline-variant/20" />}
           {nextId ? (
             <Link to={`/destinations/ap/${nextId}`} className="group py-16 pl-0 md:pl-12 text-right">
-              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">Next</span>
+              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">{t.common_next}</span>
               <div className="flex items-center justify-end space-x-4">
                 <div>
                   <h4 className="font-headline text-2xl group-hover:text-secondary transition-colors">{AP_COUNTRY_NAMES[nextId]}</h4>
-                  <span className="font-label text-[10px] text-secondary">{AP_UNIVERSITIES.filter((u) => u.countryId === nextId).length} universities</span>
+                  <span className="font-label text-[10px] text-secondary">{AP_UNIVERSITIES.filter((u) => u.countryId === nextId).length} {t.common_universities_lc}</span>
                 </div>
                 <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
               </div>
@@ -245,16 +248,16 @@ export function APCountryDetailPage() {
       <section className="px-8 md:px-16 py-32 text-center bg-primary text-on-primary">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-headline text-5xl md:text-6xl italic mb-12 leading-tight">
-            Study in {countryName}
+            {t.region_study_in.replace('{name}', countryName)}
           </h2>
           <p className="font-body text-zinc-400 text-lg mb-16 max-w-xl mx-auto">
-            Our curators will guide you through the admissions process for {countryName}'s top institutions.
+            {t.region_study_in_body.replaceAll('{name}', countryName)}
           </p>
           <Link
             to="/consultation"
             className="bg-surface text-primary px-16 py-6 font-label uppercase text-xs tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500"
           >
-            Book a Private Consultation
+            {t.book_consultation}
           </Link>
         </div>
       </section>

@@ -17,6 +17,15 @@ export const storiesTranslations = {
     mobile_draft_narrative: 'Draft Your Own Narrative',
     mobile_draft_body: 'Our portfolio grows with every ambitious mind. Let us curate your path to the world\'s most prestigious institutions.',
     vol: 'Vol. 01',
+
+    stories_similar_case_short: 'Have a similar case?',
+    stories_similar_case_long: 'Have a similar case? Get your strategy designed.',
+    stories_get_analyzed: 'Get My Case Analyzed',
+    stories_page_title: 'Case Studies - 케이스 스터디',
+    stories_all_link: 'All Success Stories',
+    stories_narrative_label: 'The Narrative',
+    stories_write_your_own: 'Write Your Own Story',
+    stories_write_your_own_body: 'Have a similar background? Get your case analyzed.',
   },
 
   ko: {
@@ -37,5 +46,14 @@ export const storiesTranslations = {
     mobile_draft_narrative: '당신의 이야기를 쓰세요',
     mobile_draft_body: '우리의 포트폴리오는 야망 있는 모든 분들과 함께 성장합니다. 세계 최고 명문 기관으로의 길을 함께 큐레이팅해 드립니다.',
     vol: '제 01권',
+
+    stories_similar_case_short: '비슷한 케이스가 있으신가요?',
+    stories_similar_case_long: '비슷한 케이스가 있으신가요? 전략을 설계해 드립니다.',
+    stories_get_analyzed: '내 케이스 분석 받기',
+    stories_page_title: '케이스 스터디 - Case Studies',
+    stories_all_link: '모든 성공 사례',
+    stories_narrative_label: '이야기',
+    stories_write_your_own: '나만의 이야기를 만들어 보세요',
+    stories_write_your_own_body: '비슷한 배경이 있으시다면 사례 분석을 받아보세요.',
   },
 } as const
