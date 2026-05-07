@@ -157,7 +157,6 @@ export function PresentationMode({ data, onClose }: Props) {
       }
     }
     const strengths = [...allEntries].sort((a, b) => b.score - a.score).slice(0, 3)
-    const risks = [...allEntries].sort((a, b) => a.score - b.score).slice(0, 2)
 
     // Steps, notes
     const steps = data.summary.nextSteps.split('\n').filter(Boolean)
@@ -182,12 +181,6 @@ export function PresentationMode({ data, onClose }: Props) {
       if (v >= 3) return { label: t.pdf_status_needs_work,  key: 'needs_work',  color: '#7A5A20', bg: '#F5EBD7' }
       return       { label: t.pdf_status_redesign,          key: 'redesign',    color: '#8B3A3A', bg: '#F1E0E0' }
     }
-    const recLevelFor = (pct: number): { label: string; color: string } => {
-      if (pct >= 75) return { label: t.pdf_track_rec_high, color: '#2D6A4F' }
-      if (pct >= 55) return { label: t.pdf_track_rec_mid,  color: '#7A5A20' }
-      return          { label: t.pdf_track_rec_low,         color: '#9B958D' }
-    }
-
     // Derived meta strings
     const field = p.interests.length > 0 ? p.interests.slice(0, 3).join(' · ') : t.pdf_field_general
     const reportId = `169-${(data.id || data.createdAt.replace(/-/g, '')).slice(-8).toUpperCase()}`
@@ -290,7 +283,6 @@ export function PresentationMode({ data, onClose }: Props) {
       `<svg width="${wd}" height="${h}" style="display:block;flex:1"><rect width="${wd}" height="${h}" rx="4" fill="#E5E0D8"/><rect width="${Math.round(wd * Math.max(0, Math.min(100, pct)) / 100)}" height="${h}" rx="4" fill="${color}"/></svg>`
     const svgLine = (wd = 32, color = '#6B4F4F') =>
       `<svg width="${wd}" height="2" style="display:block;margin:10px 0 20px"><rect width="${wd}" height="2" fill="${color}"/></svg>`
-    const H2 = 'font-size:24px;font-weight:400;font-family:Georgia,"Noto Serif KR",serif;color:#2C2C2C'
     const SUB = 'font-size:12px;color:#9B958D;margin-bottom:8px'
     const S  = 'width:100vw;height:100vh;padding:48px 64px;display:flex;align-items:center;justify-content:center;page-break-after:always;background:#FAF8F5'
     const SL = 'width:100vw;height:100vh;padding:48px 64px;display:flex;align-items:center;justify-content:center;background:#FAF8F5'

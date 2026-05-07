@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Navbar } from '../../Navbar'
 import { MobileTopBar } from '../../MobileTopBar'
 import { MobileBottomNav } from '../../MobileBottomNav'
