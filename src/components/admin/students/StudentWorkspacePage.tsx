@@ -12,6 +12,7 @@ import {
   deleteObservation,
   deleteStudent,
   getCase,
+  hasOwnPrograms,
   initStudentStore,
   listStudents,
   markExported,
@@ -24,6 +25,7 @@ import {
   type StudentCase,
   type StudentIndexEntry,
   type Status,
+  type StudyAbroadPurpose,
 } from '../../../data/student-store'
 import { isSupabaseConfigured, SUPABASE_SETUP_MESSAGE } from '../../../lib/supabase'
 import { DEFAULT_DIAGNOSIS, OBSERVER_DOMAIN_KEYS, type DiagnosisData, type ObserverMap } from '../../../data/diagnosis-template'
@@ -38,7 +40,15 @@ import { ParentStepForm } from '../diagnosis/ParentStepForm'
 import { ObserverChecklist } from '../diagnosis/ObserverChecklist'
 import { PresentationMode } from '../diagnosis/PresentationMode'
 
-type TabId = 'overview' | 'survey' | 'observations' | 'recommendation' | 'preview' | 'export'
+type TabId = 'overview' | 'survey' | 'observations' | 'recommendation' | 'preview' | 'export' | 'profile'
+
+interface CreateStudentOpts {
+  studyAbroadPurpose?: StudyAbroadPurpose
+  programs?: string[]
+  regionsOfInterest?: string
+  schoolsOfInterest?: string
+  budget?: string
+}
 
 export function StudentWorkspacePage() {
   const { studentId } = useParams<{ studentId: string }>()
@@ -83,9 +93,9 @@ export function StudentWorkspacePage() {
     setTimeout(() => setToast(null), 2000)
   }
 
-  const handleCreate = (name: string, grade: string) => {
+  const handleCreate = (name: string, opts: CreateStudentOpts) => {
     if (!name.trim()) return
-    const c = createStudent({ name: name.trim(), grade: grade.trim() })
+    const c = createStudent({ name: name.trim(), ...opts })
     refreshList()
     navigate(`/admin/students/${c.student.id}`)
   }
@@ -184,43 +194,58 @@ export function StudentWorkspacePage() {
                     </div>
                   </div>
 
-                  <ActionBar
-                    exportable={exportable}
-                    onSaveDraft={handleSaveDraft}
-                    onGenerateRec={handleGenerateRec}
-                    onExport={handleExport}
-                  />
+                  {hasOwnPrograms(current) && (
+                    <ActionBar
+                      exportable={exportable}
+                      onSaveDraft={handleSaveDraft}
+                      onGenerateRec={handleGenerateRec}
+                      onExport={handleExport}
+                    />
+                  )}
                 </div>
 
                 {/* Tabs */}
-                <div className="flex border-b border-outline-variant/15 mb-8 overflow-x-auto">
-                  {([
-                    ['overview',       t.detail_tab_overview,       'dashboard'],
-                    ['survey',         t.detail_tab_survey,         'edit_note'],
-                    ['observations',   t.detail_tab_observation,    'checklist'],
-                    ['recommendation', t.detail_tab_recommendation, 'auto_awesome'],
-                    ['preview',        t.detail_tab_preview,        'visibility'],
-                    ['export',         t.detail_tab_export,         'picture_as_pdf'],
-                  ] as [TabId, string, string][]).map(([id, label, icon]) => (
-                    <button key={id} onClick={() => setTab(id)}
-                      className={`flex items-center gap-2 px-5 py-3 font-body text-sm transition-colors border-b-2 -mb-px whitespace-nowrap ${
-                        tab === id ? 'border-secondary text-secondary' : 'border-transparent text-on-surface-variant/50 hover:text-primary'
-                      }`}>
-                      <span className="material-symbols-outlined text-base">{icon}</span>
-                      {label}
-                    </button>
-                  ))}
-                </div>
+                {(() => {
+                  const inProgram = hasOwnPrograms(current)
+                  const tabs: [TabId, string, string][] = inProgram
+                    ? [
+                        ['overview',       t.detail_tab_overview as string,       'dashboard'],
+                        ['survey',         t.detail_tab_survey as string,         'edit_note'],
+                        ['observations',   t.detail_tab_observation as string,    'checklist'],
+                        ['recommendation', t.detail_tab_recommendation as string, 'auto_awesome'],
+                        ['preview',        t.detail_tab_preview as string,        'visibility'],
+                        ['export',         t.detail_tab_export as string,         'picture_as_pdf'],
+                      ]
+                    : [
+                        ['overview', t.detail_tab_overview as string, 'dashboard'],
+                        ['profile',  t.detail_tab_profile as string,  'person'],
+                      ]
+                  return (
+                    <>
+                      <div className="flex border-b border-outline-variant/15 mb-8 overflow-x-auto">
+                        {tabs.map(([id, label, icon]) => (
+                          <button key={id} onClick={() => setTab(id)}
+                            className={`flex items-center gap-2 px-5 py-3 font-body text-sm transition-colors border-b-2 -mb-px whitespace-nowrap ${
+                              tab === id ? 'border-secondary text-secondary' : 'border-transparent text-on-surface-variant/50 hover:text-primary'
+                            }`}>
+                            <span className="material-symbols-outlined text-base">{icon}</span>
+                            {label}
+                          </button>
+                        ))}
+                      </div>
 
-                {/* Tab Content */}
-                <div>
-                  {tab === 'overview' && <OverviewTab c={current} onNav={setTab} />}
-                  {tab === 'survey' && <SurveyTab c={current} save={save} />}
-                  {tab === 'observations' && <ObservationsTab c={current} save={save} />}
-                  {tab === 'recommendation' && <RecommendationTab c={current} save={save} />}
-                  {tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
-                  {tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
-                </div>
+                      <div>
+                        {tab === 'overview' && <OverviewTab c={current} onNav={setTab} inProgram={inProgram} />}
+                        {inProgram && tab === 'survey' && <SurveyTab c={current} save={save} />}
+                        {inProgram && tab === 'observations' && <ObservationsTab c={current} save={save} />}
+                        {inProgram && tab === 'recommendation' && <RecommendationTab c={current} save={save} />}
+                        {inProgram && tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
+                        {inProgram && tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
+                        {!inProgram && tab === 'profile' && <ProfileTab c={current} save={save} />}
+                      </div>
+                    </>
+                  )
+                })()}
               </>
             )}
           </section>
@@ -252,11 +277,25 @@ export function StudentWorkspacePage() {
 
 /* ─────────────────────── Sidebar ─────────────────────── */
 
+const PROGRAM_OPTIONS = [
+  { key: 'discovery', i18nKey: 'students_modal_program_discovery' },
+  { key: 'decision',  i18nKey: 'students_modal_program_decision' },
+  { key: 'direction', i18nKey: 'students_modal_program_direction' },
+  { key: 'academic',  i18nKey: 'students_modal_program_academic' },
+  { key: 'elite',     i18nKey: 'students_modal_program_elite' },
+] as const
+
+const PURPOSE_OPTIONS = [
+  { key: 'language_study',      i18nKey: 'students_modal_purpose_language' },
+  { key: 'university_admission', i18nKey: 'students_modal_purpose_university' },
+  { key: 'summer_winter_camp',  i18nKey: 'students_modal_purpose_camp' },
+] as const
+
 function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile }: {
   list: StudentIndexEntry[]
   selectedId: string | undefined
   onSelect: (id: string) => void
-  onCreate: (name: string, grade: string) => void
+  onCreate: (name: string, opts: CreateStudentOpts) => void
   onDelete: (id: string) => void
   hideOnMobile: boolean
 }) {
@@ -264,7 +303,41 @@ function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile 
   const [search, setSearch] = useState('')
   const [adding, setAdding] = useState(false)
   const [newName, setNewName] = useState('')
-  const [newGrade, setNewGrade] = useState('')
+  const [newPurpose, setNewPurpose] = useState<StudyAbroadPurpose | ''>('')
+  const [newPrograms, setNewPrograms] = useState<string[]>([])
+  const [newRegions, setNewRegions] = useState('')
+  const [newSchools, setNewSchools] = useState('')
+  const [newBudget, setNewBudget] = useState('')
+
+  const noOwnPrograms = newPrograms.length === 0
+
+  const handleClose = () => {
+    setAdding(false)
+    setNewName('')
+    setNewPurpose('')
+    setNewPrograms([])
+    setNewRegions('')
+    setNewSchools('')
+    setNewBudget('')
+  }
+
+  const handleSubmit = () => {
+    if (!newName.trim()) return
+    onCreate(newName, {
+      studyAbroadPurpose: newPurpose || undefined,
+      programs: newPrograms,
+      regionsOfInterest: noOwnPrograms ? newRegions : '',
+      schoolsOfInterest: noOwnPrograms ? newSchools : '',
+      budget: noOwnPrograms ? newBudget : '',
+    })
+    handleClose()
+  }
+
+  const toggleProgram = (key: string) => {
+    setNewPrograms((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    )
+  }
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -332,29 +405,93 @@ function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile 
 
       {/* Add modal */}
       {adding && (
-        <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4" onClick={() => setAdding(false)}>
-          <div className="bg-surface p-8 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-headline text-xl text-primary tracking-tight mb-6">{t.students_modal_title as string}</h3>
-            <label className="block mb-4">
-              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_name as string}</span>
-              <input autoFocus value={newName} onChange={(e) => setNewName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && (onCreate(newName, newGrade), setAdding(false))}
-                className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-            </label>
-            <label className="block mb-6">
-              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_grade as string}</span>
-              <input value={newGrade} onChange={(e) => setNewGrade(e.target.value)}
-                className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-            </label>
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setAdding(false)} className="px-5 py-2 font-body text-sm text-on-surface-variant/70 hover:text-primary transition-colors">
-                {t.students_modal_cancel as string}
-              </button>
-              <button onClick={() => { onCreate(newName, newGrade); setAdding(false); setNewName(''); setNewGrade('') }}
-                disabled={!newName.trim()}
-                className="px-6 py-2 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors disabled:opacity-40">
-                {t.students_modal_create as string}
-              </button>
+        <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4" onClick={handleClose}>
+          <div className="bg-surface w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="p-8">
+              <h3 className="font-headline text-xl text-primary tracking-tight mb-6">{t.students_modal_title as string}</h3>
+
+              {/* Name */}
+              <label className="block mb-5">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_name as string}</span>
+                <input autoFocus value={newName} onChange={(e) => setNewName(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                  className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
+              </label>
+
+              {/* Study abroad purpose */}
+              <div className="mb-5">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-2 block">{t.students_modal_purpose as string}</span>
+                <div className="flex flex-col gap-2">
+                  {PURPOSE_OPTIONS.map(({ key, i18nKey }) => (
+                    <label key={key} className="flex items-center gap-2.5 cursor-pointer group">
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
+                        newPurpose === key ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
+                      }`} onClick={() => setNewPurpose(newPurpose === key ? '' : key as StudyAbroadPurpose)}>
+                        {newPurpose === key && <div className="w-1.5 h-1.5 rounded-full bg-on-primary" />}
+                      </div>
+                      <span className="font-body text-sm text-primary cursor-pointer" onClick={() => setNewPurpose(newPurpose === key ? '' : key as StudyAbroadPurpose)}>
+                        {t[i18nKey] as string}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Programs */}
+              <div className="mb-5">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_programs as string}</span>
+                <p className="font-body text-[11px] text-on-surface-variant/50 mb-2">{t.students_modal_programs_sub as string}</p>
+                <div className="flex flex-col gap-2">
+                  {PROGRAM_OPTIONS.map(({ key, i18nKey }) => {
+                    const checked = newPrograms.includes(key)
+                    return (
+                      <label key={key} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleProgram(key)}>
+                        <div className={`w-4 h-4 border-2 flex items-center justify-center transition-colors ${
+                          checked ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
+                        }`}>
+                          {checked && <span className="material-symbols-outlined text-[10px] text-on-primary font-bold">check</span>}
+                        </div>
+                        <span className="font-body text-sm text-primary">{t[i18nKey] as string}</span>
+                      </label>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* General management fields — shown only when no program selected */}
+              {noOwnPrograms && (
+                <div className="border-t border-outline-variant/15 pt-5 mb-5 space-y-4">
+                  <label className="block">
+                    <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_regions as string}</span>
+                    <input value={newRegions} onChange={(e) => setNewRegions(e.target.value)}
+                      placeholder={t.students_modal_regions_ph as string}
+                      className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
+                  </label>
+                  <label className="block">
+                    <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_schools as string}</span>
+                    <input value={newSchools} onChange={(e) => setNewSchools(e.target.value)}
+                      placeholder={t.students_modal_schools_ph as string}
+                      className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
+                  </label>
+                  <label className="block">
+                    <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_budget as string}</span>
+                    <input value={newBudget} onChange={(e) => setNewBudget(e.target.value)}
+                      placeholder={t.students_modal_budget_ph as string}
+                      className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
+                  </label>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-2">
+                <button onClick={handleClose} className="px-5 py-2 font-body text-sm text-on-surface-variant/70 hover:text-primary transition-colors">
+                  {t.students_modal_cancel as string}
+                </button>
+                <button onClick={handleSubmit}
+                  disabled={!newName.trim()}
+                  className="px-6 py-2 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors disabled:opacity-40">
+                  {t.students_modal_create as string}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -457,7 +594,21 @@ function caseToDiagnosisData(c: StudentCase, observer?: ObserverMap): DiagnosisD
 
 /* ─────────────────────── Tabs ─────────────────────── */
 
-function OverviewTab({ c, onNav }: { c: StudentCase; onNav: (t: TabId) => void }) {
+const STUDY_PURPOSE_LABELS: Record<string, string> = {
+  language_study:       'students_modal_purpose_language',
+  university_admission: 'students_modal_purpose_university',
+  summer_winter_camp:   'students_modal_purpose_camp',
+}
+
+const PROGRAM_KEY_LABELS: Record<string, string> = {
+  discovery: 'students_modal_program_discovery',
+  decision:  'students_modal_program_decision',
+  direction: 'students_modal_program_direction',
+  academic:  'students_modal_program_academic',
+  elite:     'students_modal_program_elite',
+}
+
+function OverviewTab({ c, onNav, inProgram }: { c: StudentCase; onNav: (t: TabId) => void; inProgram: boolean }) {
   const { t } = useLanguage()
   const status = computeStatus(c)
   const agg = aggregateObservations(c.observations)
@@ -470,64 +621,118 @@ function OverviewTab({ c, onNav }: { c: StudentCase; onNav: (t: TabId) => void }
 
   return (
     <div>
-      {/* Status */}
-      <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-secondary">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50">
-            {t.overview_status as string}
-          </span>
-          <StatusChip status={status} />
-        </div>
-        <p className="font-body text-sm text-on-surface-variant/70">
-          {statusCopy(status, t)}
-        </p>
-      </div>
-
-      {/* Recommended track */}
-      <div className="mb-8 bg-primary text-on-primary p-5 flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <div className="font-label text-[10px] uppercase tracking-[0.22em] text-secondary/80 mb-1">
-            {t.overview_recommended_track as string}
+      {inProgram ? (
+        <>
+          {/* Status */}
+          <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-secondary">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50">
+                {t.overview_status as string}
+              </span>
+              <StatusChip status={status} />
+            </div>
+            <p className="font-body text-sm text-on-surface-variant/70">
+              {statusCopy(status, t)}
+            </p>
           </div>
-          {rec ? (
-            <div className="font-headline text-xl tracking-tight">{trackNames[rec.key as TrackKey]}</div>
-          ) : (
-            <div className="font-body text-sm text-on-primary/60">{t.overview_no_recommendation as string}</div>
+
+          {/* Recommended track */}
+          <div className="mb-8 bg-primary text-on-primary p-5 flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <div className="font-label text-[10px] uppercase tracking-[0.22em] text-secondary/80 mb-1">
+                {t.overview_recommended_track as string}
+              </div>
+              {rec ? (
+                <div className="font-headline text-xl tracking-tight">{trackNames[rec.key as TrackKey]}</div>
+              ) : (
+                <div className="font-body text-sm text-on-primary/60">{t.overview_no_recommendation as string}</div>
+              )}
+            </div>
+            {rec && <div className="font-headline text-2xl">{rec.pct}%</div>}
+          </div>
+
+          {/* Basic info */}
+          <div className="mb-8">
+            <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_basic as string}</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+              <Field label={t.overview_field_name as string} value={c.survey.studentName} />
+              <Field label={t.overview_field_grade as string} value={c.survey.grade} />
+              <Field label={t.overview_field_phone as string} value={c.survey.parentPhone || ''} />
+              <Field label={t.overview_field_target as string} value={c.survey.educationGoal} />
+              <Field label={t.obs_sessions_title as string} value={String(c.observations.length)} />
+              <Field label={t.reports_title as string} value={String(c.reports.length)} />
+            </div>
+          </div>
+
+          {c.survey.keyQuestion && (
+            <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-secondary">
+              <div className="font-label text-[10px] uppercase tracking-widest text-secondary mb-2">{t.overview_field_key as string}</div>
+              <p className="font-body text-sm text-primary leading-relaxed">{c.survey.keyQuestion}</p>
+            </div>
           )}
-        </div>
-        {rec && <div className="font-headline text-2xl">{rec.pct}%</div>}
-      </div>
 
-      {/* Basic info */}
-      <div className="mb-8">
-        <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_basic as string}</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-          <Field label={t.overview_field_name as string} value={c.survey.studentName} />
-          <Field label={t.overview_field_grade as string} value={c.survey.grade} />
-          <Field label={t.overview_field_phone as string} value={c.survey.parentPhone || ''} />
-          <Field label={t.overview_field_target as string} value={c.survey.educationGoal} />
-          <Field label={t.obs_sessions_title as string} value={String(c.observations.length)} />
-          <Field label={t.reports_title as string} value={String(c.reports.length)} />
-        </div>
-      </div>
+          {/* Quick actions */}
+          <div>
+            <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_quick_actions as string}</h3>
+            <div className="flex gap-2 flex-wrap">
+              <QuickAction icon="edit_note" label={t.overview_open_survey as string} onClick={() => onNav('survey')} />
+              <QuickAction icon="checklist" label={t.overview_open_observation as string} onClick={() => onNav('observations')} />
+              <QuickAction icon="auto_awesome" label={t.detail_tab_recommendation as string} onClick={() => onNav('recommendation')} />
+              <QuickAction icon="picture_as_pdf" label={t.overview_open_export as string} onClick={() => onNav('export')} />
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* General management overview */}
+          <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-outline-variant/40">
+            <div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50 mb-1">
+              {t.profile_no_program_title as string}
+            </div>
+            <p className="font-body text-sm text-on-surface-variant/70">{t.profile_no_program_sub as string}</p>
+          </div>
 
-      {c.survey.keyQuestion && (
-        <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-secondary">
-          <div className="font-label text-[10px] uppercase tracking-widest text-secondary mb-2">{t.overview_field_key as string}</div>
-          <p className="font-body text-sm text-primary leading-relaxed">{c.survey.keyQuestion}</p>
-        </div>
+          <div className="mb-8">
+            <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_basic as string}</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+              <Field label={t.overview_field_name as string} value={c.student.name} />
+              {c.student.studyAbroadPurpose && (
+                <Field label={t.students_modal_purpose as string}
+                  value={t[STUDY_PURPOSE_LABELS[c.student.studyAbroadPurpose]] as string} />
+              )}
+              {c.student.regionsOfInterest && (
+                <Field label={t.profile_regions as string} value={c.student.regionsOfInterest} />
+              )}
+              {c.student.schoolsOfInterest && (
+                <Field label={t.profile_schools as string} value={c.student.schoolsOfInterest} />
+              )}
+              {c.student.budget && (
+                <Field label={t.profile_budget as string} value={c.student.budget} />
+              )}
+            </div>
+          </div>
+
+          {(c.student.programs ?? []).length > 0 && (
+            <div className="mb-8">
+              <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-3">{t.profile_programs as string}</h3>
+              <div className="flex flex-wrap gap-2">
+                {(c.student.programs ?? []).map((pk) => (
+                  <span key={pk} className="px-3 py-1 font-body text-xs bg-secondary/10 text-secondary border border-secondary/20">
+                    {t[PROGRAM_KEY_LABELS[pk]] as string || pk}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div>
+            <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_quick_actions as string}</h3>
+            <div className="flex gap-2 flex-wrap">
+              <QuickAction icon="person" label={t.detail_tab_profile as string} onClick={() => onNav('profile')} />
+            </div>
+          </div>
+        </>
       )}
-
-      {/* Quick actions */}
-      <div>
-        <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_quick_actions as string}</h3>
-        <div className="flex gap-2 flex-wrap">
-          <QuickAction icon="edit_note" label={t.overview_open_survey as string} onClick={() => onNav('survey')} />
-          <QuickAction icon="checklist" label={t.overview_open_observation as string} onClick={() => onNav('observations')} />
-          <QuickAction icon="auto_awesome" label={t.detail_tab_recommendation as string} onClick={() => onNav('recommendation')} />
-          <QuickAction icon="picture_as_pdf" label={t.overview_open_export as string} onClick={() => onNav('export')} />
-        </div>
-      </div>
     </div>
   )
 }
@@ -942,6 +1147,129 @@ function ExportTab({ c, exportable, onExport }: { c: StudentCase; exportable: bo
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+/* ─────────────────────── Profile Tab (no own program) ─────────────────────── */
+
+function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => void }) {
+  const { t } = useLanguage()
+  const [toast, setToast] = useState<string | null>(null)
+
+  const [purpose, setPurpose] = useState<StudyAbroadPurpose | ''>(c.student.studyAbroadPurpose || '')
+  const [programs, setPrograms] = useState<string[]>(c.student.programs || [])
+  const [regions, setRegions] = useState(c.student.regionsOfInterest || '')
+  const [schools, setSchools] = useState(c.student.schoolsOfInterest || '')
+  const [budget, setBudget] = useState(c.student.budget || '')
+  const [notes, setNotes] = useState(c.student.generalNotes || '')
+
+  const toggleProgram = (key: string) => {
+    setPrograms((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key])
+  }
+
+  const handleSave = () => {
+    save({
+      ...c,
+      student: {
+        ...c.student,
+        studyAbroadPurpose: purpose || undefined,
+        programs,
+        regionsOfInterest: regions,
+        schoolsOfInterest: schools,
+        budget,
+        generalNotes: notes,
+      },
+    })
+    setToast(t.profile_saved as string)
+    setTimeout(() => setToast(null), 2000)
+  }
+
+  return (
+    <div className="max-w-2xl">
+      <div className="mb-8">
+        <h2 className="font-headline text-2xl text-primary tracking-tight mb-1">{t.profile_no_program_title as string}</h2>
+        <p className="font-body text-sm text-on-surface-variant/60">{t.profile_no_program_sub as string}</p>
+      </div>
+
+      {/* Study abroad purpose */}
+      <div className="mb-6">
+        <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-2 block">{t.profile_study_purpose as string}</span>
+        <div className="flex flex-col gap-2">
+          {PURPOSE_OPTIONS.map(({ key, i18nKey }) => (
+            <label key={key} className="flex items-center gap-2.5 cursor-pointer group">
+              <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
+                purpose === key ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
+              }`} onClick={() => setPurpose(purpose === key ? '' : key as StudyAbroadPurpose)}>
+                {purpose === key && <div className="w-1.5 h-1.5 rounded-full bg-on-primary" />}
+              </div>
+              <span className="font-body text-sm text-primary cursor-pointer" onClick={() => setPurpose(purpose === key ? '' : key as StudyAbroadPurpose)}>
+                {t[i18nKey] as string}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Programs */}
+      <div className="mb-6">
+        <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_programs as string}</span>
+        <div className="flex flex-col gap-2">
+          {PROGRAM_OPTIONS.map(({ key, i18nKey }) => {
+            const checked = programs.includes(key)
+            return (
+              <label key={key} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleProgram(key)}>
+                <div className={`w-4 h-4 border-2 flex items-center justify-center transition-colors ${
+                  checked ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
+                }`}>
+                  {checked && <span className="material-symbols-outlined text-[10px] text-on-primary font-bold">check</span>}
+                </div>
+                <span className="font-body text-sm text-primary">{t[i18nKey] as string}</span>
+              </label>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="border-t border-outline-variant/15 pt-6 mb-6 space-y-5">
+        <label className="block">
+          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_regions as string}</span>
+          <input value={regions} onChange={(e) => setRegions(e.target.value)}
+            placeholder={t.profile_regions_ph as string}
+            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
+        </label>
+        <label className="block">
+          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_schools as string}</span>
+          <input value={schools} onChange={(e) => setSchools(e.target.value)}
+            placeholder={t.profile_schools_ph as string}
+            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
+        </label>
+        <label className="block">
+          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_budget as string}</span>
+          <input value={budget} onChange={(e) => setBudget(e.target.value)}
+            placeholder={t.profile_budget_ph as string}
+            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
+        </label>
+        <label className="block">
+          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_notes as string}</span>
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={4}
+            placeholder={t.profile_notes_ph as string}
+            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary resize-none" />
+        </label>
+      </div>
+
+      <button onClick={handleSave}
+        className="px-6 py-2.5 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center gap-2">
+        <span className="material-symbols-outlined text-base">save</span>
+        {t.profile_save as string}
+      </button>
+
+      {toast && (
+        <div className="mt-3 font-body text-xs text-emerald-700 flex items-center gap-1">
+          <span className="material-symbols-outlined text-sm">check_circle</span>
+          {toast}
+        </div>
+      )}
     </div>
   )
 }

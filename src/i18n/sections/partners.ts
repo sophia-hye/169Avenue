@@ -40,7 +40,7 @@ export const partnersTranslations = {
       ],
       cta: 'Camp Inquiry',
       parents: ['Comprehensive aptitude report', 'Recommended direction: academic / athletic / artistic', 'Future roadmap (by semester)', 'First portfolio entries', 'Follow-up: concrete next steps'],
-      note: 'Not a "camp" — a "direction diagnosis program." The report is what you\'re paying for.',
+      note: 'Not a one-off camp — a program that diagnoses your direction.',
     },
     partners_premium: {
       period: '1-3 Months',
@@ -157,7 +157,7 @@ export const partnersTranslations = {
       ],
       cta: '캠프 상담 신청',
       parents: ['종합 성향 분석 리포트', '추천 방향: 학업 / 운동 / 예술', '향후 로드맵 (학기별)', '포트폴리오 첫 기록물', '후속 상담: 구체적 다음 단계'],
-      note: '"캠프"가 아니라 "진로 방향 진단 프로그램". 리포트가 돈의 이유입니다.',
+      note: '일회성 캠프가 아닌 진로 방향을 진단하는 프로그램입니다.',
     },
     partners_premium: {
       period: '1~3개월',

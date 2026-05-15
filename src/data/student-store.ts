@@ -19,6 +19,8 @@ const SUPABASE_MIGRATION_FLAG = '169av-migrated-to-supabase'
 
 /* ─── Types ─── */
 
+export type StudyAbroadPurpose = 'language_study' | 'university_admission' | 'summer_winter_camp'
+
 export interface StudentMeta {
   id: string
   name: string
@@ -26,6 +28,18 @@ export interface StudentMeta {
   school: string
   /** Free-text program/track label; set manually or derived from recommendation. */
   program: string
+  /** Reason for studying abroad. */
+  studyAbroadPurpose?: StudyAbroadPurpose
+  /** Own-program keys the student is enrolled in (discovery/decision/direction/academic/elite). */
+  programs?: string[]
+  /** For students not in own programs: regions of interest. */
+  regionsOfInterest?: string
+  /** For students not in own programs: schools of interest. */
+  schoolsOfInterest?: string
+  /** For students not in own programs: budget. */
+  budget?: string
+  /** General management notes. */
+  generalNotes?: string
   createdAt: string
   updatedAt: string
 }
@@ -152,6 +166,12 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     grade: c.student?.grade || '',
     school: c.student?.school || '',
     program: c.student?.program || '',
+    studyAbroadPurpose: c.student?.studyAbroadPurpose,
+    programs: c.student?.programs || [],
+    regionsOfInterest: c.student?.regionsOfInterest || '',
+    schoolsOfInterest: c.student?.schoolsOfInterest || '',
+    budget: c.student?.budget || '',
+    generalNotes: c.student?.generalNotes || '',
     createdAt: c.student?.createdAt || nowDate(),
     updatedAt: c.student?.updatedAt || nowIso(),
   }
@@ -477,7 +497,15 @@ export function getCase(id: string): StudentCase | null {
   return cache.get(id) ?? null
 }
 
-export function createStudent(input: { name: string; grade?: string }): StudentCase {
+export function createStudent(input: {
+  name: string
+  grade?: string
+  studyAbroadPurpose?: StudyAbroadPurpose
+  programs?: string[]
+  regionsOfInterest?: string
+  schoolsOfInterest?: string
+  budget?: string
+}): StudentCase {
   const id = newId('s')
   const now = nowIso()
   const c: StudentCase = {
@@ -487,6 +515,12 @@ export function createStudent(input: { name: string; grade?: string }): StudentC
       grade: input.grade || '',
       school: '',
       program: '',
+      studyAbroadPurpose: input.studyAbroadPurpose,
+      programs: input.programs || [],
+      regionsOfInterest: input.regionsOfInterest || '',
+      schoolsOfInterest: input.schoolsOfInterest || '',
+      budget: input.budget || '',
+      generalNotes: '',
       createdAt: nowDate(),
       updatedAt: now,
     },
@@ -497,6 +531,11 @@ export function createStudent(input: { name: string; grade?: string }): StudentC
   cache.set(id, c)
   persistCase(c)
   return c
+}
+
+/** Returns true when the student is enrolled in at least one own program/track. */
+export function hasOwnPrograms(c: StudentCase): boolean {
+  return (c.student.programs?.length ?? 0) > 0
 }
 
 export function saveCase(c: StudentCase): StudentCase {
