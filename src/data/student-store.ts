@@ -98,6 +98,12 @@ export interface StudentMeta {
   budget?: string
   /** General management notes. */
   generalNotes?: string
+  /** Client date of birth (YYYY-MM-DD). */
+  dateOfBirth?: string
+  /** Parent / guardian name (for minors). */
+  parentName?: string
+  /** Parent / guardian phone (for minors). */
+  parentPhone?: string
   createdAt: string
   updatedAt: string
 }
@@ -232,6 +238,9 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     schoolsOfInterest: c.student?.schoolsOfInterest || '',
     budget: c.student?.budget || '',
     generalNotes: c.student?.generalNotes || '',
+    dateOfBirth: c.student?.dateOfBirth || '',
+    parentName: c.student?.parentName || '',
+    parentPhone: c.student?.parentPhone || '',
     createdAt: c.student?.createdAt || nowDate(),
     updatedAt: c.student?.updatedAt || nowIso(),
   }

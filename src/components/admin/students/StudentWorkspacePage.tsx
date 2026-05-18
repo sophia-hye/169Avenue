@@ -229,7 +229,7 @@ export function StudentWorkspacePage() {
                       ]
                   return (
                     <>
-                      <div className="flex border-b border-outline-variant/15 mb-8 overflow-x-auto">
+                      <div className={`flex border-b border-outline-variant/15 mb-8 ${inProgram ? 'overflow-x-auto' : ''}`}>
                         {tabs.map(([id, label, icon]) => (
                           <button key={id} onClick={() => setTab(id)}
                             className={`flex items-center gap-2 px-5 py-3 font-body text-sm transition-colors border-b-2 -mb-px whitespace-nowrap ${
@@ -1168,14 +1168,29 @@ function ExportTab({ c, exportable, onExport }: { c: StudentCase; exportable: bo
 
 function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => void }) {
   const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
   const [toast, setToast] = useState<string | null>(null)
 
+  // Basic info
+  const [dob, setDob] = useState(c.student.dateOfBirth || '')
+  const [grade, setGrade] = useState(c.student.grade || '')
+  const [school, setSchool] = useState(c.student.school || '')
+  // Guardian
+  const [parentName, setParentName] = useState(c.student.parentName || '')
+  const [parentPhone, setParentPhone] = useState(c.student.parentPhone || '')
+  // Study abroad
   const [purpose, setPurpose] = useState<StudyAbroadPurpose | ''>(c.student.studyAbroadPurpose || '')
   const [programs, setPrograms] = useState<string[]>(c.student.programs || [])
   const [regions, setRegions] = useState(c.student.regionsOfInterest || '')
   const [schools, setSchools] = useState(c.student.schoolsOfInterest || '')
   const [budget, setBudget] = useState(c.student.budget || '')
   const [notes, setNotes] = useState(c.student.generalNotes || '')
+
+  const isMinor = (() => {
+    if (!dob) return true
+    const age = Math.floor((Date.now() - new Date(dob).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+    return age < 19
+  })()
 
   const toggleProgram = (key: string) => {
     setPrograms((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key])
@@ -1186,6 +1201,11 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
       ...c,
       student: {
         ...c.student,
+        dateOfBirth: dob,
+        grade,
+        school,
+        parentName,
+        parentPhone,
         studyAbroadPurpose: purpose || undefined,
         programs,
         regionsOfInterest: regions,
@@ -1194,87 +1214,121 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
         generalNotes: notes,
       },
     })
-    setToast(t.profile_saved as string)
+    setToast(tt.profile_saved)
     setTimeout(() => setToast(null), 2000)
   }
+
+  const inputCls = 'w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary'
+  const labelCls = 'font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block'
+  const sectionHeadCls = 'font-label text-[11px] uppercase tracking-widest text-on-surface-variant/40 mb-4 mt-2'
 
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h2 className="font-headline text-2xl text-primary tracking-tight mb-1">{t.profile_no_program_title as string}</h2>
-        <p className="font-body text-sm text-on-surface-variant/60">{t.profile_no_program_sub as string}</p>
+        <h2 className="font-headline text-2xl text-primary tracking-tight mb-1">{tt.profile_no_program_title}</h2>
+        <p className="font-body text-sm text-on-surface-variant/60">{tt.profile_no_program_sub}</p>
       </div>
 
-      {/* Study abroad purpose */}
-      <div className="mb-6">
-        <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-2 block">{t.profile_study_purpose as string}</span>
-        <div className="flex flex-col gap-2">
-          {PRODUCT_OPTIONS.map(({ key, i18nKey }) => (
-            <label key={key} className="flex items-center gap-2.5 cursor-pointer group">
-              <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
-                purpose === key ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
-              }`} onClick={() => setPurpose(purpose === key ? '' : key as StudyAbroadPurpose)}>
-                {purpose === key && <div className="w-1.5 h-1.5 rounded-full bg-on-primary" />}
-              </div>
-              <span className="font-body text-sm text-primary cursor-pointer" onClick={() => setPurpose(purpose === key ? '' : key as StudyAbroadPurpose)}>
-                {(t as unknown as Record<string, string>)[i18nKey]}
-              </span>
+      {/* Basic info */}
+      <div className="mb-8">
+        <p className={sectionHeadCls}>{tt.profile_section_basic}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <label className="block">
+            <span className={labelCls}>{tt.profile_dob}</span>
+            <input type="date" value={dob} onChange={(e) => setDob(e.target.value)}
+              placeholder={tt.profile_dob_ph}
+              className={inputCls} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.profile_grade}</span>
+            <input value={grade} onChange={(e) => setGrade(e.target.value)}
+              placeholder={tt.profile_grade_ph}
+              className={inputCls} />
+          </label>
+          <label className="block md:col-span-2">
+            <span className={labelCls}>{tt.profile_school_name}</span>
+            <input value={school} onChange={(e) => setSchool(e.target.value)}
+              placeholder={tt.profile_school_ph}
+              className={inputCls} />
+          </label>
+        </div>
+      </div>
+
+      {/* Guardian info — shown when minor or DOB not filled */}
+      {isMinor && (
+        <div className="mb-8 border-l-2 border-outline-variant/20 pl-4">
+          <p className={sectionHeadCls}>{tt.profile_section_guardian}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <label className="block">
+              <span className={labelCls}>{tt.profile_parent_name}</span>
+              <input value={parentName} onChange={(e) => setParentName(e.target.value)}
+                placeholder={tt.profile_parent_name_ph}
+                className={inputCls} />
             </label>
-          ))}
+            <label className="block">
+              <span className={labelCls}>{tt.profile_parent_phone}</span>
+              <input value={parentPhone} onChange={(e) => setParentPhone(e.target.value)}
+                placeholder={tt.profile_parent_phone_ph}
+                className={inputCls} />
+            </label>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Programs */}
-      <div className="mb-6">
-        <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_programs as string}</span>
-        <div className="flex flex-col gap-2">
-          {PROGRAM_OPTIONS.map(({ key, i18nKey }) => {
-            const checked = programs.includes(key)
-            return (
-              <label key={key} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleProgram(key)}>
-                <div className={`w-4 h-4 border-2 flex items-center justify-center transition-colors ${
-                  checked ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
-                }`}>
-                  {checked && <span className="material-symbols-outlined text-[10px] text-on-primary font-bold">check</span>}
+      {/* Study abroad preferences */}
+      <div className="mb-8">
+        <p className={sectionHeadCls}>{tt.profile_section_abroad}</p>
+
+        <div className="mb-6">
+          <span className={labelCls}>{tt.profile_study_purpose}</span>
+          <div className="flex flex-col gap-2">
+            {PRODUCT_OPTIONS.map(({ key, i18nKey }) => (
+              <label key={key} className="flex items-center gap-2.5 cursor-pointer group">
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
+                  purpose === key ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
+                }`} onClick={() => setPurpose(purpose === key ? '' : key as StudyAbroadPurpose)}>
+                  {purpose === key && <div className="w-1.5 h-1.5 rounded-full bg-on-primary" />}
                 </div>
-                <span className="font-body text-sm text-primary">{(t as unknown as Record<string, string>)[i18nKey]}</span>
+                <span className="font-body text-sm text-primary cursor-pointer" onClick={() => setPurpose(purpose === key ? '' : key as StudyAbroadPurpose)}>
+                  {tt[i18nKey]}
+                </span>
               </label>
-            )
-          })}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="border-t border-outline-variant/15 pt-6 mb-6 space-y-5">
-        <label className="block">
-          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_regions as string}</span>
-          <input value={regions} onChange={(e) => setRegions(e.target.value)}
-            placeholder={t.profile_regions_ph as string}
-            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-        </label>
-        <label className="block">
-          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_schools as string}</span>
-          <input value={schools} onChange={(e) => setSchools(e.target.value)}
-            placeholder={t.profile_schools_ph as string}
-            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-        </label>
-        <label className="block">
-          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_budget as string}</span>
-          <input value={budget} onChange={(e) => setBudget(e.target.value)}
-            placeholder={t.profile_budget_ph as string}
-            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-        </label>
-        <label className="block">
-          <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.profile_notes as string}</span>
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={4}
-            placeholder={t.profile_notes_ph as string}
-            className="w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary resize-none" />
-        </label>
+        <div className="space-y-5">
+          <label className="block">
+            <span className={labelCls}>{tt.profile_regions}</span>
+            <input value={regions} onChange={(e) => setRegions(e.target.value)}
+              placeholder={tt.profile_regions_ph}
+              className={inputCls} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.profile_schools}</span>
+            <input value={schools} onChange={(e) => setSchools(e.target.value)}
+              placeholder={tt.profile_schools_ph}
+              className={inputCls} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.profile_budget}</span>
+            <input value={budget} onChange={(e) => setBudget(e.target.value)}
+              placeholder={tt.profile_budget_ph}
+              className={inputCls} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.profile_notes}</span>
+            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={4}
+              placeholder={tt.profile_notes_ph}
+              className={`${inputCls} resize-none`} />
+          </label>
+        </div>
       </div>
 
       <button onClick={handleSave}
         className="px-6 py-2.5 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center gap-2">
         <span className="material-symbols-outlined text-base">save</span>
-        {t.profile_save as string}
+        {tt.profile_save}
       </button>
 
       {toast && (
