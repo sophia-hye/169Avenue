@@ -7,6 +7,7 @@ export const commonTranslations = {
     nav_contact: 'Consultation',
     nav_consult: 'Consultation',
     nav_diagnosis: 'Client Insights',
+    nav_dashboard: 'Client Status',
     nav_student_report: 'Student Report',
     // Programs dropdown items
     nav_discovery_program: 'Discovery Program',
@@ -75,6 +76,7 @@ export const commonTranslations = {
     nav_contact: '상담',
     nav_consult: '상담',
     nav_diagnosis: '고객 관리',
+    nav_dashboard: '고객 현황',
     nav_student_report: '성장 리포트',
     nav_discovery_program: 'Discovery Program',
     nav_decision_program: 'Decision Program',

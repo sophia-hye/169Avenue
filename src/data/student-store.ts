@@ -139,6 +139,36 @@ export interface StudentMeta {
   updatedAt: string
 }
 
+/* ─── Client Dashboard ─── */
+
+export type ClientDashboardStatus =
+  | 'app_submitted'
+  | 'paid'
+  | 'in_review'
+  | 'visa_interview'
+  | 'enrolled'
+  | 'partnership_in_progress'
+  | 'docs_collection_needed'
+
+export type DashboardPriority = '1' | '2' | '3' | '4' | '5'
+
+export interface ClientDashboardEntry {
+  priority: DashboardPriority | ''
+  followUpTasks: string
+  dashboardStatus: ClientDashboardStatus | ''
+  paymentReceivedDate: string
+  tuition: string
+  institutions: string
+  pointOfContact: string
+  major: string
+  engScore: string
+  gpa: string
+  postSecondaryCredits: string
+  notes: string
+  completed: boolean
+  updatedAt: string
+}
+
 /* ─── Documents ─── */
 
 export type DocumentType =
@@ -215,6 +245,7 @@ export interface StudentCase {
   consultationLogs?: ConsultationLog[]
   applicationTracking?: ApplicationEntry[]
   documents?: DocumentFile[]
+  clientDashboard?: ClientDashboardEntry
 }
 
 export type Status = 'not-started' | 'awaiting-observation' | 'ready-for-review' | 'ready-for-pdf' | 'completed'
@@ -370,7 +401,26 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     localData: d.localData,
     uploadedAt: d.uploadedAt || nowIso(),
   }))
-  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, applicationTracking, documents }
+  const raw = c as Partial<StudentCase>
+  const clientDashboard: ClientDashboardEntry | undefined = raw.clientDashboard
+    ? {
+        priority: raw.clientDashboard.priority ?? '',
+        followUpTasks: raw.clientDashboard.followUpTasks || '',
+        dashboardStatus: raw.clientDashboard.dashboardStatus ?? '',
+        paymentReceivedDate: raw.clientDashboard.paymentReceivedDate || '',
+        tuition: raw.clientDashboard.tuition || '',
+        institutions: raw.clientDashboard.institutions || '',
+        pointOfContact: raw.clientDashboard.pointOfContact || '',
+        major: raw.clientDashboard.major || '',
+        engScore: raw.clientDashboard.engScore || '',
+        gpa: raw.clientDashboard.gpa || '',
+        postSecondaryCredits: raw.clientDashboard.postSecondaryCredits || '',
+        notes: raw.clientDashboard.notes || '',
+        completed: raw.clientDashboard.completed ?? false,
+        updatedAt: raw.clientDashboard.updatedAt || nowIso(),
+      }
+    : undefined
+  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, applicationTracking, documents, clientDashboard }
 }
 
 function normalizeObservation(o: Partial<Observation>): Observation {
@@ -975,5 +1025,33 @@ export function deleteDocument(c: StudentCase, id: string): StudentCase {
   return saveCase({
     ...c,
     documents: (c.documents || []).filter((d) => d.id !== id),
+  })
+}
+
+/* ─── Client dashboard helper ─── */
+
+export function updateClientDashboard(
+  c: StudentCase,
+  patch: Partial<ClientDashboardEntry>
+): StudentCase {
+  const current = c.clientDashboard ?? {
+    priority: '',
+    followUpTasks: '',
+    dashboardStatus: '',
+    paymentReceivedDate: '',
+    tuition: '',
+    institutions: '',
+    pointOfContact: '',
+    major: '',
+    engScore: '',
+    gpa: '',
+    postSecondaryCredits: '',
+    notes: '',
+    completed: false,
+    updatedAt: nowIso(),
+  }
+  return saveCase({
+    ...c,
+    clientDashboard: { ...current, ...patch, updatedAt: nowIso() },
   })
 }

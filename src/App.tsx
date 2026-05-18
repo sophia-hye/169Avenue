@@ -31,6 +31,7 @@ import { AcademicTrackPage } from './components/AcademicTrackPage'
 import { EliteTrackPage } from './components/EliteTrackPage'
 import { HowItWorksPage } from './components/HowItWorksPage'
 import { StudentWorkspacePage } from './components/admin/students/StudentWorkspacePage'
+import { ClientDashboardPage } from './components/admin/dashboard/ClientDashboardPage'
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
         <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route path="/admin/students" element={<ProtectedRoute><StudentWorkspacePage /></ProtectedRoute>} />
         <Route path="/admin/students/:studentId" element={<ProtectedRoute><StudentWorkspacePage /></ProtectedRoute>} />
+        <Route path="/admin/dashboard" element={<ProtectedRoute><ClientDashboardPage /></ProtectedRoute>} />
         <Route path="/admin/diagnosis" element={<Navigate to="/admin/students" replace />} />
         <Route path="/admin/report" element={<Navigate to="/admin/students" replace />} />
       </Routes>

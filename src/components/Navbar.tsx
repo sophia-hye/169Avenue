@@ -92,6 +92,11 @@ export function Navbar() {
                 {t.nav_diagnosis}
               </Link>
             )}
+            {isAdmin && (
+              <Link to="/admin/dashboard" className="font-headline tracking-tight text-lg text-secondary hover:text-primary transition-colors duration-300">
+                {(t as unknown as Record<string, string>).nav_dashboard}
+              </Link>
+            )}
           </div>
 
           <div className="hidden md:flex items-center gap-3">

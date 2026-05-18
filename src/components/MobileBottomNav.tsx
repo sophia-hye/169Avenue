@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 
-export type MobileTabId = 'about' | 'programs' | 'how' | 'contact' | 'diagnosis'
+export type MobileTabId = 'about' | 'programs' | 'how' | 'contact' | 'diagnosis' | 'dashboard'
 
 interface Tab {
   id: MobileTabId
@@ -31,6 +31,7 @@ export function MobileBottomNav({ activeTab }: Props) {
     return [
       ...base,
       { id: 'diagnosis', label: t.bottom_diagnosis, to: '/admin/students',  icon: 'analytics' },
+      { id: 'dashboard', label: (t as unknown as Record<string, string>).nav_dashboard, to: '/admin/dashboard', icon: 'table_chart' },
     ]
   }, [t, isAdmin])
 
