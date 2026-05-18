@@ -21,6 +21,31 @@ const SUPABASE_MIGRATION_FLAG = '169av-migrated-to-supabase'
 
 export type StudyAbroadPurpose = 'language_study' | 'university_admission' | 'summer_winter_camp' | 'immigration' | 'own_program'
 
+/* ─── Application Tracking ─── */
+
+export type ApplicationStatus =
+  | 'new' | 'in_progress' | 'accepted' | 'rejected'
+  | 'waitlisted' | 'shipped' | 'delivered' | 'completed'
+
+export interface ApplicationEntry {
+  id: string
+  priority: number | null
+  followUpTasks: string
+  status: ApplicationStatus
+  paymentReceivedDate: string
+  tuitionFee: string
+  institution: string
+  pointOfContact: string
+  major: string
+  engScore: string
+  gpa: string
+  postSecondaryCredits: string
+  transferCredits: string
+  notes: string
+  createdAt: string
+  updatedAt: string
+}
+
 /* ─── Purpose-specific survey types ─── */
 
 export interface LanguageStudySurvey {
@@ -159,6 +184,7 @@ export interface StudentCase {
   observations: Observation[]
   reports: Report[]
   consultationLogs?: ConsultationLog[]
+  applicationTracking?: ApplicationEntry[]
 }
 
 export type Status = 'not-started' | 'awaiting-observation' | 'ready-for-review' | 'ready-for-pdf' | 'completed'
@@ -284,7 +310,25 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     createdAt: l.createdAt || nowIso(),
     updatedAt: l.updatedAt || nowIso(),
   }))
-  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs }
+  const applicationTracking: ApplicationEntry[] = (c.applicationTracking || []).map((e) => ({
+    id: e.id || newId('at'),
+    priority: e.priority ?? null,
+    followUpTasks: e.followUpTasks || '',
+    status: e.status || 'new',
+    paymentReceivedDate: e.paymentReceivedDate || '',
+    tuitionFee: e.tuitionFee || '',
+    institution: e.institution || '',
+    pointOfContact: e.pointOfContact || '',
+    major: e.major || '',
+    engScore: e.engScore || '',
+    gpa: e.gpa || '',
+    postSecondaryCredits: e.postSecondaryCredits || '',
+    transferCredits: e.transferCredits || '',
+    notes: e.notes || '',
+    createdAt: e.createdAt || nowIso(),
+    updatedAt: e.updatedAt || nowIso(),
+  }))
+  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, applicationTracking }
 }
 
 function normalizeObservation(o: Partial<Observation>): Observation {
@@ -786,4 +830,39 @@ export function aggregateObservations(observations: Observation[]): ObserverMap 
     agg[dk].mentorNote = notes.join('\n')
   }
   return agg
+}
+
+/* ─── Application tracking helpers ─── */
+
+export function addApplicationEntry(
+  c: StudentCase,
+  data: Omit<ApplicationEntry, 'id' | 'createdAt' | 'updatedAt'>
+): StudentCase {
+  const entry: ApplicationEntry = {
+    ...data,
+    id: newId('at'),
+    createdAt: nowIso(),
+    updatedAt: nowIso(),
+  }
+  return saveCase({ ...c, applicationTracking: [...(c.applicationTracking || []), entry] })
+}
+
+export function updateApplicationEntry(
+  c: StudentCase,
+  id: string,
+  patch: Partial<ApplicationEntry>
+): StudentCase {
+  return saveCase({
+    ...c,
+    applicationTracking: (c.applicationTracking || []).map((e) =>
+      e.id === id ? { ...e, ...patch, updatedAt: nowIso() } : e
+    ),
+  })
+}
+
+export function deleteApplicationEntry(c: StudentCase, id: string): StudentCase {
+  return saveCase({
+    ...c,
+    applicationTracking: (c.applicationTracking || []).filter((e) => e.id !== id),
+  })
 }

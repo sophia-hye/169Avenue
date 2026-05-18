@@ -47,8 +47,9 @@ import { ParentStepForm } from '../diagnosis/ParentStepForm'
 import { ObserverChecklist } from '../diagnosis/ObserverChecklist'
 import { PresentationMode } from '../diagnosis/PresentationMode'
 import { PurposeSurveyForm } from './PurposeSurveyForm'
+import { ApplicationTrackingTab } from './ApplicationTrackingTab'
 
-type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'consultation' | 'recommendation' | 'preview' | 'export' | 'profile'
+type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'consultation' | 'recommendation' | 'preview' | 'export' | 'profile' | 'tracking'
 
 interface CreateStudentOpts {
   studyAbroadPurpose?: StudyAbroadPurpose
@@ -231,6 +232,7 @@ export function StudentWorkspacePage() {
                         ['overview',      tt.detail_tab_overview,      'dashboard'],
                         ['survey',        tt.detail_tab_survey,        'edit_note'],
                         ['consultation',  tt.detail_tab_consultation,  'notes'],
+                        ['tracking',      tt.detail_tab_tracking,      'table_chart'],
                         ['profile',       tt.detail_tab_profile,       'person'],
                       ]
                   return (
@@ -257,6 +259,7 @@ export function StudentWorkspacePage() {
                         {inProgram && tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
                         {inProgram && tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
                         {!inProgram && tab === 'survey' && <PurposeSurveyForm key={current.student.id} c={current} save={save} />}
+                        {tab === 'tracking' && <ApplicationTrackingTab key={current.student.id} c={current} save={save} />}
                         {!inProgram && tab === 'profile' && <ProfileTab key={current.student.id} c={current} save={save} />}
                       </div>
                     </>
@@ -381,7 +384,7 @@ function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile 
                 <div className="flex items-center justify-between gap-2">
                   <StatusChip status={s.status} small />
                   <button type="button" onClick={(e) => { e.stopPropagation(); onDelete(s.id) }}
-                    className="text-on-surface-variant/30 hover:text-rose-700 transition-colors opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100">
+                    className="text-on-surface-variant/20 hover:text-rose-700 transition-colors opacity-0 group-hover:opacity-100">
                     <span className="material-symbols-outlined text-sm">delete</span>
                   </button>
                 </div>
