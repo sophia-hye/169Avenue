@@ -381,7 +381,7 @@ function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile 
                 <div className="flex items-center justify-between gap-2">
                   <StatusChip status={s.status} small />
                   <button type="button" onClick={(e) => { e.stopPropagation(); onDelete(s.id) }}
-                    className="text-on-surface-variant/20 hover:text-rose-700 transition-colors opacity-0 group-hover:opacity-100">
+                    className="text-on-surface-variant/30 hover:text-rose-700 transition-colors opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100">
                     <span className="material-symbols-outlined text-sm">delete</span>
                   </button>
                 </div>
