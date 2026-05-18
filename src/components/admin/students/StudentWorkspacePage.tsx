@@ -1209,7 +1209,7 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
       <div className="mb-6">
         <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-2 block">{t.profile_study_purpose as string}</span>
         <div className="flex flex-col gap-2">
-          {PURPOSE_OPTIONS.map(({ key, i18nKey }) => (
+          {PRODUCT_OPTIONS.map(({ key, i18nKey }) => (
             <label key={key} className="flex items-center gap-2.5 cursor-pointer group">
               <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
                 purpose === key ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
@@ -1217,7 +1217,7 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
                 {purpose === key && <div className="w-1.5 h-1.5 rounded-full bg-on-primary" />}
               </div>
               <span className="font-body text-sm text-primary cursor-pointer" onClick={() => setPurpose(purpose === key ? '' : key as StudyAbroadPurpose)}>
-                {t[i18nKey] as string}
+                {(t as unknown as Record<string, string>)[i18nKey]}
               </span>
             </label>
           ))}
@@ -1237,7 +1237,7 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
                 }`}>
                   {checked && <span className="material-symbols-outlined text-[10px] text-on-primary font-bold">check</span>}
                 </div>
-                <span className="font-body text-sm text-primary">{t[i18nKey] as string}</span>
+                <span className="font-body text-sm text-primary">{(t as unknown as Record<string, string>)[i18nKey]}</span>
               </label>
             )
           })}
