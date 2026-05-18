@@ -48,8 +48,9 @@ import { ObserverChecklist } from '../diagnosis/ObserverChecklist'
 import { PresentationMode } from '../diagnosis/PresentationMode'
 import { PurposeSurveyForm } from './PurposeSurveyForm'
 import { ApplicationTrackingTab } from './ApplicationTrackingTab'
+import { DocumentsTab } from './DocumentsTab'
 
-type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'consultation' | 'recommendation' | 'preview' | 'export' | 'profile' | 'tracking'
+type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'consultation' | 'recommendation' | 'preview' | 'export' | 'profile' | 'tracking' | 'documents'
 
 interface CreateStudentOpts {
   studyAbroadPurpose?: StudyAbroadPurpose
@@ -233,6 +234,7 @@ export function StudentWorkspacePage() {
                         ['survey',        tt.detail_tab_survey,        'edit_note'],
                         ['consultation',  tt.detail_tab_consultation,  'notes'],
                         ['tracking',      tt.detail_tab_tracking,      'table_chart'],
+                        ['documents',     tt.detail_tab_documents,     'folder_open'],
                         ['profile',       tt.detail_tab_profile,       'person'],
                       ]
                   return (
@@ -260,6 +262,7 @@ export function StudentWorkspacePage() {
                         {inProgram && tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
                         {!inProgram && tab === 'survey' && <PurposeSurveyForm key={current.student.id} c={current} save={save} />}
                         {tab === 'tracking' && <ApplicationTrackingTab key={current.student.id} c={current} save={save} />}
+                        {tab === 'documents' && <DocumentsTab key={current.student.id} c={current} save={save} />}
                         {!inProgram && tab === 'profile' && <ProfileTab key={current.student.id} c={current} save={save} />}
                       </div>
                     </>

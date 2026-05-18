@@ -135,6 +135,31 @@ export interface StudentMeta {
   updatedAt: string
 }
 
+/* ─── Documents ─── */
+
+export type DocumentType =
+  | 'passport'
+  | 'bachelor_transcript'
+  | 'bachelor_diploma'
+  | 'sop_korean'
+  | 'sop_english'
+  | 'resume'
+  | 'master_transcript'
+  | 'master_diploma'
+
+export interface DocumentFile {
+  id: string
+  type: DocumentType
+  fileName: string
+  fileSize: number
+  mimeType: string
+  /** Supabase Storage object path (bucket-relative). */
+  storagePath?: string
+  /** Base64-encoded content — used when Supabase Storage is not configured. */
+  localData?: string
+  uploadedAt: string
+}
+
 export interface Observation {
   id: string
   sessionDate: string
@@ -185,6 +210,7 @@ export interface StudentCase {
   reports: Report[]
   consultationLogs?: ConsultationLog[]
   applicationTracking?: ApplicationEntry[]
+  documents?: DocumentFile[]
 }
 
 export type Status = 'not-started' | 'awaiting-observation' | 'ready-for-review' | 'ready-for-pdf' | 'completed'
@@ -328,7 +354,17 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     createdAt: e.createdAt || nowIso(),
     updatedAt: e.updatedAt || nowIso(),
   }))
-  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, applicationTracking }
+  const documents: DocumentFile[] = (c.documents || []).map((d) => ({
+    id: d.id || newId('doc'),
+    type: d.type,
+    fileName: d.fileName || '',
+    fileSize: d.fileSize || 0,
+    mimeType: d.mimeType || '',
+    storagePath: d.storagePath,
+    localData: d.localData,
+    uploadedAt: d.uploadedAt || nowIso(),
+  }))
+  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, applicationTracking, documents }
 }
 
 function normalizeObservation(o: Partial<Observation>): Observation {
@@ -864,5 +900,30 @@ export function deleteApplicationEntry(c: StudentCase, id: string): StudentCase 
   return saveCase({
     ...c,
     applicationTracking: (c.applicationTracking || []).filter((e) => e.id !== id),
+  })
+}
+
+/* ─── Document helpers ─── */
+
+export function upsertDocument(
+  c: StudentCase,
+  doc: Omit<DocumentFile, 'id' | 'uploadedAt'>
+): StudentCase {
+  const existing = (c.documents || []).find((d) => d.type === doc.type)
+  const entry: DocumentFile = {
+    ...doc,
+    id: existing?.id || newId('doc'),
+    uploadedAt: nowIso(),
+  }
+  const documents = existing
+    ? (c.documents || []).map((d) => (d.type === doc.type ? entry : d))
+    : [...(c.documents || []), entry]
+  return saveCase({ ...c, documents })
+}
+
+export function deleteDocument(c: StudentCase, id: string): StudentCase {
+  return saveCase({
+    ...c,
+    documents: (c.documents || []).filter((d) => d.id !== id),
   })
 }
