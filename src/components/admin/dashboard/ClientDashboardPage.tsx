@@ -120,11 +120,17 @@ export function ClientDashboardPage() {
     )
   }, [])
 
-  const visible = rows.filter((r) => {
-    if (filterCompleted === 'active')    return !r.dashboard.completed
-    if (filterCompleted === 'completed') return r.dashboard.completed
-    return true
-  })
+  const visible = rows
+    .filter((r) => {
+      if (filterCompleted === 'active')    return !r.dashboard.completed
+      if (filterCompleted === 'completed') return r.dashboard.completed
+      return true
+    })
+    .sort((a, b) => {
+      const pa = a.dashboard.priority ? parseInt(a.dashboard.priority) : 99
+      const pb = b.dashboard.priority ? parseInt(b.dashboard.priority) : 99
+      return pa - pb
+    })
 
   const tt = t as unknown as Record<string, string>
 
