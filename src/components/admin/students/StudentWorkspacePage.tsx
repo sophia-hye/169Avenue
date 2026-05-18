@@ -1385,6 +1385,9 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
   const [schools, setSchools] = useState(c.student.schoolsOfInterest || '')
   const [budget, setBudget] = useState(c.student.budget || '')
   const [notes, setNotes] = useState(c.student.generalNotes || '')
+  // Academic / career (for university/grad applicants)
+  const [currentMajorOrCareer, setCurrentMajorOrCareer] = useState(c.student.currentMajorOrCareer || '')
+  const [targetFieldOfStudy, setTargetFieldOfStudy] = useState(c.student.targetFieldOfStudy || '')
 
   const isMinor = (() => {
     if (!dob) return true
@@ -1409,6 +1412,8 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
         schoolsOfInterest: schools,
         budget,
         generalNotes: notes,
+        currentMajorOrCareer: (purpose === 'university_admission' || purpose === 'immigration') ? currentMajorOrCareer : undefined,
+        targetFieldOfStudy: (purpose === 'university_admission' || purpose === 'immigration') ? targetFieldOfStudy : undefined,
       },
     })
     setToast(tt.profile_saved)
@@ -1532,6 +1537,26 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
           </label>
         </div>
       </div>
+
+      {(purpose === 'university_admission' || purpose === 'immigration') && (
+        <div className="mb-6">
+          <div className="border-l-2 border-secondary/20 pl-4 space-y-5">
+            <p className={sectionHeadCls}>{tt.profile_section_academic}</p>
+            <label className="block">
+              <span className={labelCls}>{tt.profile_current_major_career}</span>
+              <input value={currentMajorOrCareer} onChange={(e) => setCurrentMajorOrCareer(e.target.value)}
+                placeholder={tt.profile_current_major_career_ph}
+                className={inputCls} />
+            </label>
+            <label className="block">
+              <span className={labelCls}>{tt.profile_target_field}</span>
+              <input value={targetFieldOfStudy} onChange={(e) => setTargetFieldOfStudy(e.target.value)}
+                placeholder={tt.profile_target_field_ph}
+                className={inputCls} />
+            </label>
+          </div>
+        </div>
+      )}
 
       <button onClick={handleSave}
         className="px-6 py-2.5 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center gap-2">

@@ -222,6 +222,11 @@ export const adminDiagnosisTranslations = {
     profile_notes_ph: 'Additional notes...',
     profile_save: 'Save Profile',
     profile_saved: 'Saved',
+    profile_section_academic: 'Academic / Career Background',
+    profile_current_major_career: 'Current Major or Career',
+    profile_current_major_career_ph: 'e.g. Computer Science, Software Engineer',
+    profile_target_field: 'Target Field of Study',
+    profile_target_field_ph: 'e.g. Data Science, MBA, Architecture',
 
     // Overview tab
     overview_basic: 'Basic Information',
@@ -879,6 +884,11 @@ export const adminDiagnosisTranslations = {
     profile_notes_ph: '추가 메모...',
     profile_save: '저장',
     profile_saved: '저장됨',
+    profile_section_academic: '학문 / 경력 배경',
+    profile_current_major_career: '현재 전공 또는 경력',
+    profile_current_major_career_ph: '예: 컴퓨터공학, 소프트웨어 엔지니어',
+    profile_target_field: '관심 전공 / 분야',
+    profile_target_field_ph: '예: 데이터 사이언스, MBA, 건축학',
 
     // Overview
     overview_basic: '기본 정보',

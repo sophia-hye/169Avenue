@@ -131,6 +131,10 @@ export interface StudentMeta {
   parentName?: string
   /** Parent / guardian phone (for minors). */
   parentPhone?: string
+  /** Current major or career background (for university/grad applicants). */
+  currentMajorOrCareer?: string
+  /** Target field of study (for university/grad applicants). */
+  targetFieldOfStudy?: string
   createdAt: string
   updatedAt: string
 }
@@ -307,6 +311,8 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     phone: c.student?.phone || '',
     parentName: c.student?.parentName || '',
     parentPhone: c.student?.parentPhone || '',
+    currentMajorOrCareer: c.student?.currentMajorOrCareer || '',
+    targetFieldOfStudy: c.student?.targetFieldOfStudy || '',
     createdAt: c.student?.createdAt || nowDate(),
     updatedAt: c.student?.updatedAt || nowIso(),
   }
