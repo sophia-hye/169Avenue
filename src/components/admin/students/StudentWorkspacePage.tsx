@@ -698,7 +698,7 @@ function OverviewTab({ c, onNav, inProgram }: { c: StudentCase; onNav: (t: TabId
               <Field label={t.overview_field_name as string} value={c.student.name} />
               {c.student.studyAbroadPurpose && (
                 <Field label={t.students_modal_purpose as string}
-                  value={(t as Record<string, string>)[STUDY_PURPOSE_LABELS[c.student.studyAbroadPurpose]] ?? ''} />
+                  value={(t as unknown as Record<string, string>)[STUDY_PURPOSE_LABELS[c.student.studyAbroadPurpose]] ?? ''} />
               )}
               {c.student.regionsOfInterest && (
                 <Field label={t.profile_regions as string} value={c.student.regionsOfInterest} />
@@ -718,7 +718,7 @@ function OverviewTab({ c, onNav, inProgram }: { c: StudentCase; onNav: (t: TabId
               <div className="flex flex-wrap gap-2">
                 {(c.student.programs ?? []).map((pk) => (
                   <span key={pk} className="px-3 py-1 font-body text-xs bg-secondary/10 text-secondary border border-secondary/20">
-                    {(t as Record<string, string>)[PROGRAM_KEY_LABELS[pk]] || pk}
+                    {(t as unknown as Record<string, string>)[PROGRAM_KEY_LABELS[pk]] || pk}
                   </span>
                 ))}
               </div>
