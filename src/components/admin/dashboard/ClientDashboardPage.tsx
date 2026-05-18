@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Navbar } from '../../Navbar'
 import { MobileTopBar } from '../../MobileTopBar'
 import { MobileBottomNav } from '../../MobileBottomNav'
@@ -239,9 +240,14 @@ function DashboardRow({
         />
       </td>
 
-      {/* Name (read-only) */}
-      <td className="px-3 py-2 font-body text-primary font-medium whitespace-nowrap">
-        {entry.name || '—'}
+      {/* Name */}
+      <td className="px-3 py-2 whitespace-nowrap">
+        <Link
+          to={`/admin/students/${id}`}
+          className="font-body text-primary font-medium hover:text-secondary underline-offset-2 hover:underline transition-colors"
+        >
+          {entry.name || '—'}
+        </Link>
       </td>
 
       {/* Priority select */}
