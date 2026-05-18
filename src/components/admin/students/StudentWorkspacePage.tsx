@@ -5,11 +5,13 @@ import { MobileTopBar } from '../../MobileTopBar'
 import { MobileBottomNav } from '../../MobileBottomNav'
 import { useLanguage } from '../../../context/LanguageContext'
 import {
+  addConsultationLog,
   addObservation,
   canExportPdf,
   computeGeneralStatus,
   computeStatus,
   createStudent,
+  deleteConsultationLog,
   deleteObservation,
   deleteStudent,
   getCase,
@@ -18,11 +20,13 @@ import {
   listStudents,
   markExported,
   saveCase,
+  updateConsultationLog,
   updateGeneralStatus,
   updateObservation,
   updateSurvey,
   upsertDraftReport,
   aggregateObservations,
+  type ConsultationLog,
   type GeneralStatus,
   type Observation,
   type StudentCase,
@@ -44,7 +48,7 @@ import { ObserverChecklist } from '../diagnosis/ObserverChecklist'
 import { PresentationMode } from '../diagnosis/PresentationMode'
 import { PurposeSurveyForm } from './PurposeSurveyForm'
 
-type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'recommendation' | 'preview' | 'export' | 'profile'
+type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'consultation' | 'recommendation' | 'preview' | 'export' | 'profile'
 
 interface CreateStudentOpts {
   studyAbroadPurpose?: StudyAbroadPurpose
@@ -218,18 +222,20 @@ export function StudentWorkspacePage() {
                         ['survey',         tt.detail_tab_survey,         'edit_note'],
                         ['assessment',     tt.detail_tab_assessment,     'fact_check'],
                         ['observations',   tt.detail_tab_observation,    'checklist'],
+                        ['consultation',   tt.detail_tab_consultation,   'notes'],
                         ['recommendation', tt.detail_tab_recommendation, 'auto_awesome'],
                         ['preview',        tt.detail_tab_preview,        'visibility'],
                         ['export',         tt.detail_tab_export,         'picture_as_pdf'],
                       ]
                     : [
-                        ['overview',    tt.detail_tab_overview,        'dashboard'],
-                        ['survey',      tt.detail_tab_survey,          'edit_note'],
-                        ['profile',     tt.detail_tab_profile,         'person'],
+                        ['overview',      tt.detail_tab_overview,      'dashboard'],
+                        ['survey',        tt.detail_tab_survey,        'edit_note'],
+                        ['consultation',  tt.detail_tab_consultation,  'notes'],
+                        ['profile',       tt.detail_tab_profile,       'person'],
                       ]
                   return (
                     <>
-                      <div className={`flex border-b border-outline-variant/15 mb-8 ${inProgram ? 'overflow-x-auto' : ''}`}>
+                      <div className="flex border-b border-outline-variant/15 mb-8 overflow-x-auto">
                         {tabs.map(([id, label, icon]) => (
                           <button key={id} onClick={() => setTab(id)}
                             className={`flex items-center gap-2 px-5 py-3 font-body text-sm transition-colors border-b-2 -mb-px whitespace-nowrap ${
@@ -246,6 +252,7 @@ export function StudentWorkspacePage() {
                         {inProgram && tab === 'survey' && <PurposeSurveyForm key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'assessment' && <SurveyTab key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'observations' && <ObservationsTab key={current.student.id} c={current} save={save} />}
+                        {tab === 'consultation' && <ConsultationLogTab key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'recommendation' && <RecommendationTab key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
                         {inProgram && tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
@@ -1157,6 +1164,199 @@ function ExportTab({ c, exportable, onExport }: { c: StudentCase; exportable: bo
   )
 }
 
+/* ─────────────────────── Consultation Log Tab ─────────────────────── */
+
+function ConsultationLogTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => void }) {
+  const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [isNew, setIsNew] = useState(false)
+
+  const sorted = [...(c.consultationLogs || [])].sort((a, b) => b.date.localeCompare(a.date))
+
+  const handleAdd = () => {
+    setEditingId(null)
+    setIsNew(true)
+  }
+
+  const handleOpen = (id: string) => {
+    setIsNew(false)
+    setEditingId(id)
+  }
+
+  const handleDelete = (id: string) => {
+    if (!confirm(tt.cons_delete_confirm)) return
+    save(deleteConsultationLog(c, id))
+  }
+
+  const handleBack = () => {
+    setEditingId(null)
+    setIsNew(false)
+  }
+
+  if (isNew || editingId) {
+    const existing = editingId ? (c.consultationLogs || []).find((l) => l.id === editingId) : undefined
+    return (
+      <ConsultationLogForm
+        initial={existing}
+        onSave={(patch) => {
+          if (editingId && existing) {
+            save(updateConsultationLog(c, editingId, patch))
+          } else {
+            save(addConsultationLog(c, patch))
+          }
+          handleBack()
+        }}
+        onCancel={handleBack}
+      />
+    )
+  }
+
+  return (
+    <div>
+      <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
+        <div>
+          <h2 className="font-headline text-2xl text-primary tracking-tight mb-1">{tt.cons_list_title}</h2>
+          <p className="font-body text-sm text-on-surface-variant/60">{tt.cons_list_sub}</p>
+        </div>
+        <button onClick={handleAdd}
+          className="px-5 py-2 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center gap-2">
+          <span className="material-symbols-outlined text-base">add</span>
+          {tt.cons_add}
+        </button>
+      </div>
+
+      {sorted.length === 0 ? (
+        <div className="border border-dashed border-outline-variant/25 py-16 text-center">
+          <p className="font-body text-sm text-on-surface-variant/40">{tt.cons_no_entries}</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {sorted.map((log) => (
+            <ConsultationLogRow key={log.id} log={log} onOpen={() => handleOpen(log.id)} onDelete={() => handleDelete(log.id)} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ConsultationLogRow({ log, onOpen, onDelete }: { log: ConsultationLog; onOpen: () => void; onDelete: () => void }) {
+  const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
+  return (
+    <div className="border border-outline-variant/15 px-5 py-4 hover:bg-surface-container-lowest transition-colors">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 mb-1 flex-wrap">
+            <span className="font-label text-[11px] uppercase tracking-widest text-secondary">{log.date}</span>
+            {log.specialNotes && (
+              <span className="px-1.5 py-0.5 font-label text-[9px] uppercase tracking-widest bg-amber-50 text-amber-700 border border-amber-200">
+                {tt.cons_special_notes}
+              </span>
+            )}
+            {log.cautions && (
+              <span className="px-1.5 py-0.5 font-label text-[9px] uppercase tracking-widest bg-rose-50 text-rose-700 border border-rose-200">
+                {tt.cons_cautions}
+              </span>
+            )}
+          </div>
+          <p className="font-body text-sm text-primary line-clamp-2">{log.content || '—'}</p>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          <button onClick={onOpen}
+            className="px-3 py-1 font-body text-xs border border-outline-variant/25 text-on-surface-variant/70 hover:border-secondary hover:text-secondary transition-colors">
+            {tt.obs_session_open}
+          </button>
+          <button onClick={onDelete} className="px-2 py-1 text-on-surface-variant/30 hover:text-rose-700 transition-colors">
+            <span className="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ConsultationLogForm({ initial, onSave, onCancel }: {
+  initial?: ConsultationLog
+  onSave: (patch: Partial<ConsultationLog>) => void
+  onCancel: () => void
+}) {
+  const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
+  const today = new Date().toISOString().slice(0, 10)
+  const [date, setDate] = useState(initial?.date || today)
+  const [content, setContent] = useState(initial?.content || '')
+  const [specialNotes, setSpecialNotes] = useState(initial?.specialNotes || '')
+  const [cautions, setCautions] = useState(initial?.cautions || '')
+  const [saved, setSaved] = useState(false)
+
+  const inputCls = 'w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary'
+  const labelCls = 'font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block'
+
+  const handleSave = () => {
+    onSave({ date, content, specialNotes, cautions })
+    setSaved(true)
+  }
+
+  return (
+    <div className="max-w-2xl">
+      <div className="flex items-center gap-3 mb-6">
+        <button onClick={onCancel} className="text-on-surface-variant/50 hover:text-primary transition-colors flex items-center gap-1 font-body text-xs">
+          <span className="material-symbols-outlined text-sm">arrow_back</span>
+          {tt.cons_back}
+        </button>
+        <span className="text-outline-variant/30">/</span>
+        <span className="font-label text-[11px] uppercase tracking-widest text-secondary">
+          {initial ? initial.date : tt.cons_new_entry}
+        </span>
+      </div>
+
+      <div className="space-y-5">
+        <label className="block">
+          <span className={labelCls}>{tt.cons_date}</span>
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputCls} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>{tt.cons_content}</span>
+          <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={6}
+            placeholder={tt.cons_content_ph}
+            className={`${inputCls} resize-none`} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>{tt.cons_special_notes}</span>
+          <textarea value={specialNotes} onChange={(e) => setSpecialNotes(e.target.value)} rows={3}
+            placeholder={tt.cons_special_notes_ph}
+            className={`${inputCls} resize-none`} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>{tt.cons_cautions}</span>
+          <textarea value={cautions} onChange={(e) => setCautions(e.target.value)} rows={3}
+            placeholder={tt.cons_cautions_ph}
+            className={`${inputCls} resize-none`} />
+        </label>
+      </div>
+
+      <div className="mt-6 flex items-center gap-4">
+        <button onClick={handleSave}
+          className="px-6 py-2.5 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center gap-2">
+          <span className="material-symbols-outlined text-base">save</span>
+          {tt.cons_save}
+        </button>
+        <button onClick={onCancel} className="px-4 py-2.5 font-body text-sm border border-outline-variant/25 text-on-surface-variant/70 hover:border-secondary hover:text-secondary transition-colors">
+          {tt.common_cancel || 'Cancel'}
+        </button>
+        {saved && (
+          <span className="font-body text-xs text-emerald-700 flex items-center gap-1">
+            <span className="material-symbols-outlined text-sm">check_circle</span>
+            {tt.cons_saved}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
 /* ─────────────────────── Profile Tab (no own program) ─────────────────────── */
 
 function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => void }) {
@@ -1173,7 +1373,7 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
   const [parentPhone, setParentPhone] = useState(c.student.parentPhone || '')
   // Study abroad
   const [purpose, setPurpose] = useState<StudyAbroadPurpose | ''>(c.student.studyAbroadPurpose || '')
-  const [programs, setPrograms] = useState<string[]>(c.student.programs || [])
+  const programs = c.student.programs || []
   const [regions, setRegions] = useState(c.student.regionsOfInterest || '')
   const [schools, setSchools] = useState(c.student.schoolsOfInterest || '')
   const [budget, setBudget] = useState(c.student.budget || '')

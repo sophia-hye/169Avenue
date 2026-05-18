@@ -139,6 +139,16 @@ export interface Report {
   version: number
 }
 
+export interface ConsultationLog {
+  id: string
+  date: string
+  content: string
+  specialNotes: string
+  cautions: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface StudentCase {
   student: StudentMeta
   survey: ParentSurvey
@@ -146,6 +156,7 @@ export interface StudentCase {
   generalStatus?: GeneralStatus
   observations: Observation[]
   reports: Report[]
+  consultationLogs?: ConsultationLog[]
 }
 
 export type Status = 'not-started' | 'awaiting-observation' | 'ready-for-review' | 'ready-for-pdf' | 'completed'
@@ -261,7 +272,16 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     generatedAt: r.generatedAt,
     version: typeof r.version === 'number' ? r.version : 1,
   }))
-  return { student, survey, purposeSurvey, generalStatus, observations, reports }
+  const consultationLogs: ConsultationLog[] = (c.consultationLogs || []).map((l) => ({
+    id: l.id || newId('cl'),
+    date: l.date || nowDate(),
+    content: l.content || '',
+    specialNotes: l.specialNotes || '',
+    cautions: l.cautions || '',
+    createdAt: l.createdAt || nowIso(),
+    updatedAt: l.updatedAt || nowIso(),
+  }))
+  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs }
 }
 
 function normalizeObservation(o: Partial<Observation>): Observation {
@@ -712,6 +732,34 @@ export function markExported(c: StudentCase): StudentCase {
 }
 
 /* ─── Aggregate helpers (for Recommendation tab) ─── */
+
+/* ─── Consultation log helpers ─── */
+
+export function addConsultationLog(c: StudentCase, init?: Partial<ConsultationLog>): StudentCase {
+  const log: ConsultationLog = {
+    id: newId('cl'),
+    date: init?.date || nowDate(),
+    content: init?.content || '',
+    specialNotes: init?.specialNotes || '',
+    cautions: init?.cautions || '',
+    createdAt: nowIso(),
+    updatedAt: nowIso(),
+  }
+  return saveCase({ ...c, consultationLogs: [...(c.consultationLogs || []), log] })
+}
+
+export function updateConsultationLog(c: StudentCase, logId: string, patch: Partial<ConsultationLog>): StudentCase {
+  return saveCase({
+    ...c,
+    consultationLogs: (c.consultationLogs || []).map((l) =>
+      l.id === logId ? { ...l, ...patch, updatedAt: nowIso() } : l
+    ),
+  })
+}
+
+export function deleteConsultationLog(c: StudentCase, logId: string): StudentCase {
+  return saveCase({ ...c, consultationLogs: (c.consultationLogs || []).filter((l) => l.id !== logId) })
+}
 
 /**
  * Aggregate observer map across all observations by averaging item scores per key.
