@@ -295,6 +295,8 @@ export const adminDiagnosisTranslations = {
     general_status_label: 'Progress',
     general_status_update: 'Update Progress',
     general_status_updated: 'Status updated',
+    general_status_auto_synced: 'Synced with tracking',
+    general_status_auto_synced_hint: 'Status is auto-derived from application tracking. Manual override takes effect only if set to a higher stage.',
 
     // Non-program Survey tab
     detail_tab_purpose_survey: 'Survey',
@@ -955,6 +957,8 @@ export const adminDiagnosisTranslations = {
     general_status_label: '진행 상태',
     general_status_update: '상태 변경',
     general_status_updated: '상태가 업데이트되었습니다',
+    general_status_auto_synced: '지원 현황 연동 중',
+    general_status_auto_synced_hint: '지원 현황 탭의 데이터를 기반으로 자동 계산됩니다. 수동 변경은 자동 계산보다 높은 단계일 때만 반영됩니다.',
 
     // 비Program 설문 탭
     detail_tab_purpose_survey: '설문',

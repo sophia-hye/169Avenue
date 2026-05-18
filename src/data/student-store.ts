@@ -406,9 +406,53 @@ export function computeStatus(c: StudentCase): Status {
   return 'completed'
 }
 
+const GENERAL_STATUS_ORDER: GeneralStatus[] = [
+  'not-started', 'surveyed', 'consulting', 'proposed', 'confirmed', 'completed',
+]
+
+function appStatusScore(s: ApplicationStatus): number {
+  switch (s) {
+    case 'completed':  return 5
+    case 'accepted':
+    case 'delivered':  return 4
+    case 'waitlisted':
+    case 'shipped':    return 3
+    case 'in_progress': return 2
+    case 'new':        return 1
+    case 'rejected':   return 0
+  }
+}
+
+function deriveFromTracking(entries: ApplicationEntry[]): GeneralStatus {
+  let best = 0
+  for (const e of entries) {
+    const s = appStatusScore(e.status)
+    if (s > best) best = s
+  }
+  if (best >= 5) return 'completed'
+  if (best >= 4) return 'confirmed'
+  if (best >= 3) return 'proposed'
+  return 'consulting'
+}
+
 export function computeGeneralStatus(c: StudentCase): GeneralStatus {
+  const tracking = c.applicationTracking || []
+  if (tracking.length > 0) {
+    const derived = deriveFromTracking(tracking)
+    if (c.generalStatus) {
+      const manualIdx = GENERAL_STATUS_ORDER.indexOf(c.generalStatus)
+      const derivedIdx = GENERAL_STATUS_ORDER.indexOf(derived)
+      return manualIdx > derivedIdx ? c.generalStatus : derived
+    }
+    return derived
+  }
   if (c.generalStatus) return c.generalStatus
   return c.purposeSurvey ? 'surveyed' : 'not-started'
+}
+
+/** Returns true when generalStatus is being driven by applicationTracking data. */
+export function isStatusAutoSynced(c: StudentCase): boolean {
+  return (c.applicationTracking || []).length > 0
 }
 
 export function canExportPdf(c: StudentCase): boolean {

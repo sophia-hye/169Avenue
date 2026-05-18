@@ -10,6 +10,7 @@ import {
   canExportPdf,
   computeGeneralStatus,
   computeStatus,
+  isStatusAutoSynced,
   createStudent,
   deleteConsultationLog,
   deleteObservation,
@@ -591,6 +592,7 @@ function OverviewTab({ c, onNav, inProgram, save }: { c: StudentCase; onNav: (t:
   const { t } = useLanguage()
   const status = computeStatus(c)
   const generalStatus = computeGeneralStatus(c)
+  const autoSynced = isStatusAutoSynced(c)
   const [showStatusPicker, setShowStatusPicker] = useState(false)
   const agg = aggregateObservations(c.observations)
   const avgs = computeDomainAverages(agg)
@@ -668,17 +670,23 @@ function OverviewTab({ c, onNav, inProgram, save }: { c: StudentCase; onNav: (t:
           {/* General status */}
           <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-secondary">
             <div className="flex items-center justify-between gap-3 mb-3">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50">
                   {t.general_status_label as string}
                 </span>
                 <GeneralStatusChip status={generalStatus} />
+                {autoSynced && (
+                  <span className="flex items-center gap-1 font-label text-[10px] text-secondary/70">
+                    <span className="material-symbols-outlined text-sm">sync</span>
+                    {(t as unknown as Record<string, string>).general_status_auto_synced}
+                  </span>
+                )}
               </div>
               {save && (
                 <button
                   type="button"
                   onClick={() => setShowStatusPicker((v) => !v)}
-                  className="font-label text-[10px] uppercase tracking-widest text-secondary hover:text-secondary/70 transition-colors"
+                  className="font-label text-[10px] uppercase tracking-widest text-secondary hover:text-secondary/70 transition-colors shrink-0"
                 >
                   {t.general_status_update as string}
                 </button>
@@ -686,6 +694,11 @@ function OverviewTab({ c, onNav, inProgram, save }: { c: StudentCase; onNav: (t:
             </div>
             {showStatusPicker && save && (
               <div className="flex flex-wrap gap-2 pt-2 border-t border-outline-variant/15">
+                {autoSynced && (
+                  <p className="w-full font-body text-[11px] text-on-surface-variant/50 mb-1">
+                    {(t as unknown as Record<string, string>).general_status_auto_synced_hint}
+                  </p>
+                )}
                 {(['not-started', 'surveyed', 'consulting', 'proposed', 'confirmed', 'completed'] as GeneralStatus[]).map((s) => (
                   <button
                     key={s}
