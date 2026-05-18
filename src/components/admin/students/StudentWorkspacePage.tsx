@@ -7,6 +7,7 @@ import { useLanguage } from '../../../context/LanguageContext'
 import {
   addObservation,
   canExportPdf,
+  computeGeneralStatus,
   computeStatus,
   createStudent,
   deleteObservation,
@@ -17,10 +18,12 @@ import {
   listStudents,
   markExported,
   saveCase,
+  updateGeneralStatus,
   updateObservation,
   updateSurvey,
   upsertDraftReport,
   aggregateObservations,
+  type GeneralStatus,
   type Observation,
   type StudentCase,
   type StudentIndexEntry,
@@ -39,6 +42,7 @@ import {
 import { ParentStepForm } from '../diagnosis/ParentStepForm'
 import { ObserverChecklist } from '../diagnosis/ObserverChecklist'
 import { PresentationMode } from '../diagnosis/PresentationMode'
+import { PurposeSurveyForm } from './PurposeSurveyForm'
 
 type TabId = 'overview' | 'survey' | 'observations' | 'recommendation' | 'preview' | 'export' | 'profile'
 
@@ -217,8 +221,9 @@ export function StudentWorkspacePage() {
                         ['export',         t.detail_tab_export as string,         'picture_as_pdf'],
                       ]
                     : [
-                        ['overview', t.detail_tab_overview as string, 'dashboard'],
-                        ['profile',  t.detail_tab_profile as string,  'person'],
+                        ['overview', t.detail_tab_overview as string,        'dashboard'],
+                        ['survey',   t.detail_tab_purpose_survey as string,  'edit_note'],
+                        ['profile',  t.detail_tab_profile as string,         'person'],
                       ]
                   return (
                     <>
@@ -235,12 +240,13 @@ export function StudentWorkspacePage() {
                       </div>
 
                       <div>
-                        {tab === 'overview' && <OverviewTab c={current} onNav={setTab} inProgram={inProgram} />}
+                        {tab === 'overview' && <OverviewTab c={current} onNav={setTab} inProgram={inProgram} save={save} />}
                         {inProgram && tab === 'survey' && <SurveyTab c={current} save={save} />}
                         {inProgram && tab === 'observations' && <ObservationsTab c={current} save={save} />}
                         {inProgram && tab === 'recommendation' && <RecommendationTab c={current} save={save} />}
                         {inProgram && tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
                         {inProgram && tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
+                        {!inProgram && tab === 'survey' && <PurposeSurveyForm c={current} save={save} />}
                         {!inProgram && tab === 'profile' && <ProfileTab c={current} save={save} />}
                       </div>
                     </>
@@ -286,9 +292,10 @@ const PROGRAM_OPTIONS = [
 ] as const
 
 const PURPOSE_OPTIONS = [
-  { key: 'language_study',      i18nKey: 'students_modal_purpose_language' },
+  { key: 'language_study',       i18nKey: 'students_modal_purpose_language' },
   { key: 'university_admission', i18nKey: 'students_modal_purpose_university' },
-  { key: 'summer_winter_camp',  i18nKey: 'students_modal_purpose_camp' },
+  { key: 'summer_winter_camp',   i18nKey: 'students_modal_purpose_camp' },
+  { key: 'immigration',          i18nKey: 'students_modal_purpose_immigration' },
 ] as const
 
 function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile }: {
@@ -564,6 +571,27 @@ function StatusChip({ status, small }: { status: Status; small?: boolean }) {
   )
 }
 
+/* ─────────────────────── General Status Chip ─────────────────────── */
+
+function GeneralStatusChip({ status }: { status: GeneralStatus }) {
+  const { t } = useLanguage()
+  const map: Record<GeneralStatus, { label: string; color: string; bg: string }> = {
+    'not-started': { label: t.general_status_not_started as string, color: '#9B958D', bg: '#F5F1EB' },
+    'surveyed':    { label: t.general_status_surveyed as string,    color: '#3B6EA5', bg: '#E8EFF7' },
+    'consulting':  { label: t.general_status_consulting as string,  color: '#7A5A20', bg: '#F5EBD7' },
+    'proposed':    { label: t.general_status_proposed as string,    color: '#5A4A9B', bg: '#EEE8F7' },
+    'confirmed':   { label: t.general_status_confirmed as string,   color: '#2D6A4F', bg: '#E8F1EC' },
+    'completed':   { label: t.general_status_completed as string,   color: '#2C2C2C', bg: '#E5E0D8' },
+  }
+  const m = map[status]
+  return (
+    <span className="inline-block px-2 py-0.5 font-body font-medium text-[11px]"
+      style={{ color: m.color, background: m.bg }}>
+      {m.label}
+    </span>
+  )
+}
+
 /* ─────────────────────── Shim helpers ─────────────────────── */
 
 /**
@@ -598,6 +626,7 @@ const STUDY_PURPOSE_LABELS: Record<string, string> = {
   language_study:       'students_modal_purpose_language',
   university_admission: 'students_modal_purpose_university',
   summer_winter_camp:   'students_modal_purpose_camp',
+  immigration:          'students_modal_purpose_immigration',
 }
 
 const PROGRAM_KEY_LABELS: Record<string, string> = {
@@ -608,9 +637,11 @@ const PROGRAM_KEY_LABELS: Record<string, string> = {
   elite:     'students_modal_program_elite',
 }
 
-function OverviewTab({ c, onNav, inProgram }: { c: StudentCase; onNav: (t: TabId) => void; inProgram: boolean }) {
+function OverviewTab({ c, onNav, inProgram, save }: { c: StudentCase; onNav: (t: TabId) => void; inProgram: boolean; save?: (c: StudentCase) => void }) {
   const { t } = useLanguage()
   const status = computeStatus(c)
+  const generalStatus = computeGeneralStatus(c)
+  const [showStatusPicker, setShowStatusPicker] = useState(false)
   const agg = aggregateObservations(c.observations)
   const avgs = computeDomainAverages(agg)
   const overall = OBSERVER_DOMAIN_KEYS.reduce((s, k) => s + avgs[k], 0) / OBSERVER_DOMAIN_KEYS.length
@@ -684,14 +715,50 @@ function OverviewTab({ c, onNav, inProgram }: { c: StudentCase; onNav: (t: TabId
         </>
       ) : (
         <>
-          {/* General management overview */}
-          <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-outline-variant/40">
-            <div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50 mb-1">
-              {t.profile_no_program_title as string}
+          {/* General status */}
+          <div className="mb-8 bg-surface-container-low p-5 border-l-2 border-secondary">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div className="flex items-center gap-3">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/50">
+                  {t.general_status_label as string}
+                </span>
+                <GeneralStatusChip status={generalStatus} />
+              </div>
+              {save && (
+                <button
+                  type="button"
+                  onClick={() => setShowStatusPicker((v) => !v)}
+                  className="font-label text-[10px] uppercase tracking-widest text-secondary hover:text-secondary/70 transition-colors"
+                >
+                  {t.general_status_update as string}
+                </button>
+              )}
             </div>
-            <p className="font-body text-sm text-on-surface-variant/70">{t.profile_no_program_sub as string}</p>
+            {showStatusPicker && save && (
+              <div className="flex flex-wrap gap-2 pt-2 border-t border-outline-variant/15">
+                {(['not-started', 'surveyed', 'consulting', 'proposed', 'confirmed', 'completed'] as GeneralStatus[]).map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => {
+                      const updated = updateGeneralStatus(c, s)
+                      save(updated)
+                      setShowStatusPicker(false)
+                    }}
+                    className={`px-3 py-1.5 font-body text-xs border transition-colors ${
+                      generalStatus === s
+                        ? 'bg-secondary text-on-secondary border-secondary'
+                        : 'bg-surface text-on-surface-variant border-outline-variant/30 hover:border-secondary/50'
+                    }`}
+                  >
+                    {(t as unknown as Record<string, string>)[`general_status_${s.replace(/-/g, '_')}`] ?? s}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
+          {/* Basic info */}
           <div className="mb-8">
             <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_basic as string}</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
@@ -725,9 +792,11 @@ function OverviewTab({ c, onNav, inProgram }: { c: StudentCase; onNav: (t: TabId
             </div>
           )}
 
+          {/* Quick actions */}
           <div>
             <h3 className="font-label text-[10px] uppercase tracking-widest text-secondary mb-4">{t.overview_quick_actions as string}</h3>
             <div className="flex gap-2 flex-wrap">
+              <QuickAction icon="edit_note" label={t.detail_tab_purpose_survey as string} onClick={() => onNav('survey')} />
               <QuickAction icon="person" label={t.detail_tab_profile as string} onClick={() => onNav('profile')} />
             </div>
           </div>

@@ -19,7 +19,73 @@ const SUPABASE_MIGRATION_FLAG = '169av-migrated-to-supabase'
 
 /* ─── Types ─── */
 
-export type StudyAbroadPurpose = 'language_study' | 'university_admission' | 'summer_winter_camp'
+export type StudyAbroadPurpose = 'language_study' | 'university_admission' | 'summer_winter_camp' | 'immigration'
+
+/* ─── Purpose-specific survey types (non-program students) ─── */
+
+export interface LanguageStudySurvey {
+  studentName: string
+  gradeOrAge: string
+  currentEnglishLevel: 'none' | 'beginner' | 'intermediate' | 'advanced' | ''
+  studyGoal: 'conversation' | 'certificate' | 'admission_prep' | 'daily_life' | ''
+  targetCountry: string
+  duration: 'under_1m' | '1_3m' | '3_6m' | 'over_6m' | ''
+  accommodation: 'homestay' | 'dormitory' | 'no_preference' | ''
+  overseasExperience: 'none' | 'short_visit' | 'long_stay' | ''
+  budget: string
+  notes: string
+}
+
+export interface UniversityAdmissionSurvey {
+  studentName: string
+  currentGrade: string
+  targetCountry: string
+  targetMajor: 'stem' | 'humanities' | 'business' | 'arts' | 'medicine' | 'undecided' | ''
+  targetUniversityLevel: 'top_tier' | 'upper' | 'mid' | 'safety' | ''
+  currentGpa: string
+  englishTestScore: string
+  targetEnrollmentYear: string
+  extracurriculars: string
+  budget: string
+  scholarshipNeeded: 'yes' | 'if_available' | 'no' | ''
+  notes: string
+}
+
+export interface CampSurvey {
+  studentName: string
+  gradeOrAge: string
+  campSeason: 'summer' | 'winter' | ''
+  targetCountry: string
+  interestArea: 'language' | 'stem' | 'arts' | 'sports' | 'culture' | 'other' | ''
+  duration: '2weeks' | '3_4weeks' | '5_6weeks' | 'over_6weeks' | ''
+  englishLevel: 'none' | 'beginner' | 'intermediate' | 'advanced' | ''
+  priorCampExperience: 'none' | 'domestic' | 'overseas' | ''
+  companion: 'alone' | 'with_friend' | 'with_sibling' | ''
+  budget: string
+  specialNeeds: string
+}
+
+export interface ImmigrationSurvey {
+  applicantName: string
+  age: string
+  targetCountry: string
+  immigrationType: 'skilled' | 'investment' | 'family' | 'post_study' | 'business' | ''
+  currentVisaStatus: 'none' | 'student' | 'work' | 'other' | ''
+  familyComposition: 'alone' | 'with_spouse' | 'with_children' | 'whole_family' | ''
+  education: 'high_school' | 'bachelor' | 'master' | 'phd' | ''
+  occupation: string
+  targetTimeline: string
+  budget: string
+  notes: string
+}
+
+export type PurposeSurvey =
+  | { type: 'language_study'; data: LanguageStudySurvey }
+  | { type: 'university_admission'; data: UniversityAdmissionSurvey }
+  | { type: 'summer_winter_camp'; data: CampSurvey }
+  | { type: 'immigration'; data: ImmigrationSurvey }
+
+export type GeneralStatus = 'not-started' | 'surveyed' | 'consulting' | 'proposed' | 'confirmed' | 'completed'
 
 export interface StudentMeta {
   id: string
@@ -78,6 +144,8 @@ export interface Report {
 export interface StudentCase {
   student: StudentMeta
   survey: ParentSurvey
+  purposeSurvey?: PurposeSurvey
+  generalStatus?: GeneralStatus
   observations: Observation[]
   reports: Report[]
 }
@@ -176,6 +244,8 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     updatedAt: c.student?.updatedAt || nowIso(),
   }
   const survey: ParentSurvey = { ...DEFAULT_DIAGNOSIS.parent, ...(c.survey || {}) }
+  const purposeSurvey: PurposeSurvey | undefined = (c as Partial<StudentCase>).purposeSurvey ?? undefined
+  const generalStatus: GeneralStatus | undefined = (c as Partial<StudentCase>).generalStatus ?? undefined
   const observations: Observation[] = (c.observations || []).map((o) => normalizeObservation(o))
   const reports: Report[] = (c.reports || []).map((r) => ({
     id: r.id || newId('r'),
@@ -190,7 +260,7 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     generatedAt: r.generatedAt,
     version: typeof r.version === 'number' ? r.version : 1,
   }))
-  return { student, survey, observations, reports }
+  return { student, survey, purposeSurvey, generalStatus, observations, reports }
 }
 
 function normalizeObservation(o: Partial<Observation>): Observation {
@@ -224,6 +294,11 @@ export function computeStatus(c: StudentCase): Status {
   if (!recOk) return 'ready-for-review'
   if (!exported) return 'ready-for-pdf'
   return 'completed'
+}
+
+export function computeGeneralStatus(c: StudentCase): GeneralStatus {
+  if (c.generalStatus) return c.generalStatus
+  return c.purposeSurvey ? 'surveyed' : 'not-started'
 }
 
 export function canExportPdf(c: StudentCase): boolean {
@@ -554,6 +629,14 @@ export function deleteStudent(id: string): void {
 
 export function updateSurvey(c: StudentCase, patch: Partial<ParentSurvey>): StudentCase {
   return saveCase({ ...c, survey: { ...c.survey, ...patch } })
+}
+
+export function updatePurposeSurvey(c: StudentCase, purposeSurvey: PurposeSurvey): StudentCase {
+  return saveCase({ ...c, purposeSurvey })
+}
+
+export function updateGeneralStatus(c: StudentCase, generalStatus: GeneralStatus): StudentCase {
+  return saveCase({ ...c, generalStatus })
 }
 
 /* ─── Observation helpers ─── */
