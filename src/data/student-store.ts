@@ -149,6 +149,7 @@ export type ClientDashboardStatus =
   | 'enrolled'
   | 'partnership_in_progress'
   | 'docs_collection_needed'
+  | 'pending_delivery'
 
 export type DashboardPriority = '1' | '2' | '3' | '4' | '5'
 

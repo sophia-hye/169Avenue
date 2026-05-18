@@ -28,16 +28,18 @@ const DASHBOARD_STATUSES: ClientDashboardStatus[] = [
   'enrolled',
   'partnership_in_progress',
   'docs_collection_needed',
+  'pending_delivery',
 ]
 
 const STATUS_LABELS: Record<ClientDashboardStatus, string> = {
-  app_submitted:          'App Submitted',
-  paid:                   'Paid',
-  in_review:              'In Review (Admissions)',
-  visa_interview:         'Visa Interview',
-  enrolled:               'Enrolled',
-  partnership_in_progress:'Partnership (In Progress)',
-  docs_collection_needed: 'Docs Collection Needed',
+  app_submitted:           'App Submitted',
+  paid:                    'Paid',
+  in_review:               'In Review (Admissions)',
+  visa_interview:          'Visa Interview',
+  enrolled:                'Enrolled',
+  partnership_in_progress: 'Partnership (In Progress)',
+  docs_collection_needed:  'Docs Collection Needed',
+  pending_delivery:        'Pending (자료 전달)',
 }
 
 const STATUS_COLORS: Record<ClientDashboardStatus, { text: string; bg: string }> = {
@@ -48,6 +50,7 @@ const STATUS_COLORS: Record<ClientDashboardStatus, { text: string; bg: string }>
   enrolled:                { text: 'text-teal-700',    bg: 'bg-teal-50' },
   partnership_in_progress: { text: 'text-indigo-700',  bg: 'bg-indigo-50' },
   docs_collection_needed:  { text: 'text-rose-700',    bg: 'bg-rose-50' },
+  pending_delivery:        { text: 'text-orange-700',  bg: 'bg-orange-50' },
 }
 
 const PURPOSE_LABELS: Record<StudyAbroadPurpose, string> = {
