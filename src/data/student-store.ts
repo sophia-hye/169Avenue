@@ -100,6 +100,8 @@ export interface StudentMeta {
   generalNotes?: string
   /** Client date of birth (YYYY-MM-DD). */
   dateOfBirth?: string
+  /** Client's own phone number (for adults). */
+  phone?: string
   /** Parent / guardian name (for minors). */
   parentName?: string
   /** Parent / guardian phone (for minors). */
@@ -250,6 +252,7 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     budget: c.student?.budget || '',
     generalNotes: c.student?.generalNotes || '',
     dateOfBirth: c.student?.dateOfBirth || '',
+    phone: c.student?.phone || '',
     parentName: c.student?.parentName || '',
     parentPhone: c.student?.parentPhone || '',
     createdAt: c.student?.createdAt || nowDate(),

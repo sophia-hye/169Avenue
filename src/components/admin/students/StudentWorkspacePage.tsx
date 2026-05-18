@@ -1368,6 +1368,7 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
   const [dob, setDob] = useState(c.student.dateOfBirth || '')
   const [grade, setGrade] = useState(c.student.grade || '')
   const [school, setSchool] = useState(c.student.school || '')
+  const [phone, setPhone] = useState(c.student.phone || '')
   // Guardian
   const [parentName, setParentName] = useState(c.student.parentName || '')
   const [parentPhone, setParentPhone] = useState(c.student.parentPhone || '')
@@ -1391,10 +1392,11 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
       student: {
         ...c.student,
         dateOfBirth: dob,
-        grade,
-        school,
-        parentName,
-        parentPhone,
+        grade: isMinor ? grade : '',
+        school: isMinor ? school : '',
+        phone: isMinor ? '' : phone,
+        parentName: isMinor ? parentName : '',
+        parentPhone: isMinor ? parentPhone : '',
         studyAbroadPurpose: purpose || undefined,
         programs,
         regionsOfInterest: regions,
@@ -1422,24 +1424,35 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
       <div className="mb-8">
         <p className={sectionHeadCls}>{tt.profile_section_basic}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <label className="block">
+          <label className="block md:col-span-2">
             <span className={labelCls}>{tt.profile_dob}</span>
             <input type="date" value={dob} onChange={(e) => setDob(e.target.value)}
               placeholder={tt.profile_dob_ph}
               className={inputCls} />
           </label>
-          <label className="block">
-            <span className={labelCls}>{tt.profile_grade}</span>
-            <input value={grade} onChange={(e) => setGrade(e.target.value)}
-              placeholder={tt.profile_grade_ph}
-              className={inputCls} />
-          </label>
-          <label className="block md:col-span-2">
-            <span className={labelCls}>{tt.profile_school_name}</span>
-            <input value={school} onChange={(e) => setSchool(e.target.value)}
-              placeholder={tt.profile_school_ph}
-              className={inputCls} />
-          </label>
+          {isMinor ? (
+            <>
+              <label className="block">
+                <span className={labelCls}>{tt.profile_grade}</span>
+                <input value={grade} onChange={(e) => setGrade(e.target.value)}
+                  placeholder={tt.profile_grade_ph}
+                  className={inputCls} />
+              </label>
+              <label className="block">
+                <span className={labelCls}>{tt.profile_school_name}</span>
+                <input value={school} onChange={(e) => setSchool(e.target.value)}
+                  placeholder={tt.profile_school_ph}
+                  className={inputCls} />
+              </label>
+            </>
+          ) : (
+            <label className="block md:col-span-2">
+              <span className={labelCls}>{tt.profile_phone}</span>
+              <input value={phone} onChange={(e) => setPhone(e.target.value)}
+                placeholder={tt.profile_phone_ph}
+                className={inputCls} />
+            </label>
+          )}
         </div>
       </div>
 
