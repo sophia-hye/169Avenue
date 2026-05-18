@@ -286,13 +286,6 @@ export function StudentWorkspacePage() {
 
 /* ─────────────────────── Sidebar ─────────────────────── */
 
-const PROGRAM_OPTIONS = [
-  { key: 'discovery', i18nKey: 'students_modal_program_discovery' },
-  { key: 'decision',  i18nKey: 'students_modal_program_decision' },
-  { key: 'direction', i18nKey: 'students_modal_program_direction' },
-  { key: 'academic',  i18nKey: 'students_modal_program_academic' },
-  { key: 'elite',     i18nKey: 'students_modal_program_elite' },
-] as const
 
 const PRODUCT_OPTIONS = [
   { key: 'language_study',       i18nKey: 'students_modal_purpose_language' },
@@ -1191,10 +1184,6 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
     const age = Math.floor((Date.now() - new Date(dob).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
     return age < 19
   })()
-
-  const toggleProgram = (key: string) => {
-    setPrograms((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key])
-  }
 
   const handleSave = () => {
     save({
