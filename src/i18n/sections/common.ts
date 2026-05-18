@@ -6,7 +6,7 @@ export const commonTranslations = {
     nav_how_it_works: 'The 169 Method',
     nav_contact: 'Consultation',
     nav_consult: 'Consultation',
-    nav_diagnosis: 'Student Insights',
+    nav_diagnosis: 'Client Insights',
     nav_student_report: 'Student Report',
     // Programs dropdown items
     nav_discovery_program: 'Discovery Program',
@@ -74,7 +74,7 @@ export const commonTranslations = {
     nav_how_it_works: 'The 169 Method',
     nav_contact: '상담',
     nav_consult: '상담',
-    nav_diagnosis: '학생 인사이트',
+    nav_diagnosis: '고객 인사이트',
     nav_student_report: '성장 리포트',
     nav_discovery_program: 'Discovery Program',
     nav_decision_program: 'Decision Program',

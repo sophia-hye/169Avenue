@@ -4,6 +4,7 @@ import type {
   CampSurvey,
   ImmigrationSurvey,
   LanguageStudySurvey,
+  OwnProgramSurvey,
   PurposeSurvey,
   StudentCase,
   StudyAbroadPurpose,
@@ -13,10 +14,12 @@ import { updatePurposeSurvey } from '../../../data/student-store'
 
 /* ─── shared primitives ─── */
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children, required }: { label: string; children: React.ReactNode; required?: boolean }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant/60">{label}</label>
+      <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant/60">
+        {label}{required && <span className="text-error ml-0.5">*</span>}
+      </label>
       {children}
     </div>
   )
@@ -93,20 +96,49 @@ function RadioGroup<T extends string>({
   )
 }
 
+function CheckboxGroup<T extends string>({
+  value,
+  onChange,
+  options,
+}: {
+  value: T[]
+  onChange: (v: T[]) => void
+  options: { value: T; label: string }[]
+}) {
+  function toggle(v: T) {
+    if (value.includes(v)) onChange(value.filter((x) => x !== v))
+    else onChange([...value, v])
+  }
+  return (
+    <div className="flex flex-wrap gap-2">
+      {options.map((opt) => (
+        <button
+          key={opt.value}
+          type="button"
+          onClick={() => toggle(opt.value)}
+          className={`px-3 py-1.5 font-body text-xs border transition-colors ${
+            value.includes(opt.value)
+              ? 'bg-secondary text-on-secondary border-secondary'
+              : 'bg-surface text-on-surface-variant border-outline-variant/30 hover:border-secondary/50'
+          }`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 /* ─── Language Study form ─── */
 
-function defaultLanguageStudySurvey(name: string): LanguageStudySurvey {
+function defaultLanguageStudySurvey(): LanguageStudySurvey {
   return {
-    studentName: name,
-    gradeOrAge: '',
-    currentEnglishLevel: '',
-    studyGoal: '',
     targetCountry: '',
+    targetRegion: '',
+    institutions: '',
+    studyGoal: '',
     duration: '',
-    accommodation: '',
-    overseasExperience: '',
     budget: '',
-    notes: '',
   }
 }
 
@@ -118,111 +150,71 @@ function LanguageStudyForm({
   onChange: (d: LanguageStudySurvey) => void
 }) {
   const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
   const set = <K extends keyof LanguageStudySurvey>(k: K, v: LanguageStudySurvey[K]) =>
     onChange({ ...data, [k]: v })
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Field label={t.ls_grade_or_age as string}>
-        <TextInput value={data.gradeOrAge} onChange={(v) => set('gradeOrAge', v)} placeholder={t.ls_grade_or_age_ph as string} />
+      <Field label={tt.ls_target_country} required>
+        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={tt.ls_target_country_ph} />
       </Field>
 
-      <Field label={t.ls_target_country as string}>
-        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={t.ls_target_country_ph as string} />
+      <Field label={tt.ls_target_region}>
+        <TextInput value={data.targetRegion} onChange={(v) => set('targetRegion', v)} placeholder={tt.ls_target_region_ph} />
       </Field>
 
-      <Field label={t.ls_english_level as string}>
-        <RadioGroup
-          value={data.currentEnglishLevel}
-          onChange={(v) => set('currentEnglishLevel', v)}
-          options={[
-            { value: 'none', label: t.ls_english_none as string },
-            { value: 'beginner', label: t.ls_english_beginner as string },
-            { value: 'intermediate', label: t.ls_english_intermediate as string },
-            { value: 'advanced', label: t.ls_english_advanced as string },
-          ]}
-        />
-      </Field>
+      <div className="md:col-span-2">
+        <Field label={tt.ls_institutions}>
+          <TextInput value={data.institutions} onChange={(v) => set('institutions', v)} placeholder={tt.ls_institutions_ph} />
+        </Field>
+      </div>
 
-      <Field label={t.ls_study_goal as string}>
-        <RadioGroup
-          value={data.studyGoal}
-          onChange={(v) => set('studyGoal', v)}
-          options={[
-            { value: 'conversation', label: t.ls_goal_conversation as string },
-            { value: 'certificate', label: t.ls_goal_certificate as string },
-            { value: 'admission_prep', label: t.ls_goal_admission as string },
-            { value: 'daily_life', label: t.ls_goal_daily as string },
-          ]}
-        />
-      </Field>
+      <div className="md:col-span-2">
+        <Field label={tt.ls_study_goal}>
+          <RadioGroup
+            value={data.studyGoal}
+            onChange={(v) => set('studyGoal', v)}
+            options={[
+              { value: 'conversation', label: tt.ls_goal_conversation },
+              { value: 'certificate', label: tt.ls_goal_certificate },
+              { value: 'admission_prep', label: tt.ls_goal_admission },
+              { value: 'daily_life', label: tt.ls_goal_daily },
+            ]}
+          />
+        </Field>
+      </div>
 
-      <Field label={t.ls_duration as string}>
+      <Field label={tt.ls_duration}>
         <RadioGroup
           value={data.duration}
           onChange={(v) => set('duration', v)}
           options={[
-            { value: 'under_1m', label: t.ls_duration_under_1m as string },
-            { value: '1_3m', label: t.ls_duration_1_3m as string },
-            { value: '3_6m', label: t.ls_duration_3_6m as string },
-            { value: 'over_6m', label: t.ls_duration_over_6m as string },
+            { value: 'under_1m', label: tt.ls_duration_under_1m },
+            { value: '1_3m', label: tt.ls_duration_1_3m },
+            { value: '3_6m', label: tt.ls_duration_3_6m },
+            { value: 'over_6m', label: tt.ls_duration_over_6m },
           ]}
         />
       </Field>
 
-      <Field label={t.ls_accommodation as string}>
-        <RadioGroup
-          value={data.accommodation}
-          onChange={(v) => set('accommodation', v)}
-          options={[
-            { value: 'homestay', label: t.ls_acc_homestay as string },
-            { value: 'dormitory', label: t.ls_acc_dormitory as string },
-            { value: 'no_preference', label: t.ls_acc_no_pref as string },
-          ]}
-        />
+      <Field label={tt.ls_budget}>
+        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={tt.ls_budget_ph} />
       </Field>
-
-      <Field label={t.ls_overseas_experience as string}>
-        <RadioGroup
-          value={data.overseasExperience}
-          onChange={(v) => set('overseasExperience', v)}
-          options={[
-            { value: 'none', label: t.ls_exp_none as string },
-            { value: 'short_visit', label: t.ls_exp_short as string },
-            { value: 'long_stay', label: t.ls_exp_long as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.ls_budget as string}>
-        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={t.ls_budget_ph as string} />
-      </Field>
-
-      <div className="md:col-span-2">
-        <Field label={t.ls_notes as string}>
-          <TextArea value={data.notes} onChange={(v) => set('notes', v)} placeholder={t.ls_notes_ph as string} />
-        </Field>
-      </div>
     </div>
   )
 }
 
 /* ─── University Admission form ─── */
 
-function defaultUniversityAdmissionSurvey(name: string): UniversityAdmissionSurvey {
+function defaultUniversityAdmissionSurvey(): UniversityAdmissionSurvey {
   return {
-    studentName: name,
-    currentGrade: '',
     targetCountry: '',
-    targetMajor: '',
-    targetUniversityLevel: '',
-    currentGpa: '',
-    englishTestScore: '',
-    targetEnrollmentYear: '',
-    extracurriculars: '',
+    targetRegion: '',
+    universities: '',
     budget: '',
-    scholarshipNeeded: '',
-    notes: '',
+    currentDegree: '',
+    targetDegree: '',
   }
 }
 
@@ -234,84 +226,55 @@ function UniversityAdmissionForm({
   onChange: (d: UniversityAdmissionSurvey) => void
 }) {
   const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
   const set = <K extends keyof UniversityAdmissionSurvey>(k: K, v: UniversityAdmissionSurvey[K]) =>
     onChange({ ...data, [k]: v })
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Field label={t.ua_current_grade as string}>
-        <TextInput value={data.currentGrade} onChange={(v) => set('currentGrade', v)} placeholder={t.ua_current_grade_ph as string} />
+      <Field label={tt.ua_target_country} required>
+        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={tt.ua_target_country_ph} />
       </Field>
 
-      <Field label={t.ua_target_country as string}>
-        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={t.ua_target_country_ph as string} />
-      </Field>
-
-      <Field label={t.ua_target_major as string}>
-        <RadioGroup
-          value={data.targetMajor}
-          onChange={(v) => set('targetMajor', v)}
-          options={[
-            { value: 'stem', label: t.ua_major_stem as string },
-            { value: 'humanities', label: t.ua_major_humanities as string },
-            { value: 'business', label: t.ua_major_business as string },
-            { value: 'arts', label: t.ua_major_arts as string },
-            { value: 'medicine', label: t.ua_major_medicine as string },
-            { value: 'undecided', label: t.ua_major_undecided as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.ua_university_level as string}>
-        <RadioGroup
-          value={data.targetUniversityLevel}
-          onChange={(v) => set('targetUniversityLevel', v)}
-          options={[
-            { value: 'top_tier', label: t.ua_level_top as string },
-            { value: 'upper', label: t.ua_level_upper as string },
-            { value: 'mid', label: t.ua_level_mid as string },
-            { value: 'safety', label: t.ua_level_safety as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.ua_gpa as string}>
-        <TextInput value={data.currentGpa} onChange={(v) => set('currentGpa', v)} placeholder={t.ua_gpa_ph as string} />
-      </Field>
-
-      <Field label={t.ua_english_score as string}>
-        <TextInput value={data.englishTestScore} onChange={(v) => set('englishTestScore', v)} placeholder={t.ua_english_score_ph as string} />
-      </Field>
-
-      <Field label={t.ua_enrollment_year as string}>
-        <TextInput value={data.targetEnrollmentYear} onChange={(v) => set('targetEnrollmentYear', v)} placeholder={t.ua_enrollment_year_ph as string} />
-      </Field>
-
-      <Field label={t.ua_budget as string}>
-        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={t.ua_budget_ph as string} />
-      </Field>
-
-      <Field label={t.ua_scholarship as string}>
-        <RadioGroup
-          value={data.scholarshipNeeded}
-          onChange={(v) => set('scholarshipNeeded', v)}
-          options={[
-            { value: 'yes', label: t.ua_scholarship_yes as string },
-            { value: 'if_available', label: t.ua_scholarship_if as string },
-            { value: 'no', label: t.ua_scholarship_no as string },
-          ]}
-        />
+      <Field label={tt.ua_target_region}>
+        <TextInput value={data.targetRegion} onChange={(v) => set('targetRegion', v)} placeholder={tt.ua_target_region_ph} />
       </Field>
 
       <div className="md:col-span-2">
-        <Field label={t.ua_extracurriculars as string}>
-          <TextArea value={data.extracurriculars} onChange={(v) => set('extracurriculars', v)} placeholder={t.ua_extracurriculars_ph as string} />
+        <Field label={tt.ua_universities}>
+          <TextArea value={data.universities} onChange={(v) => set('universities', v)} placeholder={tt.ua_universities_ph} rows={4} />
         </Field>
       </div>
 
+      <Field label={tt.ua_budget}>
+        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={tt.ua_budget_ph} />
+      </Field>
+
+      <Field label={tt.ua_current_degree}>
+        <RadioGroup
+          value={data.currentDegree}
+          onChange={(v) => set('currentDegree', v)}
+          options={[
+            { value: 'bachelor', label: tt.ua_degree_bachelor },
+            { value: 'master', label: tt.ua_degree_master },
+            { value: 'phd', label: tt.ua_degree_phd },
+          ]}
+        />
+      </Field>
+
       <div className="md:col-span-2">
-        <Field label={t.ua_notes as string}>
-          <TextArea value={data.notes} onChange={(v) => set('notes', v)} placeholder={t.ua_notes_ph as string} />
+        <Field label={tt.ua_target_degree}>
+          <RadioGroup
+            value={data.targetDegree}
+            onChange={(v) => set('targetDegree', v)}
+            options={[
+              { value: 'bachelor', label: tt.ua_target_bachelor },
+              { value: 'master', label: tt.ua_target_master },
+              { value: 'phd', label: tt.ua_target_phd },
+              { value: 'integrated', label: tt.ua_target_integrated },
+              { value: 'postdoc', label: tt.ua_target_postdoc },
+            ]}
+          />
         </Field>
       </div>
     </div>
@@ -320,130 +283,63 @@ function UniversityAdmissionForm({
 
 /* ─── Camp form ─── */
 
-function defaultCampSurvey(name: string): CampSurvey {
+function defaultCampSurvey(): CampSurvey {
   return {
-    studentName: name,
-    gradeOrAge: '',
-    campSeason: '',
     targetCountry: '',
-    interestArea: '',
-    duration: '',
     englishLevel: '',
-    priorCampExperience: '',
-    companion: '',
+    englishTestScore: '',
+    duration: '',
     budget: '',
-    specialNeeds: '',
+    parentAccompanying: '',
   }
 }
 
 function CampForm({ data, onChange }: { data: CampSurvey; onChange: (d: CampSurvey) => void }) {
   const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
   const set = <K extends keyof CampSurvey>(k: K, v: CampSurvey[K]) => onChange({ ...data, [k]: v })
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Field label={t.camp_grade_or_age as string}>
-        <TextInput value={data.gradeOrAge} onChange={(v) => set('gradeOrAge', v)} placeholder={t.camp_grade_or_age_ph as string} />
+      <Field label={tt.camp_target_country} required>
+        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={tt.camp_target_country_ph} />
       </Field>
 
-      <Field label={t.camp_target_country as string}>
-        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={t.camp_target_country_ph as string} />
+      <Field label={tt.camp_english_level}>
+        <TextInput value={data.englishLevel} onChange={(v) => set('englishLevel', v)} placeholder={tt.camp_english_level_ph} />
       </Field>
 
-      <Field label={t.camp_season as string}>
+      <Field label={tt.camp_english_test_score}>
+        <TextInput value={data.englishTestScore} onChange={(v) => set('englishTestScore', v)} placeholder={tt.camp_english_test_score_ph} />
+      </Field>
+
+      <Field label={tt.camp_duration}>
+        <TextInput value={data.duration} onChange={(v) => set('duration', v)} placeholder={tt.camp_duration_ph} />
+      </Field>
+
+      <Field label={tt.camp_budget}>
+        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={tt.camp_budget_ph} />
+      </Field>
+
+      <Field label={tt.camp_parent_accompanying}>
         <RadioGroup
-          value={data.campSeason}
-          onChange={(v) => set('campSeason', v)}
+          value={data.parentAccompanying}
+          onChange={(v) => set('parentAccompanying', v)}
           options={[
-            { value: 'summer', label: t.camp_season_summer as string },
-            { value: 'winter', label: t.camp_season_winter as string },
+            { value: 'yes', label: tt.camp_parent_yes },
+            { value: 'no', label: tt.camp_parent_no },
           ]}
         />
       </Field>
-
-      <Field label={t.camp_interest_area as string}>
-        <RadioGroup
-          value={data.interestArea}
-          onChange={(v) => set('interestArea', v)}
-          options={[
-            { value: 'language', label: t.camp_interest_language as string },
-            { value: 'stem', label: t.camp_interest_stem as string },
-            { value: 'arts', label: t.camp_interest_arts as string },
-            { value: 'sports', label: t.camp_interest_sports as string },
-            { value: 'culture', label: t.camp_interest_culture as string },
-            { value: 'other', label: t.camp_interest_other as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.camp_duration as string}>
-        <RadioGroup
-          value={data.duration}
-          onChange={(v) => set('duration', v)}
-          options={[
-            { value: '2weeks', label: t.camp_duration_2w as string },
-            { value: '3_4weeks', label: t.camp_duration_3_4w as string },
-            { value: '5_6weeks', label: t.camp_duration_5_6w as string },
-            { value: 'over_6weeks', label: t.camp_duration_over_6w as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.camp_english_level as string}>
-        <RadioGroup
-          value={data.englishLevel}
-          onChange={(v) => set('englishLevel', v)}
-          options={[
-            { value: 'none', label: t.ls_english_none as string },
-            { value: 'beginner', label: t.ls_english_beginner as string },
-            { value: 'intermediate', label: t.ls_english_intermediate as string },
-            { value: 'advanced', label: t.ls_english_advanced as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.camp_prior_experience as string}>
-        <RadioGroup
-          value={data.priorCampExperience}
-          onChange={(v) => set('priorCampExperience', v)}
-          options={[
-            { value: 'none', label: t.camp_exp_none as string },
-            { value: 'domestic', label: t.camp_exp_domestic as string },
-            { value: 'overseas', label: t.camp_exp_overseas as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.camp_companion as string}>
-        <RadioGroup
-          value={data.companion}
-          onChange={(v) => set('companion', v)}
-          options={[
-            { value: 'alone', label: t.camp_alone as string },
-            { value: 'with_friend', label: t.camp_with_friend as string },
-            { value: 'with_sibling', label: t.camp_with_sibling as string },
-          ]}
-        />
-      </Field>
-
-      <Field label={t.camp_budget as string}>
-        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={t.camp_budget_ph as string} />
-      </Field>
-
-      <div className="md:col-span-2">
-        <Field label={t.camp_special_needs as string}>
-          <TextArea value={data.specialNeeds} onChange={(v) => set('specialNeeds', v)} placeholder={t.camp_special_needs_ph as string} />
-        </Field>
-      </div>
     </div>
   )
 }
 
 /* ─── Immigration form ─── */
 
-function defaultImmigrationSurvey(name: string): ImmigrationSurvey {
+function defaultImmigrationSurvey(): ImmigrationSurvey {
   return {
-    applicantName: name,
+    applicantName: '',
     age: '',
     targetCountry: '',
     immigrationType: '',
@@ -465,118 +361,172 @@ function ImmigrationForm({
   onChange: (d: ImmigrationSurvey) => void
 }) {
   const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
   const set = <K extends keyof ImmigrationSurvey>(k: K, v: ImmigrationSurvey[K]) =>
     onChange({ ...data, [k]: v })
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Field label={t.imm_applicant_name as string}>
+      <Field label={tt.imm_applicant_name}>
         <TextInput value={data.applicantName} onChange={(v) => set('applicantName', v)} />
       </Field>
 
-      <Field label={t.imm_age as string}>
-        <TextInput value={data.age} onChange={(v) => set('age', v)} placeholder={t.imm_age_ph as string} />
+      <Field label={tt.imm_age}>
+        <TextInput value={data.age} onChange={(v) => set('age', v)} placeholder={tt.imm_age_ph} />
       </Field>
 
-      <Field label={t.imm_target_country as string}>
-        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={t.imm_target_country_ph as string} />
+      <Field label={tt.imm_target_country} required>
+        <TextInput value={data.targetCountry} onChange={(v) => set('targetCountry', v)} placeholder={tt.imm_target_country_ph} />
       </Field>
 
-      <Field label={t.imm_immigration_type as string}>
+      <Field label={tt.imm_immigration_type}>
         <RadioGroup
           value={data.immigrationType}
           onChange={(v) => set('immigrationType', v)}
           options={[
-            { value: 'skilled', label: t.imm_type_skilled as string },
-            { value: 'investment', label: t.imm_type_investment as string },
-            { value: 'family', label: t.imm_type_family as string },
-            { value: 'post_study', label: t.imm_type_post_study as string },
-            { value: 'business', label: t.imm_type_business as string },
+            { value: 'skilled', label: tt.imm_type_skilled },
+            { value: 'investment', label: tt.imm_type_investment },
+            { value: 'family', label: tt.imm_type_family },
+            { value: 'post_study', label: tt.imm_type_post_study },
+            { value: 'business', label: tt.imm_type_business },
           ]}
         />
       </Field>
 
-      <Field label={t.imm_current_visa as string}>
+      <Field label={tt.imm_current_visa}>
         <RadioGroup
           value={data.currentVisaStatus}
           onChange={(v) => set('currentVisaStatus', v)}
           options={[
-            { value: 'none', label: t.imm_visa_none as string },
-            { value: 'student', label: t.imm_visa_student as string },
-            { value: 'work', label: t.imm_visa_work as string },
-            { value: 'other', label: t.imm_visa_other as string },
+            { value: 'none', label: tt.imm_visa_none },
+            { value: 'student', label: tt.imm_visa_student },
+            { value: 'work', label: tt.imm_visa_work },
+            { value: 'other', label: tt.imm_visa_other },
           ]}
         />
       </Field>
 
-      <Field label={t.imm_family as string}>
+      <Field label={tt.imm_family}>
         <RadioGroup
           value={data.familyComposition}
           onChange={(v) => set('familyComposition', v)}
           options={[
-            { value: 'alone', label: t.imm_family_alone as string },
-            { value: 'with_spouse', label: t.imm_family_spouse as string },
-            { value: 'with_children', label: t.imm_family_children as string },
-            { value: 'whole_family', label: t.imm_family_whole as string },
+            { value: 'alone', label: tt.imm_family_alone },
+            { value: 'with_spouse', label: tt.imm_family_spouse },
+            { value: 'with_children', label: tt.imm_family_children },
+            { value: 'whole_family', label: tt.imm_family_whole },
           ]}
         />
       </Field>
 
-      <Field label={t.imm_education as string}>
+      <Field label={tt.imm_education}>
         <RadioGroup
           value={data.education}
           onChange={(v) => set('education', v)}
           options={[
-            { value: 'high_school', label: t.imm_edu_high_school as string },
-            { value: 'bachelor', label: t.imm_edu_bachelor as string },
-            { value: 'master', label: t.imm_edu_master as string },
-            { value: 'phd', label: t.imm_edu_phd as string },
+            { value: 'high_school', label: tt.imm_edu_high_school },
+            { value: 'bachelor', label: tt.imm_edu_bachelor },
+            { value: 'master', label: tt.imm_edu_master },
+            { value: 'phd', label: tt.imm_edu_phd },
           ]}
         />
       </Field>
 
-      <Field label={t.imm_occupation as string}>
-        <TextInput value={data.occupation} onChange={(v) => set('occupation', v)} placeholder={t.imm_occupation_ph as string} />
+      <Field label={tt.imm_occupation}>
+        <TextInput value={data.occupation} onChange={(v) => set('occupation', v)} placeholder={tt.imm_occupation_ph} />
       </Field>
 
-      <Field label={t.imm_timeline as string}>
-        <TextInput value={data.targetTimeline} onChange={(v) => set('targetTimeline', v)} placeholder={t.imm_timeline_ph as string} />
+      <Field label={tt.imm_timeline}>
+        <TextInput value={data.targetTimeline} onChange={(v) => set('targetTimeline', v)} placeholder={tt.imm_timeline_ph} />
       </Field>
 
-      <Field label={t.imm_budget as string}>
-        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={t.imm_budget_ph as string} />
+      <Field label={tt.imm_budget}>
+        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={tt.imm_budget_ph} />
       </Field>
 
       <div className="md:col-span-2">
-        <Field label={t.imm_notes as string}>
-          <TextArea value={data.notes} onChange={(v) => set('notes', v)} placeholder={t.imm_notes_ph as string} />
+        <Field label={tt.imm_notes}>
+          <TextArea value={data.notes} onChange={(v) => set('notes', v)} placeholder={tt.imm_notes_ph} />
         </Field>
       </div>
     </div>
   )
 }
 
+/* ─── Own Program form ─── */
+
+function defaultOwnProgramSurvey(): OwnProgramSurvey {
+  return {
+    interestAreas: [],
+    budget: '',
+    interestedSchools: '',
+  }
+}
+
+function OwnProgramForm({
+  data,
+  onChange,
+}: {
+  data: OwnProgramSurvey
+  onChange: (d: OwnProgramSurvey) => void
+}) {
+  const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
+  const set = <K extends keyof OwnProgramSurvey>(k: K, v: OwnProgramSurvey[K]) =>
+    onChange({ ...data, [k]: v })
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="md:col-span-2">
+        <Field label={tt.op_interest_areas}>
+          <CheckboxGroup
+            value={data.interestAreas}
+            onChange={(v) => set('interestAreas', v as OwnProgramSurvey['interestAreas'])}
+            options={[
+              { value: 'art', label: tt.op_interest_art },
+              { value: 'sports', label: tt.op_interest_sports },
+              { value: 'music', label: tt.op_interest_music },
+              { value: 'academics', label: tt.op_interest_academics },
+            ]}
+          />
+        </Field>
+      </div>
+
+      <Field label={tt.op_budget}>
+        <TextInput value={data.budget} onChange={(v) => set('budget', v)} placeholder={tt.op_budget_ph} />
+      </Field>
+
+      <Field label={tt.op_interested_schools}>
+        <TextInput value={data.interestedSchools} onChange={(v) => set('interestedSchools', v)} placeholder={tt.op_interested_schools_ph} />
+      </Field>
+    </div>
+  )
+}
+
 /* ─── Public export: PurposeSurveyForm ─── */
 
-function buildDefaultSurvey(purpose: StudyAbroadPurpose, name: string): PurposeSurvey {
+function buildDefaultSurvey(purpose: StudyAbroadPurpose): PurposeSurvey {
   switch (purpose) {
     case 'language_study':
-      return { type: 'language_study', data: defaultLanguageStudySurvey(name) }
+      return { type: 'language_study', data: defaultLanguageStudySurvey() }
     case 'university_admission':
-      return { type: 'university_admission', data: defaultUniversityAdmissionSurvey(name) }
+      return { type: 'university_admission', data: defaultUniversityAdmissionSurvey() }
     case 'summer_winter_camp':
-      return { type: 'summer_winter_camp', data: defaultCampSurvey(name) }
+      return { type: 'summer_winter_camp', data: defaultCampSurvey() }
     case 'immigration':
-      return { type: 'immigration', data: defaultImmigrationSurvey(name) }
+      return { type: 'immigration', data: defaultImmigrationSurvey() }
+    case 'own_program':
+      return { type: 'own_program', data: defaultOwnProgramSurvey() }
   }
 }
 
 export function PurposeSurveyForm({ c, save }: { c: StudentCase; save: (c: StudentCase) => void }) {
   const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
   const purpose = c.student.studyAbroadPurpose
 
   const initial: PurposeSurvey = c.purposeSurvey ??
-    (purpose ? buildDefaultSurvey(purpose, c.student.name) : { type: 'language_study', data: defaultLanguageStudySurvey(c.student.name) })
+    (purpose ? buildDefaultSurvey(purpose) : { type: 'language_study', data: defaultLanguageStudySurvey() })
 
   const [draft, setDraft] = useState<PurposeSurvey>(initial)
   const [saved, setSaved] = useState(false)
@@ -584,7 +534,7 @@ export function PurposeSurveyForm({ c, save }: { c: StudentCase; save: (c: Stude
   if (!purpose) {
     return (
       <div className="py-12 text-center font-body text-sm text-on-surface-variant/50">
-        {t.students_modal_purpose as string}이 설정되지 않았습니다.
+        {tt.students_modal_purpose} 설정되지 않았습니다.
       </div>
     )
   }
@@ -597,17 +547,18 @@ export function PurposeSurveyForm({ c, save }: { c: StudentCase; save: (c: Stude
   }
 
   const titleKey: Record<StudyAbroadPurpose, string> = {
-    language_study: t.ls_survey_title as string,
-    university_admission: t.ua_survey_title as string,
-    summer_winter_camp: t.camp_survey_title as string,
-    immigration: t.imm_survey_title as string,
+    language_study: tt.ls_survey_title,
+    university_admission: tt.ua_survey_title,
+    summer_winter_camp: tt.camp_survey_title,
+    immigration: tt.imm_survey_title,
+    own_program: tt.op_survey_title,
   }
 
   return (
     <div className="space-y-8">
       <div>
         <h2 className="font-display text-lg text-on-surface">{titleKey[purpose]}</h2>
-        <p className="font-body text-sm text-on-surface-variant/60 mt-1">{t.purpose_survey_sub as string}</p>
+        <p className="font-body text-sm text-on-surface-variant/60 mt-1">{tt.purpose_survey_sub}</p>
       </div>
 
       {draft.type === 'language_study' && (
@@ -634,6 +585,12 @@ export function PurposeSurveyForm({ c, save }: { c: StudentCase; save: (c: Stude
           onChange={(data) => setDraft({ type: 'immigration', data })}
         />
       )}
+      {draft.type === 'own_program' && (
+        <OwnProgramForm
+          data={draft.data}
+          onChange={(data) => setDraft({ type: 'own_program', data })}
+        />
+      )}
 
       <div className="flex justify-end pt-2">
         <button
@@ -641,7 +598,7 @@ export function PurposeSurveyForm({ c, save }: { c: StudentCase; save: (c: Stude
           onClick={handleSave}
           className="px-6 py-2.5 bg-secondary text-on-secondary font-label text-sm hover:bg-secondary/90 transition-colors"
         >
-          {saved ? (t.purpose_survey_saved as string) : (t.purpose_survey_save as string)}
+          {saved ? tt.purpose_survey_saved : tt.purpose_survey_save}
         </button>
       </div>
     </div>

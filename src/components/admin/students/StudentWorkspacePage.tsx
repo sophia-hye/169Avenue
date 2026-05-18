@@ -44,7 +44,7 @@ import { ObserverChecklist } from '../diagnosis/ObserverChecklist'
 import { PresentationMode } from '../diagnosis/PresentationMode'
 import { PurposeSurveyForm } from './PurposeSurveyForm'
 
-type TabId = 'overview' | 'survey' | 'observations' | 'recommendation' | 'preview' | 'export' | 'profile'
+type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'recommendation' | 'preview' | 'export' | 'profile'
 
 interface CreateStudentOpts {
   studyAbroadPurpose?: StudyAbroadPurpose
@@ -211,19 +211,21 @@ export function StudentWorkspacePage() {
                 {/* Tabs */}
                 {(() => {
                   const inProgram = hasOwnPrograms(current)
+                  const tt = t as unknown as Record<string, string>
                   const tabs: [TabId, string, string][] = inProgram
                     ? [
-                        ['overview',       t.detail_tab_overview as string,       'dashboard'],
-                        ['survey',         t.detail_tab_survey as string,         'edit_note'],
-                        ['observations',   t.detail_tab_observation as string,    'checklist'],
-                        ['recommendation', t.detail_tab_recommendation as string, 'auto_awesome'],
-                        ['preview',        t.detail_tab_preview as string,        'visibility'],
-                        ['export',         t.detail_tab_export as string,         'picture_as_pdf'],
+                        ['overview',       tt.detail_tab_overview,       'dashboard'],
+                        ['survey',         tt.detail_tab_survey,         'edit_note'],
+                        ['assessment',     tt.detail_tab_assessment,     'fact_check'],
+                        ['observations',   tt.detail_tab_observation,    'checklist'],
+                        ['recommendation', tt.detail_tab_recommendation, 'auto_awesome'],
+                        ['preview',        tt.detail_tab_preview,        'visibility'],
+                        ['export',         tt.detail_tab_export,         'picture_as_pdf'],
                       ]
                     : [
-                        ['overview', t.detail_tab_overview as string,        'dashboard'],
-                        ['survey',   t.detail_tab_purpose_survey as string,  'edit_note'],
-                        ['profile',  t.detail_tab_profile as string,         'person'],
+                        ['overview',    tt.detail_tab_overview,        'dashboard'],
+                        ['survey',      tt.detail_tab_survey,          'edit_note'],
+                        ['profile',     tt.detail_tab_profile,         'person'],
                       ]
                   return (
                     <>
@@ -241,7 +243,8 @@ export function StudentWorkspacePage() {
 
                       <div>
                         {tab === 'overview' && <OverviewTab c={current} onNav={setTab} inProgram={inProgram} save={save} />}
-                        {inProgram && tab === 'survey' && <SurveyTab c={current} save={save} />}
+                        {inProgram && tab === 'survey' && <PurposeSurveyForm c={current} save={save} />}
+                        {inProgram && tab === 'assessment' && <SurveyTab c={current} save={save} />}
                         {inProgram && tab === 'observations' && <ObservationsTab c={current} save={save} />}
                         {inProgram && tab === 'recommendation' && <RecommendationTab c={current} save={save} />}
                         {inProgram && tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
@@ -291,11 +294,11 @@ const PROGRAM_OPTIONS = [
   { key: 'elite',     i18nKey: 'students_modal_program_elite' },
 ] as const
 
-const PURPOSE_OPTIONS = [
+const PRODUCT_OPTIONS = [
   { key: 'language_study',       i18nKey: 'students_modal_purpose_language' },
   { key: 'university_admission', i18nKey: 'students_modal_purpose_university' },
   { key: 'summer_winter_camp',   i18nKey: 'students_modal_purpose_camp' },
-  { key: 'immigration',          i18nKey: 'students_modal_purpose_immigration' },
+  { key: 'own_program',          i18nKey: 'students_modal_purpose_own_program' },
 ] as const
 
 function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile }: {
@@ -310,40 +313,18 @@ function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile 
   const [search, setSearch] = useState('')
   const [adding, setAdding] = useState(false)
   const [newName, setNewName] = useState('')
-  const [newPurpose, setNewPurpose] = useState<StudyAbroadPurpose | ''>('')
-  const [newPrograms, setNewPrograms] = useState<string[]>([])
-  const [newRegions, setNewRegions] = useState('')
-  const [newSchools, setNewSchools] = useState('')
-  const [newBudget, setNewBudget] = useState('')
-
-  const noOwnPrograms = newPrograms.length === 0
+  const [newProduct, setNewProduct] = useState<StudyAbroadPurpose | ''>('')
 
   const handleClose = () => {
     setAdding(false)
     setNewName('')
-    setNewPurpose('')
-    setNewPrograms([])
-    setNewRegions('')
-    setNewSchools('')
-    setNewBudget('')
+    setNewProduct('')
   }
 
   const handleSubmit = () => {
-    if (!newName.trim()) return
-    onCreate(newName, {
-      studyAbroadPurpose: newPurpose || undefined,
-      programs: newPrograms,
-      regionsOfInterest: noOwnPrograms ? newRegions : '',
-      schoolsOfInterest: noOwnPrograms ? newSchools : '',
-      budget: noOwnPrograms ? newBudget : '',
-    })
+    if (!newName.trim() || !newProduct) return
+    onCreate(newName, { studyAbroadPurpose: newProduct })
     handleClose()
-  }
-
-  const toggleProgram = (key: string) => {
-    setNewPrograms((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
-    )
   }
 
   const filtered = useMemo(() => {
@@ -413,88 +394,50 @@ function Sidebar({ list, selectedId, onSelect, onCreate, onDelete, hideOnMobile 
       {/* Add modal */}
       {adding && (
         <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4" onClick={handleClose}>
-          <div className="bg-surface w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-surface w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="p-8">
               <h3 className="font-headline text-xl text-primary tracking-tight mb-6">{t.students_modal_title as string}</h3>
 
               {/* Name */}
-              <label className="block mb-5">
+              <label className="block mb-6">
                 <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_name as string}</span>
                 <input autoFocus value={newName} onChange={(e) => setNewName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                  onKeyDown={(e) => e.key === 'Enter' && newProduct && handleSubmit()}
                   className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
               </label>
 
-              {/* Study abroad purpose */}
-              <div className="mb-5">
-                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-2 block">{t.students_modal_purpose as string}</span>
+              {/* Study abroad product */}
+              <div className="mb-6">
+                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-3 block">{t.students_modal_product as string}</span>
                 <div className="flex flex-col gap-2">
-                  {PURPOSE_OPTIONS.map(({ key, i18nKey }) => (
-                    <label key={key} className="flex items-center gap-2.5 cursor-pointer group">
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
-                        newPurpose === key ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
-                      }`} onClick={() => setNewPurpose(newPurpose === key ? '' : key as StudyAbroadPurpose)}>
-                        {newPurpose === key && <div className="w-1.5 h-1.5 rounded-full bg-on-primary" />}
+                  {PRODUCT_OPTIONS.map(({ key, i18nKey }) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setNewProduct(key as StudyAbroadPurpose)}
+                      className={`flex items-center gap-3 w-full px-4 py-3 border text-left transition-colors ${
+                        newProduct === key
+                          ? 'border-secondary bg-secondary/8 text-secondary'
+                          : 'border-outline-variant/25 text-primary hover:border-secondary/50'
+                      }`}
+                    >
+                      <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${
+                        newProduct === key ? 'border-secondary bg-secondary' : 'border-outline-variant/40'
+                      }`}>
+                        {newProduct === key && <div className="w-1.5 h-1.5 rounded-full bg-on-primary" />}
                       </div>
-                      <span className="font-body text-sm text-primary cursor-pointer" onClick={() => setNewPurpose(newPurpose === key ? '' : key as StudyAbroadPurpose)}>
-                        {t[i18nKey] as string}
-                      </span>
-                    </label>
+                      <span className="font-body text-sm">{(t as unknown as Record<string, string>)[i18nKey]}</span>
+                    </button>
                   ))}
                 </div>
               </div>
-
-              {/* Programs */}
-              <div className="mb-5">
-                <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_programs as string}</span>
-                <p className="font-body text-[11px] text-on-surface-variant/50 mb-2">{t.students_modal_programs_sub as string}</p>
-                <div className="flex flex-col gap-2">
-                  {PROGRAM_OPTIONS.map(({ key, i18nKey }) => {
-                    const checked = newPrograms.includes(key)
-                    return (
-                      <label key={key} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleProgram(key)}>
-                        <div className={`w-4 h-4 border-2 flex items-center justify-center transition-colors ${
-                          checked ? 'border-secondary bg-secondary' : 'border-outline-variant/40 group-hover:border-secondary/60'
-                        }`}>
-                          {checked && <span className="material-symbols-outlined text-[10px] text-on-primary font-bold">check</span>}
-                        </div>
-                        <span className="font-body text-sm text-primary">{t[i18nKey] as string}</span>
-                      </label>
-                    )
-                  })}
-                </div>
-              </div>
-
-              {/* General management fields — shown only when no program selected */}
-              {noOwnPrograms && (
-                <div className="border-t border-outline-variant/15 pt-5 mb-5 space-y-4">
-                  <label className="block">
-                    <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_regions as string}</span>
-                    <input value={newRegions} onChange={(e) => setNewRegions(e.target.value)}
-                      placeholder={t.students_modal_regions_ph as string}
-                      className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-                  </label>
-                  <label className="block">
-                    <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_schools as string}</span>
-                    <input value={newSchools} onChange={(e) => setNewSchools(e.target.value)}
-                      placeholder={t.students_modal_schools_ph as string}
-                      className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-                  </label>
-                  <label className="block">
-                    <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">{t.students_modal_budget as string}</span>
-                    <input value={newBudget} onChange={(e) => setNewBudget(e.target.value)}
-                      placeholder={t.students_modal_budget_ph as string}
-                      className="w-full border border-outline-variant/30 px-3 py-2 font-body text-sm outline-none focus:border-secondary" />
-                  </label>
-                </div>
-              )}
 
               <div className="flex justify-end gap-2">
                 <button onClick={handleClose} className="px-5 py-2 font-body text-sm text-on-surface-variant/70 hover:text-primary transition-colors">
                   {t.students_modal_cancel as string}
                 </button>
                 <button onClick={handleSubmit}
-                  disabled={!newName.trim()}
+                  disabled={!newName.trim() || !newProduct}
                   className="px-6 py-2 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors disabled:opacity-40">
                   {t.students_modal_create as string}
                 </button>
@@ -627,6 +570,7 @@ const STUDY_PURPOSE_LABELS: Record<string, string> = {
   university_admission: 'students_modal_purpose_university',
   summer_winter_camp:   'students_modal_purpose_camp',
   immigration:          'students_modal_purpose_immigration',
+  own_program:          'students_modal_purpose_own_program',
 }
 
 const PROGRAM_KEY_LABELS: Record<string, string> = {

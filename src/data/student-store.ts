@@ -19,50 +19,35 @@ const SUPABASE_MIGRATION_FLAG = '169av-migrated-to-supabase'
 
 /* ─── Types ─── */
 
-export type StudyAbroadPurpose = 'language_study' | 'university_admission' | 'summer_winter_camp' | 'immigration'
+export type StudyAbroadPurpose = 'language_study' | 'university_admission' | 'summer_winter_camp' | 'immigration' | 'own_program'
 
-/* ─── Purpose-specific survey types (non-program students) ─── */
+/* ─── Purpose-specific survey types ─── */
 
 export interface LanguageStudySurvey {
-  studentName: string
-  gradeOrAge: string
-  currentEnglishLevel: 'none' | 'beginner' | 'intermediate' | 'advanced' | ''
-  studyGoal: 'conversation' | 'certificate' | 'admission_prep' | 'daily_life' | ''
   targetCountry: string
+  targetRegion: string
+  institutions: string
+  studyGoal: 'conversation' | 'certificate' | 'admission_prep' | 'daily_life' | ''
   duration: 'under_1m' | '1_3m' | '3_6m' | 'over_6m' | ''
-  accommodation: 'homestay' | 'dormitory' | 'no_preference' | ''
-  overseasExperience: 'none' | 'short_visit' | 'long_stay' | ''
   budget: string
-  notes: string
 }
 
 export interface UniversityAdmissionSurvey {
-  studentName: string
-  currentGrade: string
   targetCountry: string
-  targetMajor: 'stem' | 'humanities' | 'business' | 'arts' | 'medicine' | 'undecided' | ''
-  targetUniversityLevel: 'top_tier' | 'upper' | 'mid' | 'safety' | ''
-  currentGpa: string
-  englishTestScore: string
-  targetEnrollmentYear: string
-  extracurriculars: string
+  targetRegion: string
+  universities: string
   budget: string
-  scholarshipNeeded: 'yes' | 'if_available' | 'no' | ''
-  notes: string
+  currentDegree: 'bachelor' | 'master' | 'phd' | ''
+  targetDegree: 'bachelor' | 'master' | 'phd' | 'integrated' | 'postdoc' | ''
 }
 
 export interface CampSurvey {
-  studentName: string
-  gradeOrAge: string
-  campSeason: 'summer' | 'winter' | ''
   targetCountry: string
-  interestArea: 'language' | 'stem' | 'arts' | 'sports' | 'culture' | 'other' | ''
-  duration: '2weeks' | '3_4weeks' | '5_6weeks' | 'over_6weeks' | ''
-  englishLevel: 'none' | 'beginner' | 'intermediate' | 'advanced' | ''
-  priorCampExperience: 'none' | 'domestic' | 'overseas' | ''
-  companion: 'alone' | 'with_friend' | 'with_sibling' | ''
+  englishLevel: string
+  englishTestScore: string
+  duration: string
   budget: string
-  specialNeeds: string
+  parentAccompanying: 'yes' | 'no' | ''
 }
 
 export interface ImmigrationSurvey {
@@ -79,11 +64,18 @@ export interface ImmigrationSurvey {
   notes: string
 }
 
+export interface OwnProgramSurvey {
+  interestAreas: ('art' | 'sports' | 'music' | 'academics')[]
+  budget: string
+  interestedSchools: string
+}
+
 export type PurposeSurvey =
   | { type: 'language_study'; data: LanguageStudySurvey }
   | { type: 'university_admission'; data: UniversityAdmissionSurvey }
   | { type: 'summer_winter_camp'; data: CampSurvey }
   | { type: 'immigration'; data: ImmigrationSurvey }
+  | { type: 'own_program'; data: OwnProgramSurvey }
 
 export type GeneralStatus = 'not-started' | 'surveyed' | 'consulting' | 'proposed' | 'confirmed' | 'completed'
 
@@ -608,9 +600,9 @@ export function createStudent(input: {
   return c
 }
 
-/** Returns true when the student is enrolled in at least one own program/track. */
+/** Returns true when the student is in a 169Avenue own program/track. */
 export function hasOwnPrograms(c: StudentCase): boolean {
-  return (c.student.programs?.length ?? 0) > 0
+  return c.student.studyAbroadPurpose === 'own_program' || (c.student.programs?.length ?? 0) > 0
 }
 
 export function saveCase(c: StudentCase): StudentCase {
