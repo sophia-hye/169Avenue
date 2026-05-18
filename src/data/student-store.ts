@@ -401,23 +401,22 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
     localData: d.localData,
     uploadedAt: d.uploadedAt || nowIso(),
   }))
-  const raw = c as Partial<StudentCase>
-  const clientDashboard: ClientDashboardEntry | undefined = raw.clientDashboard
+  const clientDashboard: ClientDashboardEntry | undefined = c.clientDashboard
     ? {
-        priority: raw.clientDashboard.priority ?? '',
-        followUpTasks: raw.clientDashboard.followUpTasks || '',
-        dashboardStatus: raw.clientDashboard.dashboardStatus ?? '',
-        paymentReceivedDate: raw.clientDashboard.paymentReceivedDate || '',
-        tuition: raw.clientDashboard.tuition || '',
-        institutions: raw.clientDashboard.institutions || '',
-        pointOfContact: raw.clientDashboard.pointOfContact || '',
-        major: raw.clientDashboard.major || '',
-        engScore: raw.clientDashboard.engScore || '',
-        gpa: raw.clientDashboard.gpa || '',
-        postSecondaryCredits: raw.clientDashboard.postSecondaryCredits || '',
-        notes: raw.clientDashboard.notes || '',
-        completed: raw.clientDashboard.completed ?? false,
-        updatedAt: raw.clientDashboard.updatedAt || nowIso(),
+        priority: c.clientDashboard.priority ?? '',
+        followUpTasks: c.clientDashboard.followUpTasks || '',
+        dashboardStatus: c.clientDashboard.dashboardStatus ?? '',
+        paymentReceivedDate: c.clientDashboard.paymentReceivedDate || '',
+        tuition: c.clientDashboard.tuition || '',
+        institutions: c.clientDashboard.institutions || '',
+        pointOfContact: c.clientDashboard.pointOfContact || '',
+        major: c.clientDashboard.major || '',
+        engScore: c.clientDashboard.engScore || '',
+        gpa: c.clientDashboard.gpa || '',
+        postSecondaryCredits: c.clientDashboard.postSecondaryCredits || '',
+        notes: c.clientDashboard.notes || '',
+        completed: c.clientDashboard.completed ?? false,
+        updatedAt: c.clientDashboard.updatedAt || nowIso(),
       }
     : undefined
   return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, applicationTracking, documents, clientDashboard }

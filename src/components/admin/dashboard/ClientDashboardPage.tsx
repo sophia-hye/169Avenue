@@ -7,7 +7,6 @@ import {
   getCase,
   initStudentStore,
   listStudents,
-  saveCase,
   updateClientDashboard,
   type ClientDashboardEntry,
   type ClientDashboardStatus,
@@ -184,7 +183,7 @@ export function ClientDashboardPage() {
                 </thead>
                 <tbody>
                   {visible.map((r) => (
-                    <DashboardRow key={r.entry.id} row={r} onPatch={handlePatch} tt={tt} />
+                    <DashboardRow key={r.entry.id} row={r} onPatch={handlePatch} />
                   ))}
                 </tbody>
               </table>
@@ -202,11 +201,9 @@ export function ClientDashboardPage() {
 function DashboardRow({
   row,
   onPatch,
-  tt,
 }: {
   row: RowData
   onPatch: (id: string, patch: Partial<ClientDashboardEntry>) => void
-  tt: Record<string, string>
 }) {
   const { entry, case: c, dashboard: d } = row
   const id = entry.id
