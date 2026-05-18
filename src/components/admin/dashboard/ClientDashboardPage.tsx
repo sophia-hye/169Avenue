@@ -170,39 +170,166 @@ export function ClientDashboardPage() {
           ) : visible.length === 0 ? (
             <p className="font-body text-sm text-on-surface-variant/50 py-12 text-center">{tt.dashboard_empty}</p>
           ) : (
-            <div className="overflow-x-auto border border-outline-variant/20 rounded-none">
-              <table className="w-full border-collapse text-[12px]" style={{ minWidth: 1400 }}>
-                <thead>
-                  <tr className="bg-surface-container-low border-b border-outline-variant/20">
-                    <Th sticky>{tt.dashboard_col_done}</Th>
-                    <Th>{tt.dashboard_col_name}</Th>
-                    <Th>{tt.dashboard_col_priority}</Th>
-                    <Th>{tt.dashboard_col_follow_up}</Th>
-                    <Th>{tt.dashboard_col_product}</Th>
-                    <Th>{tt.dashboard_col_status}</Th>
-                    <Th>{tt.dashboard_col_payment_date}</Th>
-                    <Th>{tt.dashboard_col_tuition}</Th>
-                    <Th>{tt.dashboard_col_institutions}</Th>
-                    <Th>{tt.dashboard_col_contact}</Th>
-                    <Th>{tt.dashboard_col_major}</Th>
-                    <Th>{tt.dashboard_col_eng_score}</Th>
-                    <Th>{tt.dashboard_col_gpa}</Th>
-                    <Th>{tt.dashboard_col_post_credits}</Th>
-                    <Th>{tt.dashboard_col_notes}</Th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {visible.map((r) => (
-                    <DashboardRow key={r.entry.id} row={r} onPatch={handlePatch} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <>
+              {/* Mobile card list */}
+              <div className="md:hidden space-y-2">
+                {visible.map((r) => (
+                  <DashboardCard key={r.entry.id} row={r} onPatch={handlePatch} />
+                ))}
+              </div>
+
+              {/* Desktop table */}
+              <div className="hidden md:block overflow-x-auto border border-outline-variant/20 rounded-none">
+                <table className="w-full border-collapse text-[12px]" style={{ minWidth: 1400 }}>
+                  <thead>
+                    <tr className="bg-surface-container-low border-b border-outline-variant/20">
+                      <Th sticky>{tt.dashboard_col_done}</Th>
+                      <Th>{tt.dashboard_col_name}</Th>
+                      <Th>{tt.dashboard_col_priority}</Th>
+                      <Th>{tt.dashboard_col_follow_up}</Th>
+                      <Th>{tt.dashboard_col_product}</Th>
+                      <Th>{tt.dashboard_col_status}</Th>
+                      <Th>{tt.dashboard_col_payment_date}</Th>
+                      <Th>{tt.dashboard_col_tuition}</Th>
+                      <Th>{tt.dashboard_col_institutions}</Th>
+                      <Th>{tt.dashboard_col_contact}</Th>
+                      <Th>{tt.dashboard_col_major}</Th>
+                      <Th>{tt.dashboard_col_eng_score}</Th>
+                      <Th>{tt.dashboard_col_gpa}</Th>
+                      <Th>{tt.dashboard_col_post_credits}</Th>
+                      <Th>{tt.dashboard_col_notes}</Th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {visible.map((r) => (
+                      <DashboardRow key={r.entry.id} row={r} onPatch={handlePatch} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </main>
       <MobileBottomNav />
     </>
+  )
+}
+
+/* ─── Mobile Card ─── */
+
+function DashboardCard({
+  row,
+  onPatch,
+}: {
+  row: RowData
+  onPatch: (id: string, patch: Partial<ClientDashboardEntry>) => void
+}) {
+  const { entry, case: c, dashboard: d } = row
+  const id = entry.id
+  const completed = d.completed
+
+  const product = c.student.studyAbroadPurpose
+    ? PURPOSE_LABELS[c.student.studyAbroadPurpose]
+    : c.student.program || '—'
+
+  const contactValue = (() => {
+    if (d.pointOfContact) return d.pointOfContact
+    if (c.student.phone) return c.student.phone
+    if (c.student.parentPhone) return `${c.student.parentName || ''} ${c.student.parentPhone}`.trim()
+    return ''
+  })()
+
+  return (
+    <div className={`border border-outline-variant/20 p-3 ${
+      completed ? 'opacity-60 bg-surface-container-lowest/40' : 'bg-surface'
+    }`}>
+      {/* Top row: checkbox + name + priority */}
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <input
+            type="checkbox"
+            checked={completed}
+            onChange={(e) => onPatch(id, { completed: e.target.checked })}
+            className="w-4 h-4 accent-secondary cursor-pointer flex-shrink-0"
+          />
+          <Link
+            to={`/admin/students/${id}`}
+            className="font-body text-sm text-primary font-medium hover:text-secondary underline-offset-2 hover:underline truncate"
+          >
+            {entry.name || '—'}
+          </Link>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {d.priority && (
+            <span className={`font-label text-xs font-bold ${priorityColor(d.priority)}`}>
+              P{d.priority}
+            </span>
+          )}
+          <select
+            value={d.priority}
+            disabled={completed}
+            onChange={(e) => onPatch(id, { priority: e.target.value as DashboardPriority | '' })}
+            className={`w-12 font-body text-[11px] border border-outline-variant/25 bg-transparent px-1 py-0.5 focus:outline-none focus:border-secondary ${
+              completed ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
+            <option value="">—</option>
+            {PRIORITIES.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Status */}
+      <div className="mb-2">
+        <select
+          value={d.dashboardStatus}
+          disabled={completed}
+          onChange={(e) => onPatch(id, { dashboardStatus: e.target.value as ClientDashboardStatus | '' })}
+          className={`w-full font-body text-[11px] border border-outline-variant/25 bg-transparent px-2 py-1.5 focus:outline-none focus:border-secondary ${
+            completed ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+        >
+          <option value="">— 상태 선택 —</option>
+          {DASHBOARD_STATUSES.map((s) => (
+            <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+          ))}
+        </select>
+        {d.dashboardStatus && (
+          <div className={`mt-1 inline-block px-1.5 py-0.5 font-body text-[10px] rounded-sm ${STATUS_COLORS[d.dashboardStatus as ClientDashboardStatus].bg} ${STATUS_COLORS[d.dashboardStatus as ClientDashboardStatus].text}`}>
+            {STATUS_LABELS[d.dashboardStatus as ClientDashboardStatus]}
+          </div>
+        )}
+      </div>
+
+      {/* Follow-up tasks */}
+      {d.followUpTasks && (
+        <p className="font-body text-[11px] text-on-surface-variant/70 mb-2 line-clamp-2 bg-surface-container-low/50 px-2 py-1">
+          {d.followUpTasks}
+        </p>
+      )}
+
+      {/* Meta info row */}
+      <div className="flex flex-wrap gap-x-4 gap-y-0.5">
+        <span className="font-body text-[10px] text-on-surface-variant/50">{product}</span>
+        {contactValue && (
+          <span className="font-body text-[10px] text-on-surface-variant/50">{contactValue}</span>
+        )}
+        {d.tuition && (
+          <span className="font-body text-[10px] text-on-surface-variant/50">{d.tuition}</span>
+        )}
+        {d.paymentReceivedDate && (
+          <span className="font-body text-[10px] text-on-surface-variant/50">{d.paymentReceivedDate}</span>
+        )}
+      </div>
+
+      {/* Notes */}
+      {d.notes && (
+        <p className="font-body text-[10px] text-on-surface-variant/50 mt-1 line-clamp-1 italic">{d.notes}</p>
+      )}
+    </div>
   )
 }
 
