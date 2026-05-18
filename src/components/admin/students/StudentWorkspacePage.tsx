@@ -243,14 +243,14 @@ export function StudentWorkspacePage() {
 
                       <div>
                         {tab === 'overview' && <OverviewTab c={current} onNav={setTab} inProgram={inProgram} save={save} />}
-                        {inProgram && tab === 'survey' && <PurposeSurveyForm c={current} save={save} />}
-                        {inProgram && tab === 'assessment' && <SurveyTab c={current} save={save} />}
-                        {inProgram && tab === 'observations' && <ObservationsTab c={current} save={save} />}
-                        {inProgram && tab === 'recommendation' && <RecommendationTab c={current} save={save} />}
+                        {inProgram && tab === 'survey' && <PurposeSurveyForm key={current.student.id} c={current} save={save} />}
+                        {inProgram && tab === 'assessment' && <SurveyTab key={current.student.id} c={current} save={save} />}
+                        {inProgram && tab === 'observations' && <ObservationsTab key={current.student.id} c={current} save={save} />}
+                        {inProgram && tab === 'recommendation' && <RecommendationTab key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
                         {inProgram && tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
-                        {!inProgram && tab === 'survey' && <PurposeSurveyForm c={current} save={save} />}
-                        {!inProgram && tab === 'profile' && <ProfileTab c={current} save={save} />}
+                        {!inProgram && tab === 'survey' && <PurposeSurveyForm key={current.student.id} c={current} save={save} />}
+                        {!inProgram && tab === 'profile' && <ProfileTab key={current.student.id} c={current} save={save} />}
                       </div>
                     </>
                   )
