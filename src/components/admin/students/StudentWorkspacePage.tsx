@@ -1593,17 +1593,6 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
 
 /* ─────────────────────── Consulting Direction Tab ─────────────────────── */
 
-const EMPTY_DIRECTION: Omit<ConsultingDirectionEntry, 'savedAt'> = {
-  coreSummary: '',
-  targetRegions: '',
-  targetSchoolType: '',
-  shortTermPlan: '',
-  midTermPlan: '',
-  longTermPlan: '',
-  decisionsMade: '',
-  pendingItems: '',
-  resources: '',
-}
 
 function ConsultingDirectionTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => void }) {
   const { t } = useLanguage()
