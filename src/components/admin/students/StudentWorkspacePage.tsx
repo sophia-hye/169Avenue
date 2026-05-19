@@ -21,6 +21,7 @@ import {
   listStudents,
   markExported,
   saveCase,
+  saveConsultingDirection,
   updateConsultationLog,
   updateGeneralStatus,
   updateObservation,
@@ -28,6 +29,7 @@ import {
   upsertDraftReport,
   aggregateObservations,
   type ConsultationLog,
+  type ConsultingDirectionEntry,
   type GeneralStatus,
   type Observation,
   type StudentCase,
@@ -51,7 +53,7 @@ import { PurposeSurveyForm } from './PurposeSurveyForm'
 import { ApplicationTrackingTab } from './ApplicationTrackingTab'
 import { DocumentsTab } from './DocumentsTab'
 
-type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'consultation' | 'recommendation' | 'preview' | 'export' | 'profile' | 'tracking' | 'documents'
+type TabId = 'overview' | 'survey' | 'assessment' | 'observations' | 'consultation' | 'direction' | 'recommendation' | 'preview' | 'export' | 'profile' | 'tracking' | 'documents'
 
 interface CreateStudentOpts {
   studyAbroadPurpose?: StudyAbroadPurpose
@@ -234,6 +236,7 @@ export function StudentWorkspacePage() {
                         ['overview',      tt.detail_tab_overview,      'dashboard'],
                         ['survey',        tt.detail_tab_survey,        'edit_note'],
                         ['consultation',  tt.detail_tab_consultation,  'notes'],
+                        ['direction',     tt.detail_tab_direction,     'explore'],
                         ['tracking',      tt.detail_tab_tracking,      'table_chart'],
                         ['documents',     tt.detail_tab_documents,     'folder_open'],
                         ['profile',       tt.detail_tab_profile,       'person'],
@@ -258,6 +261,7 @@ export function StudentWorkspacePage() {
                         {inProgram && tab === 'assessment' && <SurveyTab key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'observations' && <ObservationsTab key={current.student.id} c={current} save={save} />}
                         {tab === 'consultation' && <ConsultationLogTab key={current.student.id} c={current} save={save} />}
+                        {tab === 'direction' && <ConsultingDirectionTab key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'recommendation' && <RecommendationTab key={current.student.id} c={current} save={save} />}
                         {inProgram && tab === 'preview' && <PreviewTab c={current} onOpen={() => setPresenting(true)} />}
                         {inProgram && tab === 'export' && <ExportTab c={current} exportable={exportable} onExport={handleExport} />}
@@ -1583,6 +1587,219 @@ function ProfileTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => voi
           {toast}
         </div>
       )}
+    </div>
+  )
+}
+
+/* ─────────────────────── Consulting Direction Tab ─────────────────────── */
+
+const EMPTY_DIRECTION: Omit<ConsultingDirectionEntry, 'savedAt'> = {
+  coreSummary: '',
+  targetRegions: '',
+  targetSchoolType: '',
+  shortTermPlan: '',
+  midTermPlan: '',
+  longTermPlan: '',
+  decisionsMade: '',
+  pendingItems: '',
+  resources: '',
+}
+
+function ConsultingDirectionTab({ c, save }: { c: StudentCase; save: (c: StudentCase) => void }) {
+  const { t } = useLanguage()
+  const tt = t as unknown as Record<string, string>
+
+  const current = c.consultingDirection
+  const history = [...(c.consultingDirectionHistory || [])].reverse()
+
+  const [coreSummary, setCoreSummary] = useState(current?.coreSummary ?? '')
+  const [targetRegions, setTargetRegions] = useState(current?.targetRegions ?? '')
+  const [targetSchoolType, setTargetSchoolType] = useState(current?.targetSchoolType ?? '')
+  const [shortTermPlan, setShortTermPlan] = useState(current?.shortTermPlan ?? '')
+  const [midTermPlan, setMidTermPlan] = useState(current?.midTermPlan ?? '')
+  const [longTermPlan, setLongTermPlan] = useState(current?.longTermPlan ?? '')
+  const [decisionsMade, setDecisionsMade] = useState(current?.decisionsMade ?? '')
+  const [pendingItems, setPendingItems] = useState(current?.pendingItems ?? '')
+  const [resources, setResources] = useState(current?.resources ?? '')
+  const [showHistory, setShowHistory] = useState(false)
+  const [saved, setSaved] = useState(false)
+
+  const handleSave = () => {
+    save(saveConsultingDirection(c, {
+      coreSummary, targetRegions, targetSchoolType,
+      shortTermPlan, midTermPlan, longTermPlan,
+      decisionsMade, pendingItems, resources,
+    }))
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleRestore = (entry: ConsultingDirectionEntry) => {
+    setCoreSummary(entry.coreSummary)
+    setTargetRegions(entry.targetRegions)
+    setTargetSchoolType(entry.targetSchoolType)
+    setShortTermPlan(entry.shortTermPlan)
+    setMidTermPlan(entry.midTermPlan)
+    setLongTermPlan(entry.longTermPlan)
+    setDecisionsMade(entry.decisionsMade)
+    setPendingItems(entry.pendingItems)
+    setResources(entry.resources)
+  }
+
+  const inputCls = 'w-full border border-outline-variant/25 px-3 py-2 font-body text-sm outline-none focus:border-secondary'
+  const labelCls = 'font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block'
+
+  return (
+    <div>
+      <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
+        <div>
+          <h2 className="font-headline text-2xl text-primary tracking-tight mb-1">{tt.dir_title}</h2>
+          <p className="font-body text-sm text-on-surface-variant/60">{tt.dir_sub}</p>
+        </div>
+        {current?.savedAt && (
+          <span className="font-body text-xs text-on-surface-variant/40">
+            {tt.dir_last_updated}: {new Date(current.savedAt).toLocaleString()}
+          </span>
+        )}
+      </div>
+
+      <div className="max-w-2xl space-y-5 mb-8">
+        {/* Core summary */}
+        <label className="block">
+          <span className={labelCls}>{tt.dir_core_summary}</span>
+          <textarea value={coreSummary} onChange={(e) => setCoreSummary(e.target.value)} rows={4}
+            placeholder={tt.dir_core_summary_ph}
+            className={`${inputCls} resize-none`} />
+        </label>
+
+        {/* Target */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label className="block">
+            <span className={labelCls}>{tt.dir_target_regions}</span>
+            <input value={targetRegions} onChange={(e) => setTargetRegions(e.target.value)}
+              placeholder={tt.dir_target_regions_ph} className={inputCls} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.dir_target_school_type}</span>
+            <input value={targetSchoolType} onChange={(e) => setTargetSchoolType(e.target.value)}
+              placeholder={tt.dir_target_school_type_ph} className={inputCls} />
+          </label>
+        </div>
+
+        {/* Roadmap */}
+        <div className="pt-4 border-t border-outline-variant/10">
+          <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/40 mb-3">Roadmap</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <label className="block">
+              <span className={labelCls}>{tt.dir_short_term}</span>
+              <textarea value={shortTermPlan} onChange={(e) => setShortTermPlan(e.target.value)} rows={4}
+                placeholder={tt.dir_short_term_ph}
+                className={`${inputCls} resize-none`} />
+            </label>
+            <label className="block">
+              <span className={labelCls}>{tt.dir_mid_term}</span>
+              <textarea value={midTermPlan} onChange={(e) => setMidTermPlan(e.target.value)} rows={4}
+                placeholder={tt.dir_mid_term_ph}
+                className={`${inputCls} resize-none`} />
+            </label>
+            <label className="block">
+              <span className={labelCls}>{tt.dir_long_term}</span>
+              <textarea value={longTermPlan} onChange={(e) => setLongTermPlan(e.target.value)} rows={4}
+                placeholder={tt.dir_long_term_ph}
+                className={`${inputCls} resize-none`} />
+            </label>
+          </div>
+        </div>
+
+        {/* Decisions & pending */}
+        <div className="pt-4 border-t border-outline-variant/10 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label className="block">
+            <span className={labelCls}>{tt.dir_decisions_made}</span>
+            <textarea value={decisionsMade} onChange={(e) => setDecisionsMade(e.target.value)} rows={4}
+              placeholder={tt.dir_decisions_made_ph}
+              className={`${inputCls} resize-none`} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.dir_pending_items}</span>
+            <textarea value={pendingItems} onChange={(e) => setPendingItems(e.target.value)} rows={4}
+              placeholder={tt.dir_pending_items_ph}
+              className={`${inputCls} resize-none`} />
+          </label>
+        </div>
+
+        {/* Resources */}
+        <label className="block">
+          <span className={labelCls}>{tt.dir_resources}</span>
+          <textarea value={resources} onChange={(e) => setResources(e.target.value)} rows={3}
+            placeholder={tt.dir_resources_ph}
+            className={`${inputCls} resize-none`} />
+        </label>
+      </div>
+
+      {/* Save */}
+      <div className="flex items-center gap-4 mb-12">
+        <button onClick={handleSave}
+          className="px-6 py-2.5 font-body text-sm bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center gap-2">
+          <span className="material-symbols-outlined text-base">save</span>
+          {tt.dir_save}
+        </button>
+        {saved && (
+          <span className="font-body text-xs text-emerald-700 flex items-center gap-1">
+            <span className="material-symbols-outlined text-sm">check_circle</span>
+            {tt.dir_saved}
+          </span>
+        )}
+      </div>
+
+      {/* History */}
+      <div className="border-t border-outline-variant/15 pt-6">
+        <button
+          onClick={() => setShowHistory((v) => !v)}
+          className="flex items-center gap-2 font-label text-[11px] uppercase tracking-widest text-on-surface-variant/50 hover:text-primary transition-colors mb-4"
+        >
+          <span className="material-symbols-outlined text-base">{showHistory ? 'expand_less' : 'expand_more'}</span>
+          {tt.dir_history_title}
+          {history.length > 0 && (
+            <span className="ml-1 px-1.5 py-0.5 bg-outline-variant/15 font-body text-[10px]">{history.length}</span>
+          )}
+        </button>
+
+        {showHistory && (
+          history.length === 0 ? (
+            <p className="font-body text-xs text-on-surface-variant/40">{tt.dir_history_empty}</p>
+          ) : (
+            <div className="space-y-3">
+              {history.map((entry, idx) => (
+                <div key={entry.savedAt} className="border border-outline-variant/15 p-4 bg-surface-container-lowest">
+                  <div className="flex items-center justify-between gap-4 mb-2 flex-wrap">
+                    <div className="flex items-center gap-3">
+                      <span className="font-label text-[10px] uppercase tracking-widest text-secondary">
+                        {tt.dir_history_version.replace('{n}', String(history.length - idx))}
+                      </span>
+                      <span className="font-body text-[11px] text-on-surface-variant/40">
+                        {new Date(entry.savedAt).toLocaleString()}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => handleRestore(entry)}
+                      className="font-body text-xs text-on-surface-variant/50 hover:text-secondary transition-colors flex items-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-sm">restore</span>
+                      복원
+                    </button>
+                  </div>
+                  {entry.coreSummary && (
+                    <p className="font-body text-sm text-primary line-clamp-2">{entry.coreSummary}</p>
+                  )}
+                  {entry.targetRegions && (
+                    <p className="font-body text-xs text-on-surface-variant/50 mt-1">{entry.targetRegions}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )
+        )}
+      </div>
     </div>
   )
 }

@@ -236,6 +236,19 @@ export interface ConsultationLog {
   updatedAt: string
 }
 
+export interface ConsultingDirectionEntry {
+  coreSummary: string
+  targetRegions: string
+  targetSchoolType: string
+  shortTermPlan: string
+  midTermPlan: string
+  longTermPlan: string
+  decisionsMade: string
+  pendingItems: string
+  resources: string
+  savedAt: string
+}
+
 export interface StudentCase {
   student: StudentMeta
   survey: ParentSurvey
@@ -244,6 +257,8 @@ export interface StudentCase {
   observations: Observation[]
   reports: Report[]
   consultationLogs?: ConsultationLog[]
+  consultingDirection?: ConsultingDirectionEntry
+  consultingDirectionHistory?: ConsultingDirectionEntry[]
   applicationTracking?: ApplicationEntry[]
   documents?: DocumentFile[]
   clientDashboard?: ClientDashboardEntry
@@ -420,7 +435,33 @@ function normalizeCase(raw: unknown, id: string): StudentCase {
         updatedAt: c.clientDashboard.updatedAt || nowIso(),
       }
     : undefined
-  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, applicationTracking, documents, clientDashboard }
+  const consultingDirection: ConsultingDirectionEntry | undefined = c.consultingDirection
+    ? {
+        coreSummary: c.consultingDirection.coreSummary || '',
+        targetRegions: c.consultingDirection.targetRegions || '',
+        targetSchoolType: c.consultingDirection.targetSchoolType || '',
+        shortTermPlan: c.consultingDirection.shortTermPlan || '',
+        midTermPlan: c.consultingDirection.midTermPlan || '',
+        longTermPlan: c.consultingDirection.longTermPlan || '',
+        decisionsMade: c.consultingDirection.decisionsMade || '',
+        pendingItems: c.consultingDirection.pendingItems || '',
+        resources: c.consultingDirection.resources || '',
+        savedAt: c.consultingDirection.savedAt || nowIso(),
+      }
+    : undefined
+  const consultingDirectionHistory: ConsultingDirectionEntry[] = (c.consultingDirectionHistory || []).map((h) => ({
+    coreSummary: h.coreSummary || '',
+    targetRegions: h.targetRegions || '',
+    targetSchoolType: h.targetSchoolType || '',
+    shortTermPlan: h.shortTermPlan || '',
+    midTermPlan: h.midTermPlan || '',
+    longTermPlan: h.longTermPlan || '',
+    decisionsMade: h.decisionsMade || '',
+    pendingItems: h.pendingItems || '',
+    resources: h.resources || '',
+    savedAt: h.savedAt || nowIso(),
+  }))
+  return { student, survey, purposeSurvey, generalStatus, observations, reports, consultationLogs, consultingDirection, consultingDirectionHistory, applicationTracking, documents, clientDashboard }
 }
 
 function normalizeObservation(o: Partial<Observation>): Observation {
@@ -942,6 +983,16 @@ export function updateConsultationLog(c: StudentCase, logId: string, patch: Part
 
 export function deleteConsultationLog(c: StudentCase, logId: string): StudentCase {
   return saveCase({ ...c, consultationLogs: (c.consultationLogs || []).filter((l) => l.id !== logId) })
+}
+
+/* ─── Consulting direction helpers ─── */
+
+export function saveConsultingDirection(c: StudentCase, entry: Omit<ConsultingDirectionEntry, 'savedAt'>): StudentCase {
+  const snapshot: ConsultingDirectionEntry = { ...entry, savedAt: nowIso() }
+  const history = c.consultingDirection
+    ? [...(c.consultingDirectionHistory || []), c.consultingDirection]
+    : (c.consultingDirectionHistory || [])
+  return saveCase({ ...c, consultingDirection: snapshot, consultingDirectionHistory: history })
 }
 
 /**
