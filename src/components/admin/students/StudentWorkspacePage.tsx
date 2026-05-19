@@ -1662,46 +1662,42 @@ function ConsultingDirectionTab({ c, save }: { c: StudentCase; save: (c: Student
         </label>
 
         {/* Target */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label className="block">
-            <span className={labelCls}>{tt.dir_target_regions}</span>
-            <input value={targetRegions} onChange={(e) => setTargetRegions(e.target.value)}
-              placeholder={tt.dir_target_regions_ph} className={inputCls} />
-          </label>
-          <label className="block">
-            <span className={labelCls}>{tt.dir_target_school_type}</span>
-            <input value={targetSchoolType} onChange={(e) => setTargetSchoolType(e.target.value)}
-              placeholder={tt.dir_target_school_type_ph} className={inputCls} />
-          </label>
-        </div>
+        <label className="block">
+          <span className={labelCls}>{tt.dir_target_regions}</span>
+          <input value={targetRegions} onChange={(e) => setTargetRegions(e.target.value)}
+            placeholder={tt.dir_target_regions_ph} className={inputCls} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>{tt.dir_target_school_type}</span>
+          <input value={targetSchoolType} onChange={(e) => setTargetSchoolType(e.target.value)}
+            placeholder={tt.dir_target_school_type_ph} className={inputCls} />
+        </label>
 
         {/* Roadmap */}
-        <div className="pt-4 border-t border-outline-variant/10">
-          <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/40 mb-3">Roadmap</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <label className="block">
-              <span className={labelCls}>{tt.dir_short_term}</span>
-              <textarea value={shortTermPlan} onChange={(e) => setShortTermPlan(e.target.value)} rows={4}
-                placeholder={tt.dir_short_term_ph}
-                className={`${inputCls} resize-none`} />
-            </label>
-            <label className="block">
-              <span className={labelCls}>{tt.dir_mid_term}</span>
-              <textarea value={midTermPlan} onChange={(e) => setMidTermPlan(e.target.value)} rows={4}
-                placeholder={tt.dir_mid_term_ph}
-                className={`${inputCls} resize-none`} />
-            </label>
-            <label className="block">
-              <span className={labelCls}>{tt.dir_long_term}</span>
-              <textarea value={longTermPlan} onChange={(e) => setLongTermPlan(e.target.value)} rows={4}
-                placeholder={tt.dir_long_term_ph}
-                className={`${inputCls} resize-none`} />
-            </label>
-          </div>
+        <div className="pt-4 border-t border-outline-variant/10 space-y-4">
+          <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/40">Roadmap</p>
+          <label className="block">
+            <span className={labelCls}>{tt.dir_short_term}</span>
+            <textarea value={shortTermPlan} onChange={(e) => setShortTermPlan(e.target.value)} rows={4}
+              placeholder={tt.dir_short_term_ph}
+              className={`${inputCls} resize-none`} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.dir_mid_term}</span>
+            <textarea value={midTermPlan} onChange={(e) => setMidTermPlan(e.target.value)} rows={4}
+              placeholder={tt.dir_mid_term_ph}
+              className={`${inputCls} resize-none`} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>{tt.dir_long_term}</span>
+            <textarea value={longTermPlan} onChange={(e) => setLongTermPlan(e.target.value)} rows={4}
+              placeholder={tt.dir_long_term_ph}
+              className={`${inputCls} resize-none`} />
+          </label>
         </div>
 
         {/* Decisions & pending */}
-        <div className="pt-4 border-t border-outline-variant/10 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="pt-4 border-t border-outline-variant/10 space-y-4">
           <label className="block">
             <span className={labelCls}>{tt.dir_decisions_made}</span>
             <textarea value={decisionsMade} onChange={(e) => setDecisionsMade(e.target.value)} rows={4}
